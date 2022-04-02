@@ -1,0 +1,83 @@
+#dddot-panel-container {
+  height: calc(100vh - 30px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.dddot-hidden {
+  display: none;
+}
+
+.dddot-tool-header {
+  margin-top: 4px;
+  margin-bottom: 2px;
+  margin-left: 4px;
+}
+
+.dddot-tool-header h2 {
+  margin-bottom: 4px;
+}
+
+.dddot-tool {
+  padding-bottom: 4px;
+}
+
+.dddot-note-dragging {
+  background-color:  var(--joplin-background-color-hover3);
+}
+
+.dddot-note-item {
+  display: block;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: relative;
+  display: block;
+  text-overflow: clip;
+  overflow-x: clip;
+}
+
+.dddot-note-item:hover {
+  background: var(--joplin-background-color-hover3);
+}
+
+.dddot-note-item a {
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  font-family: var(--joplin-font-family);
+  color: var(--joplin-color3);
+  height: 28px;
+  line-height: 28px;
+  white-space: nowrap;
+}
+
+.dddot-note-item div {
+  overflow-x: hidden;  
+}
+
+.dddot-note-item a:hover {
+  text-decoration: none;
+}
+
+.dddot-note-item a:visited {
+  text-decoration: none;
+}
+
+.dddot-note-item a:active {
+  text-decoration: none;
+}
+
+.dddot-note-item:not(:first-child):before  {
+  content: " ";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: -1px;
+  height: 1px;
+  background-color: var(--joplin-divider-color);
+}
+
+.dddot-sortable-ghost {
+  opacity: 0;
+}

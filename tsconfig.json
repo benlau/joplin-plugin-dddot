@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist/",
+		"module": "commonjs",
+		"target": "es2015",
+		"jsx": "react",
+		"allowJs": true,
+		"baseUrl": ".",
+		"experimentalDecorators": true
+	},
+	"exclude": [
+		"./tests"
+	]
+}

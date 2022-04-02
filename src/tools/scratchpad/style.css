@@ -1,0 +1,12 @@
+
+#dddot-scratchpad-tool-content .CodeMirror {
+  border: 1px solid #000;
+  border-radius: 2px;
+  margin-left: 4px;
+  margin-right: 4px;
+  height: 30vh;
+}
+
+#dddot-scratchpad-tool-content .CodeMirror-wrap pre {
+  word-break: break-word;
+}

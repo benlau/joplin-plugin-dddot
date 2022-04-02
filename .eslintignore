@@ -1,0 +1,8 @@
+node_modules
+dist
+jest.config.js
+babel.config.js
+webpack.config.js
+src/libs
+bower_components
+api

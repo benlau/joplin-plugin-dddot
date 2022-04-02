@@ -1,0 +1,26 @@
+{
+  "name": "joplin-plugin-joplin-dddot",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Ben Lau <xbenlau@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "joplin-plugin"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.6.0",
+    "codemirror": "^5.65.1",
+    "Sortable": "sortablejs#^1.14.0"
+  }
+}
