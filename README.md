@@ -1,24 +1,34 @@
-# Joplin Plugin
+# Joplin DDDot
 
-This is a template to create a new Joplin plugin.
+DDDot is a Joplin plugin to provide a set of tools like recent notes, shortcuts, scratchpad, and .... in a single sidebar.
 
-The main two files you will want to look at are:
+**Main Features**:
 
-- `/src/index.ts`, which contains the entry point for the plugin source code.
-- `/src/manifest.json`, which is the plugin manifest. It contains information such as the plugin a name, version, etc.
+1. Recent Notes - Show recently opened notes
+2. Shortcuts - A bookmark of faviour notes
+3. Scratchpad - An area to write anything when you got an inspiration but don't want to bother to find the right note to insert.
+4. Backlinks - Show the backlink of the currently selected note
 
-## Building the plugin
+![Screenshot](https://raw.githubusercontent.com/benlau/joplin-plugin-dddot/master/docs/screenshot1.png)
 
-The plugin is built using Webpack, which creates the compiled code in `/dist`. A JPL archive will also be created at the root, which can use to distribute the plugin.
+**Minor features**
 
-To build the plugin, simply run `npm run dist`.
+- Support to enable/disable an individual tool
+- Support changing the tool order by drag and drop
 
-The project is setup to use TypeScript, although you can change the configuration to use plain JavaScript.
+# User Guide
 
-## Updating the plugin framework
+## Toggle visibility of DDDot
 
-To update the plugin framework, run `npm run update`.
+Press the DDDot icon in the toolbar
 
-In general this command tries to do the right thing - in particular it's going to merge the changes in package.json and .gitignore instead of overwriting. It will also leave "/src" as well as README.md untouched.
+![Screenshot](https://raw.githubusercontent.com/benlau/joplin-plugin-dddot/master/docs/toggle-visibility.png)
 
-The file that may cause problem is "webpack.config.js" because it's going to be overwritten. For that reason, if you want to change it, consider creating a separate JavaScript file and include it in webpack.config.js. That way, when you update, you only have to restore the line that include your file.
+## Enable/disable a tool
+
+Launch Preference and open DDDot section. It will show the options to enable/disable a tool 
+
+## Shortcuts
+
+- Add shortcut - Drag a note from the note list over the Shortcuts area. 
+- Remove shortcut - Right-click on a shortcut

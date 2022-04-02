@@ -6,7 +6,7 @@ joplin.plugins.register({
     async onStart() {
         const panel = new Panel();
 
-        const toggleDDDotVisibility = "toggleDDDotVisibility";
+        const toggleDDDotVisibility = "dddot.toggleVisibility";
 
         await joplin.commands.register({
             name: toggleDDDotVisibility,
