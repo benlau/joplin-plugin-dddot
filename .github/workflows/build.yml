@@ -1,0 +1,37 @@
+name: Build
+
+on:
+  push:
+    branches: master 
+  pull_request:
+    branches: "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          npm install -g codecov
+      - name: Test the extension
+        run: |
+          npm install
+          npm run test
+          npm run lint
