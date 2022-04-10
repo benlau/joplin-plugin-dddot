@@ -52,7 +52,7 @@ export default class Panel {
             const content = `
             <div class="dddot-tool dddot-hidden" data-id="${tool.key}" id="${tool.containerId}">
             <div class="dddot-tool-header">
-                <h2>${tool.title}</h2>
+                <h3>${tool.title}</h3>
             </div>
                 <div id="${tool.contentId}"></div>
             </div>
