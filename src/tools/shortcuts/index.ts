@@ -62,6 +62,9 @@ export default class Shortcuts extends Tool {
             rendererService,
         } = this.servicePool;
 
+        if (links.length === 0) {
+            return "<div class='dddot-tool-help-text'>Drag a note here</div>";
+        }
         const list = links.map((link: any) => rendererService.renderNoteLink(link.id, link.title, {
             onClick: {
                 type: "dddot.openNote",

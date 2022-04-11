@@ -4,6 +4,10 @@ async function shortcutsWorker() {
     const refresh = (content) => {
         $(contentId).html(content);
         const list = document.getElementById("dddot-shortcuts-list");
+        if (list === null) {
+            return;
+        }
+
         const sortable = Sortable.create(list, {
             ghostClass: "dddot-sortable-ghost",
             dataIdAttr: "dddot-note-id",

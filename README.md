@@ -6,8 +6,8 @@ DDDot is a Joplin plugin to provide a set of tools like recent notes, shortcuts,
 
 1. Recent Notes - Show recently opened notes
 2. Shortcuts - A bookmark of faviour notes
-3. Scratchpad - An area to write anything when you got an inspiration but don't want to bother to find the right note to insert.
-4. Backlinks - Show the backlink of the currently selected note
+3. Scratchpad - Write something quickly without bothering to find the right note to insert
+4. Backlinks - Show the backlinks of the currently selected note
 
 ![Screenshot](https://raw.githubusercontent.com/benlau/joplin-plugin-dddot/master/docs/screenshot1.png)
 
