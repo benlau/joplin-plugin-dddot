@@ -4,27 +4,37 @@ import LinkListModel from "../../models/linklistmodel";
 import Link from "../../types/link";
 import { ItemChangeEventType } from "../../repo/joplinrepo";
 
-const RecentNotesContent = "dddot.settings.recentnotes.content";
+const RecentNotesContentSetting = "dddot.settings.recentnotes.content";
+const RecentNotesMaxNotesSetting = "dddot.settings.recentnotes.maxnotes";
+const RecentNotesMaxNotesSettingDefaultValue = 5;
 
 export default class RecentNotes extends Tool {
-    maxVisibleItemCount = 5;
-
     linkListModel: LinkListModel = new LinkListModel();
 
     settings(section: string) {
         return {
-            [RecentNotesContent]: {
+            [RecentNotesContentSetting]: {
                 value: [],
                 type: SettingItemType.Object,
                 public: false,
                 label: "Recent Notes",
                 section,
             },
+            [RecentNotesMaxNotesSetting]: {
+                value: RecentNotesMaxNotesSettingDefaultValue,
+                type: SettingItemType.Int,
+                public: true,
+                label: "Recent Notes - Max number of notes",
+                section,
+            },
         };
     }
 
     async start() {
-        this.linkListModel.links = await this.joplinRepo.settingsLoad(RecentNotesContent, []);
+        this.linkListModel.links = await this.joplinRepo.settingsLoad(
+            RecentNotesContentSetting,
+            [],
+        );
 
         await this.joplinRepo.workspaceOnNoteSelectionChange(async () => {
             const activeNote = await this.joplinRepo.workspaceSelectedNote();
@@ -47,7 +57,7 @@ export default class RecentNotes extends Tool {
     }
 
     async save() {
-        await this.joplinRepo.settingsSave(RecentNotesContent, this.linkListModel.toData());
+        await this.joplinRepo.settingsSave(RecentNotesContentSetting, this.linkListModel.toData());
     }
 
     async refresh() {
@@ -66,21 +76,33 @@ export default class RecentNotes extends Tool {
 
         this.linkListModel.unshift(prependLink);
 
-        this.linkListModel.links = this.linkListModel.links.slice(0, this.maxVisibleItemCount);
-
+        await this.truncate();
         await this.save();
         await this.refresh();
     }
 
     async onMessage(message: any) {
         if (message.type === "recentnotes.onReady") {
-            return this.render();
+            return this.onReady();
         }
         return undefined;
     }
 
     get title() {
         return "Recent Notes";
+    }
+
+    async onReady() {
+        await this.truncate();
+        return this.render();
+    }
+
+    async truncate() {
+        const maxVisibleItemCount = await this.joplinRepo.settingsLoad(
+            RecentNotesMaxNotesSetting,
+            RecentNotesMaxNotesSettingDefaultValue,
+        );
+        this.linkListModel.links = this.linkListModel.links.slice(0, maxVisibleItemCount);
     }
 
     render() {
