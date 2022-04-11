@@ -2,6 +2,7 @@ import { SettingItemType } from "api/types";
 import Tool from "../tool";
 import LinkListModel from "../../models/linklistmodel";
 import { ItemChangeEventType } from "../../repo/joplinrepo";
+import JoplinService from "../../services/joplin/joplinservice";
 
 const ShortcutsContent = "dddot.settings.shortcuts.content";
 
@@ -95,6 +96,11 @@ export default class Shortcuts extends Tool {
     }
 
     async removeNote(noteId: string) {
+        const result = await this.joplinService.showMessageBox("Are you sure to remove this shortcut?");
+        if (result === JoplinService.Cancel) {
+            return;
+        }
+
         this.linkListModel.remove(noteId);
         await this.save();
         this.refresh(this.render());

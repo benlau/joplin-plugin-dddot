@@ -2,6 +2,10 @@ import JoplinRepo from "src/repo/joplinrepo";
 import Link from "../../types/link";
 
 export default class JoplinService {
+    static Cancel = "Cancel";
+
+    static OK = "OK";
+
     repo: JoplinRepo;
 
     constructor(repo: JoplinRepo) {
@@ -25,5 +29,10 @@ export default class JoplinService {
 
         const links = items.map((item) => Link.createNoteLink(item.id, item.title));
         return links;
+    }
+
+    async showMessageBox(message: string) {
+        const result = await this.repo.dialogShowMessageBox(message);
+        return result === 0 ? JoplinService.OK : JoplinService.Cancel;
     }
 }

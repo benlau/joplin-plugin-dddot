@@ -44,4 +44,8 @@ export default class JoplinRepo {
     async panelPostMessage(message: any) {
         joplin.views.panels.postMessage(this.panelView, message);
     }
+
+    async dialogShowMessageBox(message: string) {
+        return joplin.views.dialogs.showMessageBox(message);
+    }
 }
