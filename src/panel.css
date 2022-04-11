@@ -20,6 +20,10 @@
   margin-bottom: 4px;
 }
 
+.dddot-tool-header i {
+  font-size: 12px;
+}
+
 .dddot-tool {
   padding-bottom: 4px;
 }

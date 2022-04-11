@@ -52,7 +52,7 @@ export default class Panel {
             const content = `
             <div class="dddot-tool dddot-hidden" data-id="${tool.key}" id="${tool.containerId}">
             <div class="dddot-tool-header">
-                <h3>${tool.title}</h3>
+                <h3><i class="fas fa-bars"></i> ${tool.title}</h3>
             </div>
                 <div id="${tool.contentId}"></div>
             </div>
