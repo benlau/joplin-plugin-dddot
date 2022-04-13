@@ -18,15 +18,21 @@ DDDot is a Joplin plugin to provide a set of tools like recent notes, shortcuts,
 
 # User Guide
 
-## Toggle visibility of DDDot
+## General Usage
+
+### Toggle visibility of DDDot
 
 Press the DDDot icon in the toolbar
 
 ![Screenshot](https://raw.githubusercontent.com/benlau/joplin-plugin-dddot/master/docs/toggle-visibility.png)
 
-## Enable/disable a tool
+### Enable/disable a tool
 
 Launch Preference and open DDDot section. It will show the options to enable/disable a tool 
+
+### Draggable link
+
+The links in Recent Notes and Backlinks are draggable. You may drag it to the note editor to insert the link there.
 
 ## Shortcuts
 
