@@ -13,6 +13,9 @@
   margin-top: 4px;
   margin-bottom: 2px;
   margin-left: 4px;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 8px;
 }
 
 .dddot-tool-header h3 {
@@ -22,6 +25,20 @@
 
 .dddot-tool-header i {
   font-size: 12px;
+}
+
+.dddot-expand-button {
+  transform-origin: center center;
+  transform: scale(0.8, 0.8) ! important;
+  margin-top: 6px ! important;
+}
+
+.dddot-expand-button-active {
+  transform: rotate(90deg) ! important;
+}
+
+.dddot-expand-button-inactive {
+  transform: rotate(180deg) ! important;
 }
 
 .dddot-tool {

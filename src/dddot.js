@@ -93,12 +93,28 @@ class DDDot {
             const {
                 workerFunctionName,
                 containerId,
+                contentId,
                 enabled,
             } = tool;
 
             if (enabled) {
                 await window[workerFunctionName]();
                 $(`#${containerId}`).removeClass("dddot-hidden");
+                const content = $(`#${contentId}`);
+
+                const expandButton = $(`#${containerId} .dddot-expand-button`);
+
+                expandButton.on("click", () => {
+                    if (expandButton.hasClass("dddot-expand-button-active")) {
+                        expandButton.removeClass("dddot-expand-button-active");
+                        expandButton.addClass("dddot-expand-button-inactive");
+                        content.addClass("dddot-hidden");
+                    } else {
+                        expandButton.removeClass("dddot-expand-button-inactive");
+                        expandButton.addClass("dddot-expand-button-active");
+                        content.removeClass("dddot-hidden");
+                    }
+                });
             } else {
                 $(`#${containerId}`).addClass("dddot-hidden");
             }

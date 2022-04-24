@@ -53,6 +53,7 @@ export default class Panel {
             <div class="dddot-tool dddot-hidden" data-id="${tool.key}" id="${tool.containerId}">
             <div class="dddot-tool-header">
                 <h3><i class="fas fa-bars"></i> ${tool.title}</h3>
+                <h3 class="dddot-expand-button dddot-expand-button-active"><i class="fas fa-play"></i></h3>
             </div>
                 <div id="${tool.contentId}"></div>
             </div>
@@ -174,6 +175,7 @@ export default class Panel {
             const {
                 workerFunctionName,
                 containerId,
+                contentId,
             } = tool;
 
             const enabled = await tool.updateEnabledFromSetting();
@@ -181,6 +183,7 @@ export default class Panel {
             return {
                 workerFunctionName,
                 containerId,
+                contentId,
                 enabled,
             };
         }));
