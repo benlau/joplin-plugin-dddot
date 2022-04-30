@@ -11,13 +11,13 @@ import BackLinks from "./tools/backlinks";
 const ToolOrder = "dddot.settings.panel.toolorder";
 
 export default class Panel {
-    private view: any;
+    public view: any;
 
-    private joplinRepo: JoplinRepo;
+    public joplinRepo: JoplinRepo;
 
-    private servicePool: ServicePool;
+    public servicePool: ServicePool;
 
-    private tools: Tool[];
+    public tools: Tool[];
 
     async loadResources() {
         const resources = [
@@ -34,7 +34,7 @@ export default class Panel {
                 async (resource) => joplin.views.panels.addScript(this.view, resource),
             ),
         );
-        const scripts = this.tools.map((tool) => {
+        const scripts = this.tools.filter((tool) => tool.hasView).map((tool) => {
             const { key } = tool;
             return [
                 `./tools/${key}/worker.js`,
@@ -171,22 +171,26 @@ export default class Panel {
             toolIds,
         });
 
-        const tools = await Promise.all(this.tools.map(async (tool) => {
-            const {
-                workerFunctionName,
-                containerId,
-                contentId,
-            } = tool;
+        const tools = await Promise.all(
+            this.tools.filter(
+                (tool) => tool.hasView,
+            ).map(async (tool) => {
+                const {
+                    workerFunctionName,
+                    containerId,
+                    contentId,
+                } = tool;
 
-            const enabled = await tool.updateEnabledFromSetting();
+                const enabled = await tool.updateEnabledFromSetting();
 
-            return {
-                workerFunctionName,
-                containerId,
-                contentId,
-                enabled,
-            };
-        }));
+                return {
+                    workerFunctionName,
+                    containerId,
+                    contentId,
+                    enabled,
+                };
+            }),
+        );
 
         this.joplinRepo.panelPostMessage({
             type: "dddot.start",
