@@ -32,7 +32,7 @@ export default class JoplinService {
     }
 
     async showMessageBox(message: string) {
-        const result = await this.repo.dialogShowMessageBox(message);
+        const result = await this.repo.dialogsShowMessageBox(message);
         return result === 0 ? JoplinService.OK : JoplinService.Cancel;
     }
 }

@@ -1,4 +1,5 @@
 import joplin from "api";
+import { CreateMenuItemOptions, MenuItemLocation } from "api/types";
 
 export enum ItemChangeEventType {
     Create = 1,
@@ -45,7 +46,28 @@ export default class JoplinRepo {
         joplin.views.panels.postMessage(this.panelView, message);
     }
 
-    async dialogShowMessageBox(message: string) {
+    async dialogsShowMessageBox(message: string) {
         return joplin.views.dialogs.showMessageBox(message);
+    }
+
+    async dialogsCreate(id: string) {
+        return joplin.views.dialogs.create(id);
+    }
+
+    async commandsRegister(options: any) {
+        return joplin.commands.register(options);
+    }
+
+    async commandsExecute(command: string, ...args: any[]) {
+        return joplin.commands.execute(command, ...args);
+    }
+
+    async menuItemsCreate(
+        id: string,
+        commandName: string,
+        location?: MenuItemLocation,
+        options?: CreateMenuItemOptions,
+    ) {
+        return joplin.views.menuItems.create(id, commandName, location, options);
     }
 }

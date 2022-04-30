@@ -7,6 +7,7 @@ import Tool from "./tools/tool";
 import JoplinRepo from "./repo/joplinrepo";
 import ServicePool from "./services/servicepool";
 import BackLinks from "./tools/backlinks";
+import TextSorter from "./tools/textsorter";
 
 const ToolOrder = "dddot.settings.panel.toolorder";
 
@@ -113,8 +114,9 @@ export default class Panel {
         const recentlyNotes = new RecentNotes(this.servicePool);
         const shortcuts = new Shortcuts(this.servicePool);
         const backLinks = new BackLinks(this.servicePool);
+        const textSorter = new TextSorter(this.servicePool);
 
-        const tools = [scratchpad, shortcuts, recentlyNotes, backLinks];
+        const tools = [scratchpad, shortcuts, recentlyNotes, backLinks, textSorter];
         this.tools = tools;
 
         await this.createSettings(tools);
