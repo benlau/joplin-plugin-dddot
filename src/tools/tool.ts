@@ -69,4 +69,10 @@ export default class Tool {
     settings(_: string) {
         return {};
     }
+
+    async start() {
+    }
+
+    async registerCommands() {
+    }
 }

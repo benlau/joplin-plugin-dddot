@@ -29,16 +29,15 @@
 
 .dddot-expand-button {
   transform-origin: center center;
-  transform: scale(0.8, 0.8) ! important;
   margin-top: 6px ! important;
 }
 
 .dddot-expand-button-active {
-  transform: rotate(90deg) ! important;
+  transform: scale(0.8, 0.8) rotate(90deg) ! important;
 }
 
 .dddot-expand-button-inactive {
-  transform: rotate(180deg) ! important;
+  transform: scale(0.8, 0.8) rotate(180deg) ! important;
 }
 
 .dddot-tool {

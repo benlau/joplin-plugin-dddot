@@ -6,11 +6,15 @@ export default class TextSorter extends Tool {
         return false;
     }
 
-    async start() {
+    get isDefaultEnabled() {
+        return false;
+    }
+
+    async registerCommands() {
         const command = "dddot.textsorter.sortselected";
         await this.joplinRepo.commandsRegister({
             name: command,
-            label: "Sort text",
+            label: "Sort text...",
             iconName: "fas",
             execute: async () => this.sortSelectedText(),
         });

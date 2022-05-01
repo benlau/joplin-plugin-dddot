@@ -131,7 +131,14 @@ export default class Panel {
             return module[0].onMessage(message);
         });
 
-        await Promise.all(tools.map((module) => module.start()));
+        await Promise.all(tools.map((tool) => tool.start()));
+
+        await Promise.all(tools.map(async (tool) => {
+            const enabled = await tool.updateEnabledFromSetting();
+            if (enabled) {
+                await tool.registerCommands();
+            }
+        }));
 
         await this.render();
         await this.loadResources();
