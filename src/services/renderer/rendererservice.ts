@@ -23,8 +23,13 @@ export default class RendererService {
         return `event.dataTransfer.setData('${mime}', '${this.escapeInline(value)}')`;
     }
 
-    renderNoteLink(id: string, title: string, options) {
+    renderNoteLink(id: string, title: string, options: any) {
         const events = ["onClick", "onContextMenu"];
+        let checkbox = "";
+        const {
+            isTodo,
+            isTodoCompleted,
+        } = options;
 
         const listners = events.map((event) => {
             if (event in options) {
@@ -41,8 +46,19 @@ export default class RendererService {
                 `ondragstart="${setDataFunc.join(";")}"`,
             );
         }
+
+        if (isTodo === true) {
+            checkbox = isTodoCompleted === true
+                ? "<i class='far fa-check-square'></i> "
+                : "<i class='far fa-square'></i> ";
+        }
+
         const js = listners.join(" ");
         const escapedTitle = this.escapeInline(title);
-        return `<div draggable="true" class="dddot-note-item" dddot-note-id="${id}" dddot-note-title="${escapedTitle}" ${js}><div><a href="#">${title}</a></div></div>`;
+        return `<div draggable="true" class="dddot-note-item" dddot-note-id="${id}" dddot-note-title="${escapedTitle}" ${js}>
+            <div>
+                <a href="#">${checkbox}${title}</a>
+            </div>
+        </div>`;
     }
 }

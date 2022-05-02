@@ -13,8 +13,13 @@ export default class JoplinService {
     }
 
     async createNoteLink(noteId: string): Promise<Link> {
-        const note = await this.repo.dataGet(["notes", noteId]);
-        return Link.createNoteLink(noteId, note.title);
+        const note = await this.repo.dataGet(
+            ["notes", noteId],
+            {
+                fields: ["id", "title", "is_todo", "todo_completed"],
+            },
+        );
+        return Link.createNoteLinkFromRawData(note);
     }
 
     async searchBacklinks(id: string): Promise<Link[]> {
@@ -22,12 +27,21 @@ export default class JoplinService {
         let page = 1;
         let items = [];
         while (hasMore) {
-            const notes = await this.repo.dataGet(["search"], { query: id, fields: ["id", "title"], page });
+            const notes = await this.repo.dataGet(
+                ["search"],
+                {
+                    query: id,
+                    fields: ["id", "title", "is_todo", "todo_completed"],
+                    page,
+                },
+            );
             items = items.concat(notes.items);
             if (notes.has_more) { page += 1; } else { hasMore = false; }
         }
 
-        const links = items.map((item) => Link.createNoteLink(item.id, item.title));
+        const links = items.map(
+            (item) => Link.createNoteLinkFromRawData(item),
+        );
         return links;
     }
 

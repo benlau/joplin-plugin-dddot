@@ -72,7 +72,7 @@ export default class RecentNotes extends Tool {
     }
 
     async insertLink(note) {
-        const prependLink = Link.createNoteLink(note.id, note.title);
+        const prependLink = Link.createNoteLinkFromRawData(note);
 
         this.linkListModel.unshift(prependLink);
 
@@ -120,6 +120,8 @@ export default class RecentNotes extends Tool {
                         type: "dddot.openNote",
                         noteId: note.id,
                     },
+                    isTodo: note.isTodo,
+                    isTodoCompleted: note.isTodoCompleted,
                 },
             );
             return link;

@@ -75,6 +75,8 @@ export default class Shortcuts extends Tool {
                 type: "shortcuts.removeNote",
                 noteId: link.id,
             },
+            isTodo: link.isTodo,
+            isTodoCompleted: link.isTodoCompleted,
         }));
         const html = ["<div id='dddot-shortcuts-list' class='dddot-note-list'>", ...list, "</div>"];
         return html.join("\n");

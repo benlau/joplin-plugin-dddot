@@ -19,12 +19,24 @@ test("renderInlineMarkdownLink", () => {
     expect(service.renderInlineMarkdownLink("0", "\"title\"")).toBe("[&quot;title&quot;](:/0)");
 });
 
-test("renderNoteLink", () => {
+test("renderNoteLink set onClick should dispatch the message", () => {
     const service = new RendererService();
+    const type = "message-type";
 
-    expect(service.renderNoteLink("0", "title", {
+    const html = service.renderNoteLink("0", "title", {
         onClick: {
-            type: "message-type",
+            type,
         },
-    })).toBe("<div draggable=\"true\" class=\"dddot-note-item\" dddot-note-id=\"0\" dddot-note-title=\"title\" onclick=\"DDDot.postMessage('{&quot;type&quot;:&quot;message-type&quot;}'); return false;\"><div><a href=\"#\">title</a></div></div>");
+    });
+
+    expect(html).toContain(type);
+});
+
+test("renderNoteLink set isTodo without isTodoCompleted should insert fa-square", () => {
+    const service = new RendererService();
+    const html = service.renderNoteLink("0", "title", {
+        isTodo: true,
+    });
+
+    expect(html).toContain("far fa-square");
 });

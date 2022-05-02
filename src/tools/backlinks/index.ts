@@ -39,6 +39,8 @@ export default class BackLinks extends Tool {
                         type: "dddot.openNote",
                         noteId: note.id,
                     },
+                    isTodo: note.isTodo,
+                    isTodoCompleted: note.isTodoCompleted,
                 },
             );
             return link;
