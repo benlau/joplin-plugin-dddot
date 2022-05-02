@@ -1,9 +1,28 @@
 import joplin from "api";
 import { ToolbarButtonLocation } from "api/types";
+import i18next from "i18next";
 import Panel from "./panel";
+import en from "./locale-data/en.js";
+import zhTW from "./locale-data/zh_TW.js";
 
 joplin.plugins.register({
     async onStart() {
+        const locale = await joplin.settings.globalValue("locale");
+
+        i18next.init({
+            lng: locale,
+            debug: true,
+            resources: {
+                en: {
+                    translation: en,
+                },
+                zh_TW: {
+                    translation: zhTW,
+                },
+            },
+            fallbackLng: "en",
+        });
+
         const panel = new Panel();
 
         const toggleDDDotVisibility = "dddot.toggleVisibility";

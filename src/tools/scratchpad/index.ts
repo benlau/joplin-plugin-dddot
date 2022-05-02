@@ -1,11 +1,12 @@
 import { SettingItemType } from "api/types";
+import { t } from "i18next";
 import Tool from "../tool";
 
 const ScratchPadContent = "dddot.settings.scratchpad.content";
 
 export default class ScratchPad extends Tool {
     get title() {
-        return "Scratchpad";
+        return t("scratchpad.title");
     }
 
     settings(section: string) {

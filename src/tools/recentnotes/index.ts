@@ -1,4 +1,5 @@
 import { SettingItemType } from "api/types";
+import { t } from "i18next";
 import Tool from "../tool";
 import LinkListModel from "../../models/linklistmodel";
 import Link from "../../types/link";
@@ -89,7 +90,7 @@ export default class RecentNotes extends Tool {
     }
 
     get title() {
-        return "Recent Notes";
+        return t("recentnotes.title");
     }
 
     async onReady() {

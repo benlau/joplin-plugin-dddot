@@ -49,7 +49,7 @@ export default class Panel {
     }
 
     async render() {
-        const toolHtmls = this.tools.map((tool: Tool) => {
+        const toolHtmls = this.tools.filter((tool) => tool.hasView).map((tool: Tool) => {
             const content = `
             <div class="dddot-tool dddot-hidden" data-id="${tool.key}" id="${tool.containerId}">
             <div class="dddot-tool-header">

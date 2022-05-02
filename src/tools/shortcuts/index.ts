@@ -1,4 +1,5 @@
 import { SettingItemType } from "api/types";
+import { t } from "i18next";
 import Tool from "../tool";
 import LinkListModel from "../../models/linklistmodel";
 import { ItemChangeEventType } from "../../repo/joplinrepo";
@@ -122,6 +123,6 @@ export default class Shortcuts extends Tool {
     }
 
     get title() {
-        return "Shortcuts";
+        return t("shortcuts.title");
     }
 }

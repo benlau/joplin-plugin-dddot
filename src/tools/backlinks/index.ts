@@ -1,11 +1,12 @@
 import LinkGraphNode from "src/services/linkgraph/linkgraphnode";
+import { t } from "i18next";
 import Tool, { blockDisabled } from "../tool";
 
 export default class BackLinks extends Tool {
     selectedNoteId = "";
 
     get title() {
-        return "Backlinks";
+        return t("backlinks.title");
     }
 
     get key() {
