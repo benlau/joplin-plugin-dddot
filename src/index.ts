@@ -4,6 +4,7 @@ import i18next from "i18next";
 import Panel from "./panel";
 import en from "./locale-data/en.js";
 import zhTW from "./locale-data/zh_TW.js";
+import fr from "./locale-data/fr_FR.js";
 
 joplin.plugins.register({
     async onStart() {
@@ -18,6 +19,9 @@ joplin.plugins.register({
                 },
                 zh_TW: {
                     translation: zhTW,
+                },
+                fr_FR: {
+                    translation: fr,
                 },
             },
             fallbackLng: "en",
