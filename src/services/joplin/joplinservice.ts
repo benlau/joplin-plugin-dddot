@@ -6,6 +6,8 @@ export default class JoplinService {
 
     static OK = "OK";
 
+    dialogHandle = "";
+
     repo: JoplinRepo;
 
     constructor(repo: JoplinRepo) {
@@ -32,7 +34,23 @@ export default class JoplinService {
     }
 
     async showMessageBox(message: string) {
-        const result = await this.repo.dialogShowMessageBox(message);
-        return result === 0 ? JoplinService.OK : JoplinService.Cancel;
+        if (this.dialogHandle === "") {
+            this.dialogHandle = await this.repo.dialogCreate("dddot.joplinservice.messageBox");
+        }
+
+        await this.repo.dialogSetButtons(this.dialogHandle, [
+            {
+                id: "ok",
+            },
+            {
+                id: "cancel",
+            },
+        ]);
+
+        await this.repo.dialogSetHtml(this.dialogHandle, `<h3>${message}</h3>`);
+
+        const result = await this.repo.dialogOpen(this.dialogHandle);
+
+        return result.id === "ok" ? JoplinService.OK : JoplinService.Cancel;
     }
 }
