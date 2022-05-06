@@ -19,7 +19,7 @@ test("removeNote - it should ask for confirmation", async () => {
     });
 
     tool.linkListModel = model;
-    joplinRepo.dialogShowMessageBox.mockReturnValue(0);
+    joplinRepo.dialogOpen.mockReturnValue({ id: "ok" });
 
     await tool.removeNote("1");
 
@@ -39,7 +39,7 @@ test("removeNote - user could refuse to remove", async () => {
     });
 
     tool.linkListModel = model;
-    joplinRepo.dialogShowMessageBox.mockReturnValue(1);
+    joplinRepo.dialogOpen.mockReturnValue({ id: "cancel" });
 
     await tool.removeNote("1");
 

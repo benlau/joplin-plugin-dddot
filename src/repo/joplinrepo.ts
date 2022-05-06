@@ -1,4 +1,5 @@
 import joplin from "api";
+import { ButtonSpec, DialogResult, ViewHandle } from "api/types";
 
 export enum ItemChangeEventType {
     Create = 1,
@@ -45,7 +46,23 @@ export default class JoplinRepo {
         joplin.views.panels.postMessage(this.panelView, message);
     }
 
+    async dialogCreate(id: string): Promise<ViewHandle> {
+        return joplin.views.dialogs.create(id);
+    }
+
     async dialogShowMessageBox(message: string) {
         return joplin.views.dialogs.showMessageBox(message);
+    }
+
+    async dialogSetButtons(handle: ViewHandle, buttons: ButtonSpec[]): Promise<ButtonSpec[]> {
+        return joplin.views.dialogs.setButtons(handle, buttons);
+    }
+
+    async dialogSetHtml(handle: ViewHandle, html: string): Promise<string> {
+        return joplin.views.dialogs.setHtml(handle, html);
+    }
+
+    async dialogOpen(handle: ViewHandle): Promise<DialogResult> {
+        return joplin.views.dialogs.open(handle);
     }
 }
