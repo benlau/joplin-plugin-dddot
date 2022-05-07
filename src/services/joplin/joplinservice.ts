@@ -1,4 +1,5 @@
-import JoplinRepo from "src/repo/joplinrepo";
+import JoplinRepo from "../../repo/joplinrepo";
+import PlatformRepo from "../../repo/platformrepo";
 import Link from "../../types/link";
 
 export default class JoplinService {
@@ -6,10 +7,15 @@ export default class JoplinService {
 
     static OK = "OK";
 
+    dialogHandle = "";
+
     repo: JoplinRepo;
 
-    constructor(repo: JoplinRepo) {
+    platformRepo: PlatformRepo;
+
+    constructor(repo: JoplinRepo, platformRepo: PlatformRepo = new PlatformRepo()) {
         this.repo = repo;
+        this.platformRepo = platformRepo;
     }
 
     async createNoteLink(noteId: string): Promise<Link> {
@@ -46,7 +52,34 @@ export default class JoplinService {
     }
 
     async showMessageBox(message: string) {
-        const result = await this.repo.dialogsShowMessageBox(message);
+        return this.platformRepo.isLinux()
+            ? this.showMessageBoxCustom(message)
+            : this.showMessageBoxNative(message);
+    }
+
+    async showMessageBoxCustom(message: string) {
+        if (this.dialogHandle === "") {
+            this.dialogHandle = await this.repo.dialogCreate("dddot.joplinservice.messageBox");
+        }
+
+        await this.repo.dialogSetHtml(this.dialogHandle, `<h3>${message}</h3>`);
+
+        await this.repo.dialogSetButtons(this.dialogHandle, [
+            {
+                id: "ok",
+            },
+            {
+                id: "cancel",
+            },
+        ]);
+
+        const result = await this.repo.dialogOpen(this.dialogHandle);
+
+        return result.id === "ok" ? JoplinService.OK : JoplinService.Cancel;
+    }
+
+    async showMessageBoxNative(message: string) {
+        const result = await this.repo.dialogShowMessageBox(message);
         return result === 0 ? JoplinService.OK : JoplinService.Cancel;
     }
 }

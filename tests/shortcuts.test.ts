@@ -5,6 +5,9 @@ import Link from "../src/types/link";
 import LinkListModel from "../src/models/linklistmodel";
 
 jest.mock("../src/repo/joplinrepo");
+jest.mock("../src/repo/platformrepo", () => ({
+    default: jest.fn().mockImplementation(() => ({ isLinux: () => true })),
+}));
 
 test("removeNote - it should ask for confirmation", async () => {
     const joplinRepo: any = new JoplinRepo();
@@ -19,7 +22,7 @@ test("removeNote - it should ask for confirmation", async () => {
     });
 
     tool.linkListModel = model;
-    joplinRepo.dialogsShowMessageBox.mockReturnValue(0);
+    joplinRepo.dialogOpen.mockReturnValue({ id: "ok" });
 
     await tool.removeNote("1");
 
@@ -39,7 +42,7 @@ test("removeNote - user could refuse to remove", async () => {
     });
 
     tool.linkListModel = model;
-    joplinRepo.dialogsShowMessageBox.mockReturnValue(1);
+    joplinRepo.dialogOpen.mockReturnValue({ id: "cancel" });
 
     await tool.removeNote("1");
 
