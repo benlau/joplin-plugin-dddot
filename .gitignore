@@ -3,3 +3,4 @@ node_modules/
 publish/
 src/libs
 bower_components/
+.DS_Store
