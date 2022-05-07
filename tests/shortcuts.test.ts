@@ -5,6 +5,9 @@ import Link from "../src/types/link";
 import LinkListModel from "../src/models/linklistmodel";
 
 jest.mock("../src/repo/joplinrepo");
+jest.mock("../src/repo/platformrepo", () => ({
+    default: jest.fn().mockImplementation(() => ({ isLinux: () => true })),
+}));
 
 test("removeNote - it should ask for confirmation", async () => {
     const joplinRepo: any = new JoplinRepo();
