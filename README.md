@@ -15,6 +15,7 @@ DDDot is a Joplin plugin to provide a set of tools like recent notes, shortcuts,
 
 - Support to enable/disable an individual tool
 - Support changing the tool order by drag and drop
+- Sort selected text
 
 # User Guide
 
@@ -38,3 +39,13 @@ The links in Recent Notes and Backlinks are draggable. You may drag it to the no
 
 - Add shortcut - Drag a note from the note list over the Shortcuts area. 
 - Remove shortcut - Right-click on a shortcut
+
+## Sort Text
+
+This feature adds a "Sort text..." on the context menu (press right-click to trigger) to sort the selected text. You may use it to move finished todo to the bottom of the list.
+
+![Screenshot](https://raw.githubusercontent.com/benlau/joplin-plugin-dddot/master/docs/sort-text.png)
+
+It is an experimental feature that is not enabled by default. Open the "Perference", find DDDot, tick the "Enable sort text", and then restart the Joplin to take effect.
+
+
