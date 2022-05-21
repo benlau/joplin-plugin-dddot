@@ -8,11 +8,12 @@ import JoplinRepo from "./repo/joplinrepo";
 import ServicePool from "./services/servicepool";
 import BackLinks from "./tools/backlinks";
 import TextSorter from "./tools/textsorter";
+import ThemeType from "./types/themetype";
 
 const ToolOrder = "dddot.settings.panel.toolorder";
 
 export default class Panel {
-    public view: any;
+    public view: string;
 
     public joplinRepo: JoplinRepo;
 
@@ -28,6 +29,7 @@ export default class Panel {
             "./libs/codemirror.js",
             "./libs/codemirror.css",
             "./libs/Sortable.min.js",
+            "./theme/codemirror/blackboard.css",
         ];
 
         await Promise.all(
@@ -174,6 +176,10 @@ export default class Panel {
     }
 
     async onLoaded() {
+        const {
+            joplinService,
+        } = this.servicePool;
+
         const toolIds = await this.joplinRepo.settingsLoad(ToolOrder, []);
         this.joplinRepo.panelPostMessage({
             type: "dddot.setToolOrder",
@@ -200,10 +206,16 @@ export default class Panel {
                 };
             }),
         );
+        const currentTheme = await joplinService.queryThemeType();
 
         this.joplinRepo.panelPostMessage({
             type: "dddot.start",
             tools,
+            theme: {
+                name: ThemeType[currentTheme],
+                isDarkTheme: ThemeType.isDarkTheme(currentTheme),
+                isLightTheme: ThemeType.isLightTheme(currentTheme),
+            },
         });
     }
 }

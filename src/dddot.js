@@ -81,7 +81,7 @@ class DDDot {
     }
 
     static async start(message) {
-        const { tools } = message;
+        const { tools, theme } = message;
         for (;;) {
             const loadedTools = tools.filter((tool) => tool.workerFunctionName in window);
             if (loadedTools.length === tools.length) {
@@ -98,7 +98,7 @@ class DDDot {
             } = tool;
 
             if (enabled) {
-                await window[workerFunctionName]();
+                await window[workerFunctionName]({ theme });
                 $(`#${containerId}`).removeClass("dddot-hidden");
                 const content = $(`#${contentId}`);
 

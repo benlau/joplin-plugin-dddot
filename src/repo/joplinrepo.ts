@@ -24,6 +24,10 @@ export default class JoplinRepo {
         return await joplin.settings.value(key) ?? defaults;
     }
 
+    async settingsLoadGlobal(key: string, defaults: any) {
+        return await joplin.settings.globalValue(key) ?? defaults;
+    }
+
     async dataGet(path: any, query?: any) {
         return joplin.data.get(path, query);
     }

@@ -4,3 +4,5 @@ publish/
 src/libs
 bower_components/
 .DS_Store
+
+*.swp

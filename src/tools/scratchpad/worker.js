@@ -1,6 +1,7 @@
 // eslint-disable-next-line
-async function scratchpadWorker() {
+async function scratchpadWorker(options) {
     const contentId = "#dddot-scratchpad-tool-content";
+    const { theme } = options;
 
     const refresh = async (content) => {
         $(contentId).html(content);
@@ -10,7 +11,7 @@ async function scratchpadWorker() {
             mode: "markdown",
             lineWrapping: true,
             highlightFormatting: true,
-            theme: "default",
+            theme: theme.isDarkTheme ? "blackboard" : "default",
         });
 
         cm.on("change", async () => {

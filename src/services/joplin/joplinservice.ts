@@ -1,3 +1,4 @@
+import ThemeType from "../../types/themetype";
 import JoplinRepo from "../../repo/joplinrepo";
 import PlatformRepo from "../../repo/platformrepo";
 import Link from "../../types/link";
@@ -81,5 +82,9 @@ export default class JoplinService {
     async showMessageBoxNative(message: string) {
         const result = await this.repo.dialogShowMessageBox(message);
         return result === 0 ? JoplinService.OK : JoplinService.Cancel;
+    }
+
+    async queryThemeType(): Promise<ThemeType> {
+        return await this.repo.settingsLoadGlobal("theme", ThemeType.THEME_UNKNOWN) as ThemeType;
     }
 }
