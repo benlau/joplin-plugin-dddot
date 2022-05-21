@@ -11,10 +11,11 @@ DDDot is a Joplin plugin to provide a set of tools like recent notes, shortcuts,
 
 ![Screenshot](https://raw.githubusercontent.com/benlau/joplin-plugin-dddot/master/docs/screenshot1.png)
 
-**Minor features**
+**Minor Features**
 
 - Support to enable/disable an individual tool
 - Support changing the tool order by drag and drop
+- Support dark theme
 - Sort selected text
 
 # User Guide
