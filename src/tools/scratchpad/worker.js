@@ -1,9 +1,48 @@
+async function scratchpadResizeable(options) {
+    const {
+        cm,
+        height,
+        minHeight,
+    } = options;
+
+    let isResizing = false;
+    let lastY = 0;
+    let currentHeight = height;
+    const handle = $(".dddot-scratchpad-handle");
+
+    handle.on("mousedown", (e) => {
+        isResizing = true;
+        lastY = e.clientY;
+    });
+
+    $(document).on("mousemove", (e) => {
+        if (!isResizing) { return; }
+
+        const dy = e.clientY - lastY;
+        const newHeight = currentHeight + dy;
+        lastY = e.clientY;
+
+        if (newHeight >= minHeight) {
+            currentHeight = newHeight;
+            cm.setSize("95%", `${currentHeight}px`);
+            webviewApi.postMessage({
+                type: "scratchpad.tool.setHeight",
+                height: currentHeight,
+            });
+        } else {
+            isResizing = false;
+        }
+    }).on("mouseup", () => {
+        isResizing = false;
+    });
+}
+
 // eslint-disable-next-line
 async function scratchpadWorker(options) {
     const contentId = "#dddot-scratchpad-tool-content";
     const { theme } = options;
 
-    const refresh = async (content) => {
+    const refresh = async (content, height) => {
         $(contentId).html(content);
         const textArea = document.getElementById("dddot-scratchpad-textarea");
 
@@ -13,6 +52,10 @@ async function scratchpadWorker(options) {
             highlightFormatting: true,
             theme: theme.isDarkTheme ? "blackboard" : "default",
         });
+
+        cm.setSize("95%", `${height}px`);
+
+        scratchpadResizeable({ cm, height, minHeight: 50 });
 
         cm.on("change", async () => {
             const value = cm.getValue();
@@ -67,12 +110,8 @@ async function scratchpadWorker(options) {
         });
     };
 
-    DDDot.onMessage("scratchpad.refresh", (message) => {
-        refresh(message.html);
-    });
-
-    const response = await DDDot.postMessage({
+    const { content, height } = await DDDot.postMessage({
         type: "scratchpad.onReady",
     });
-    refresh(response);
+    refresh(content, height);
 }
