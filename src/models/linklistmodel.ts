@@ -21,8 +21,12 @@ export default class LinkListModel {
         this.links = this.links.filter((link) => link.id !== id);
     }
 
-    toData() {
+    dehydrate() {
         return this.links.map((link) => ({ ...link }));
+    }
+
+    rehydrate(items) {
+        this.links = items.map((item) => Link.rehydrate(item)).filter((item) => item !== undefined);
     }
 
     reorder(orderedIds: string[]) {

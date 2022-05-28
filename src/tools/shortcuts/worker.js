@@ -30,6 +30,15 @@ async function shortcutsWorker() {
         refresh(response);
     });
 
+    DDDot.onFolderDropped("#dddot-shortcuts-tool-container", async (folderId) => {
+        const response = await DDDot.postMessage({
+            type: "shortcuts.tool.pushFolder",
+            folderId,
+            index: 0,
+        });
+        refresh(response);
+    });
+
     DDDot.onMessage("shortcuts.refresh", (message) => {
         refresh(message.html);
     });

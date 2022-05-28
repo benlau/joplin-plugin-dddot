@@ -32,10 +32,10 @@ export default class RecentNotes extends Tool {
     }
 
     async start() {
-        this.linkListModel.links = await this.joplinRepo.settingsLoad(
+        this.linkListModel.rehydrate(await this.joplinRepo.settingsLoad(
             RecentNotesContentSetting,
             [],
-        );
+        ));
 
         await this.joplinRepo.workspaceOnNoteSelectionChange(async () => {
             const activeNote = await this.joplinRepo.workspaceSelectedNote();
@@ -58,7 +58,10 @@ export default class RecentNotes extends Tool {
     }
 
     async save() {
-        await this.joplinRepo.settingsSave(RecentNotesContentSetting, this.linkListModel.toData());
+        await this.joplinRepo.settingsSave(
+            RecentNotesContentSetting,
+            this.linkListModel.dehydrate(),
+        );
     }
 
     async refresh() {

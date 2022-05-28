@@ -2,8 +2,36 @@ async function sleep(time) {
     return new Promise((resolve) => { setTimeout(resolve, time); });
 }
 
+function onDropped(type, elem, callback) {
+    $(elem).on("dragover", (event) => {
+        const dt = event.originalEvent.dataTransfer;
+        if (dt.types.indexOf(type) >= 0) {
+            dt.dropEffect = "link";
+            $(elem).addClass("dddot-note-dragging");
+            return false;
+        }
+        return undefined;
+    });
+
+    $(elem).on("dragleave", () => {
+        $(elem).removeClass("dddot-note-dragging");
+    });
+
+    $(elem).on("drop", (event) => {
+        const dt = event.originalEvent.dataTransfer;
+        $(elem).removeClass("dddot-note-dragging");
+        if (dt.types.indexOf(type) >= 0) {
+            callback(dt.getData(type));
+            return false;
+        }
+        return undefined;
+    });
+}
+
 class DDDot {
     static X_JOP_NOTE_IDS = "text/x-jop-note-ids";
+
+    static X_JOP_FOLDER_IDS = "text/x-jop-folder-ids";
 
     static panelMessageCallbacks = {};
 
@@ -138,29 +166,16 @@ class DDDot {
     }
 
     static onNoteDropped(elem, callback) {
-        $(elem).on("dragover", (event) => {
-            const dt = event.originalEvent.dataTransfer;
-            if (dt.types.indexOf(this.X_JOP_NOTE_IDS) >= 0) {
-                dt.dropEffect = "link";
-                $(elem).addClass("dddot-note-dragging");
-                return false;
-            }
-            return undefined;
+        onDropped(this.X_JOP_NOTE_IDS, elem, (data) => {
+            const noteId = data.replace("[\"", "").replace("\"]", "");
+            callback(noteId);
         });
+    }
 
-        $(elem).on("dragleave", () => {
-            $(elem).removeClass("dddot-note-dragging");
-        });
-
-        $(elem).on("drop", (event) => {
-            const dt = event.originalEvent.dataTransfer;
-            $(elem).removeClass("dddot-note-dragging");
-            if (dt.types.indexOf(this.X_JOP_NOTE_IDS) >= 0) {
-                const noteId = dt.getData(this.X_JOP_NOTE_IDS).replace("[\"", "").replace("\"]", "");
-                callback(noteId);
-                return false;
-            }
-            return undefined;
+    static onFolderDropped(elem, callback) {
+        onDropped(this.X_JOP_FOLDER_IDS, elem, (data) => {
+            const folderId = data.replace("[\"", "").replace("\"]", "");
+            callback(folderId);
         });
     }
 

@@ -126,7 +126,7 @@ export default class Panel {
         await joplin.views.panels.onMessage(this.view, async (message:any) => {
             const token = message.type.split(".");
             const target = token[0];
-            if (target === "dddot") {
+            if (target === "dddot" || target === "panel") {
                 return this.onMessage(message);
             }
             const module = tools.filter((item) => item.key === target);
@@ -164,11 +164,17 @@ export default class Panel {
         case "dddot.openNote":
             joplin.commands.execute("openNote", noteId);
             break;
+        case "panel.openFolder":
+            this.openFolder(message.folderId);
+            break;
         default:
             break;
         }
-
         return undefined;
+    }
+
+    openFolder(folderId: string) {
+        joplin.commands.execute("openFolder", folderId);
     }
 
     async onToolOrderChanged(toolIds) {

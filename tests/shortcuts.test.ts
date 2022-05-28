@@ -24,7 +24,7 @@ test("removeNote - it should ask for confirmation", async () => {
     tool.linkListModel = model;
     joplinRepo.dialogOpen.mockReturnValue({ id: "ok" });
 
-    await tool.removeNote("1");
+    await tool.removeLink("1");
 
     expect(tool.linkListModel.links.length).toBe(ids.length - 1);
 });
@@ -44,7 +44,7 @@ test("removeNote - user could refuse to remove", async () => {
     tool.linkListModel = model;
     joplinRepo.dialogOpen.mockReturnValue({ id: "cancel" });
 
-    await tool.removeNote("1");
+    await tool.removeLink("1");
 
     expect(tool.linkListModel.links.length).toBe(ids.length);
 });

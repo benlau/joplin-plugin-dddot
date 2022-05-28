@@ -94,3 +94,33 @@ test("update - return false if nothing changed", () => {
         title,
     );
 });
+
+test("dehydrate", () => {
+    const model = new LinkListModel();
+
+    model.push(Link.createNoteLink("1", "1"));
+    model.push(Link.createNoteLink("2", "2"));
+    const json = model.dehydrate();
+    const expected = [{ id: "1", title: "1", type: "NoteLink" }, { id: "2", title: "2", type: "NoteLink" }];
+    expect(json).toStrictEqual(expected);
+});
+
+test("rehydrate", () => {
+    const input = [{ id: "1", title: "1", type: "NoteLink" }, { id: "2", title: "2", type: "NoteLink" }];
+    const model = new LinkListModel();
+
+    model.rehydrate(input);
+
+    expect(model.links.length).toBe(2);
+    expect(model.links[1].id).toBe("2");
+});
+
+test("rehydrate could filter invalid data", () => {
+    const input = [{}, { id: "1", title: "1", type: "NoteLink" }, { id: "2", title: "2", type: "NoteLink" }];
+    const model = new LinkListModel();
+
+    model.rehydrate(input);
+
+    expect(model.links.length).toBe(2);
+    expect(model.links[1].id).toBe("2");
+});

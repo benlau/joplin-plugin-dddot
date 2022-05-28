@@ -29,6 +29,16 @@ export default class JoplinService {
         return Link.createNoteLinkFromRawData(note);
     }
 
+    async createFolderLink(folderId: string): Promise<Link> {
+        const folder = await this.repo.dataGet(
+            ["folders", folderId],
+            {
+                fields: ["id", "title"],
+            },
+        );
+        return Link.createFolderLink(folder.id, folder.title);
+    }
+
     async searchBacklinks(id: string): Promise<Link[]> {
         let hasMore = true;
         let page = 1;

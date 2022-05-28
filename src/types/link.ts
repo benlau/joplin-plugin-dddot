@@ -1,5 +1,6 @@
-enum LinkType {
-  NoteLink = "NoteLink"
+export enum LinkType {
+  NoteLink = "NoteLink",
+  FolderLink = "FolderLink"
 }
 
 export default class Link {
@@ -13,6 +14,15 @@ export default class Link {
 
     isTodoCompleted: Boolean | undefined;
 
+    static rehydrate(object: any): Link|undefined {
+        if (!Object.values(LinkType).includes(object.type)) {
+            return undefined;
+        }
+        const link = new Link();
+        Object.assign(link, object);
+        return link;
+    }
+
     static createNoteLink(
         id: string,
         title: string,
@@ -21,6 +31,14 @@ export default class Link {
         link.id = id;
         link.title = title;
         link.type = LinkType.NoteLink;
+        return link;
+    }
+
+    static createFolderLink(id: string, title: string): Link {
+        const link = new Link();
+        link.id = id;
+        link.title = title;
+        link.type = LinkType.FolderLink;
         return link;
     }
 
