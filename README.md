@@ -22,7 +22,7 @@ DDDot is a Joplin plugin to provide a set of tools like recent notes, shortcuts,
 
 ## General Usage
 
-### Toggle visibility of DDDot
+### Toggle the visibility of DDDot
 
 Press the DDDot icon in the toolbar
 
@@ -38,15 +38,14 @@ The links in Recent Notes and Backlinks are draggable. You may drag it to the no
 
 ## Shortcuts
 
-- Add shortcut - Drag a note from the note list over the Shortcuts area. 
-- Remove shortcut - Right-click on a shortcut
+- Add a shortcut to a note - Drag a note from the note list over the Shortcuts area. 
+- Add a shortcut to a notebook - Drag a folder from the Notebooks list over the Shortcuts area.
+- Remove shortcut - Right-click on a shortcut. It will prompt a dialog for confirmation
 
-## Sort Text
+Add a shortcut to search
 
-This feature adds a "Sort text..." on the context menu (press right-click to trigger) to sort the selected text. You may use it to move finished todo to the bottom of the list.
-
-![Screenshot](https://raw.githubusercontent.com/benlau/joplin-plugin-dddot/master/docs/sort-text.png)
-
-It is an experimental feature that is not enabled by default. Open the "Perference", find DDDot, tick the "Enable sort text", and then restart the Joplin to take effect.
+Install the [Embed search](https://discourse.joplinapp.org/t/embed-any-search-with-content/14328) plugin
+Create a note with embed search
+Drag the note from the note list over the Shortcuts tool
 
 

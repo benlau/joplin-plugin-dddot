@@ -23,7 +23,7 @@ export default class ScratchPad extends Tool {
                 value: 200,
                 type: SettingItemType.Int,
                 public: true,
-                label: "Scratchpad Height(px)", // @FIXME translate
+                label: t("scratchpad.settings.height"),
                 minValue: 50,
                 step: 10,
                 section,
