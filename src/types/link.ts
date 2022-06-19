@@ -4,15 +4,15 @@ export enum LinkType {
 }
 
 export default class Link {
-    id: String;
+    id: string;
 
-    title: String;
+    title: string;
 
     type: LinkType;
 
-    isTodo: Boolean | undefined;
+    isTodo: boolean | undefined;
 
-    isTodoCompleted: Boolean | undefined;
+    isTodoCompleted: boolean | undefined;
 
     static rehydrate(object: any): Link|undefined {
         if (!Object.values(LinkType).includes(object.type)) {

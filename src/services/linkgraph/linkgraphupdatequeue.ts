@@ -22,7 +22,7 @@ export default class LinkGraphUpdateQueue {
 
     joplinService: JoplinService;
 
-    isProcessing: Boolean = false;
+    isRunning: Boolean = false;
 
     constructor(joplinService: JoplinService, graph: Map<string, LinkGraphNode>, internal: number) {
         this.joplinService = joplinService;
@@ -67,10 +67,10 @@ export default class LinkGraphUpdateQueue {
     }
 
     private async run() {
-        if (this.isProcessing) {
+        if (this.isRunning) {
             return;
         }
-        this.isProcessing = true;
+        this.isRunning = true;
 
         for (;;) {
             await sleep(this.internal);
@@ -84,6 +84,6 @@ export default class LinkGraphUpdateQueue {
             next.callbacks.forEach((callback) => callback(result));
         }
 
-        this.isProcessing = false;
+        this.isRunning = false;
     }
 }
