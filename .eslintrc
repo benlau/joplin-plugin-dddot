@@ -13,7 +13,8 @@
     "messenger": true,
     "CodeMirror": true,
     "DDDot": true,
-    "Sortable": true
+    "Sortable": true,
+    "FullScreenDialog": true
   }, 
   "parser": "@typescript-eslint/parser",
   "plugins": [

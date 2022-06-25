@@ -86,10 +86,29 @@ export default class RecentNotes extends Tool {
     }
 
     async onMessage(message: any) {
-        if (message.type === "recentnotes.onReady") {
+        switch (message.type) {
+        case "recentnotes.onReady":
             return this.onReady();
+        case "recentnotes.tool.openNoteDetailDialog":
+            return this.openNoteDetailDialog(message.noteId);
+        default:
+            break;
         }
         return undefined;
+    }
+
+    async openNoteDetailDialog(noteId: string) {
+        const note = await this.joplinRepo.getNote(noteId, ["body"]);
+        const {
+            body,
+        } = note;
+
+        const message = {
+            type: "dddot.fullScreenDialog.open",
+            title: "test",
+            html: `<div>${body}</div>`,
+        };
+        this.joplinRepo.panelPostMessage(message);
     }
 
     get title() {
@@ -122,6 +141,10 @@ export default class RecentNotes extends Tool {
                 {
                     onClick: {
                         type: "dddot.openNote",
+                        noteId: note.id,
+                    },
+                    onContextMenu: {
+                        type: "recentnotes.tool.openNoteDetailDialog",
                         noteId: note.id,
                     },
                     isTodo: note.isTodo,

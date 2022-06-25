@@ -44,6 +44,8 @@ class DDDot {
 
     static sortable = undefined;
 
+    static fullSceenDialog = undefined;
+
     static listenPanelMessage() {
         webviewApi.onMessage((payload) => {
             const { message } = payload;
@@ -66,11 +68,16 @@ class DDDot {
             this.setToolOrder(message);
         });
 
+        this.onMessage("dddot.fullScreenDialog.open", (message) => {
+            this.fullSceenDialogOpen(message);
+        });
+
         let loaded = false;
         while (!loaded) {
             try {
                 loaded = CodeMirror !== undefined
                          && Sortable !== undefined
+                         && FullScreenDialog !== undefined
                          && $ !== undefined;
             } catch (e) {
                 // continue regardless of error
@@ -102,6 +109,8 @@ class DDDot {
             },
         });
         this.sortable = sortable;
+
+        this.fullSceenDialog = new FullScreenDialog();
 
         this.postMessage({
             type: "dddot.onLoaded",
@@ -213,6 +222,14 @@ class DDDot {
 
     static onEvent(listener) {
         this.eventListeners.push(listener);
+    }
+
+    static fullSceenDialogOpen(message) {
+        const {
+            title,
+            html,
+        } = message;
+        this.fullSceenDialog.open(title, html);
     }
 }
 DDDot.load();

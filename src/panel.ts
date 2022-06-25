@@ -25,6 +25,7 @@ export default class Panel {
         const resources = [
             "./panel.css",
             "./dddot.js",
+            "./fullscreendialog.js",
             "./libs/jquery.min.js",
             "./libs/codemirror.js",
             "./libs/codemirror.css",

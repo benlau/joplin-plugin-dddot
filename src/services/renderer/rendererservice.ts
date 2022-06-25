@@ -31,7 +31,7 @@ export default class RendererService {
             isTodoCompleted,
         } = options;
 
-        const listners = events.map((event) => {
+        const listeners = events.map((event) => {
             if (event in options) {
                 return `${event.toLocaleLowerCase()}="${this.renderInlineDDDotPostMessage(options[event])}; return false;"`;
             }
@@ -42,7 +42,7 @@ export default class RendererService {
             const setDataFunc = options.onDragStart.map(
                 (item) => this.renderDataTransferSetData(item[0], item[1]),
             );
-            listners.push(
+            listeners.push(
                 `ondragstart="${setDataFunc.join(";")}"`,
             );
         }
@@ -53,7 +53,7 @@ export default class RendererService {
                 : "<i class='far fa-square'></i> ";
         }
 
-        const js = listners.join(" ");
+        const js = listeners.join(" ");
         const escapedTitle = this.escapeInline(title);
         return `<div draggable="true" class="dddot-note-item" dddot-note-id="${id}" dddot-note-title="${escapedTitle}" ${js}>
             <div>
