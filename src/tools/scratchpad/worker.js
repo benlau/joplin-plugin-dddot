@@ -3,6 +3,7 @@ async function scratchpadResizeable(options) {
         cm,
         height,
         minHeight,
+        onHeightChanged,
     } = options;
 
     let isResizing = false;
@@ -24,11 +25,8 @@ async function scratchpadResizeable(options) {
 
         if (newHeight >= minHeight) {
             currentHeight = newHeight;
-            cm.setSize("95%", `${currentHeight}px`);
-            webviewApi.postMessage({
-                type: "scratchpad.tool.setHeight",
-                height: currentHeight,
-            });
+            cm.setSize(null, `${currentHeight}px`);
+            onHeightChanged(currentHeight);
         } else {
             isResizing = false;
         }
@@ -53,9 +51,19 @@ async function scratchpadWorker(options) {
             theme: theme.isDarkTheme ? "blackboard" : "default",
         });
 
-        cm.setSize("95%", `${height}px`);
+        cm.setSize(null, `${height}px`);
 
-        scratchpadResizeable({ cm, height, minHeight: 50 });
+        scratchpadResizeable({
+            cm,
+            height,
+            minHeight: 50,
+            onHeightChanged: (newHeight) => {
+                webviewApi.postMessage({
+                    type: "scratchpad.tool.setHeight",
+                    height: newHeight,
+                });
+            },
+        });
 
         cm.on("change", async () => {
             const value = cm.getValue();
