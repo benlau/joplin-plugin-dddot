@@ -1,44 +1,6 @@
-async function scratchpadResizeable(options) {
-    const {
-        cm,
-        height,
-        minHeight,
-        onHeightChanged,
-    } = options;
-
-    let isResizing = false;
-    let lastY = 0;
-    let currentHeight = height;
-    const handle = $(".dddot-scratchpad-handle");
-
-    handle.on("mousedown", (e) => {
-        isResizing = true;
-        lastY = e.clientY;
-    });
-
-    $(document).on("mousemove", (e) => {
-        if (!isResizing) { return; }
-
-        const dy = e.clientY - lastY;
-        const newHeight = currentHeight + dy;
-        lastY = e.clientY;
-
-        if (newHeight >= minHeight) {
-            currentHeight = newHeight;
-            cm.setSize(null, `${currentHeight}px`);
-            onHeightChanged(currentHeight);
-        } else {
-            isResizing = false;
-        }
-    }).on("mouseup", () => {
-        isResizing = false;
-    });
-}
-
 // eslint-disable-next-line
-async function scratchpadWorker(options) {
+async function scratchpadWorker() {
     const contentId = "#dddot-scratchpad-tool-content";
-    const { theme } = options;
 
     const refresh = async (content, height) => {
         $(contentId).html(content);
@@ -48,22 +10,24 @@ async function scratchpadWorker(options) {
             mode: "markdown",
             lineWrapping: true,
             highlightFormatting: true,
-            theme: theme.isDarkTheme ? "blackboard" : "default",
+            theme: CodeMirror5Manager.instance.themeName,
         });
 
         cm.setSize(null, `${height}px`);
+        const minHeight = 50;
 
-        scratchpadResizeable({
+        CodeMirror5Manager.instance.setupResizable(
             cm,
             height,
-            minHeight: 50,
-            onHeightChanged: (newHeight) => {
+            minHeight,
+            ".dddot-scratchpad-handle",
+            (newHeight) => {
                 webviewApi.postMessage({
                     type: "scratchpad.tool.setHeight",
                     height: newHeight,
                 });
             },
-        });
+        );
 
         cm.on("change", async () => {
             const value = cm.getValue();

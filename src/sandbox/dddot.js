@@ -28,6 +28,16 @@ function onDropped(type, elem, callback) {
     });
 }
 
+async function waitUntilLoaded(components) {
+    for (;;) {
+        const loadedComponents = components.filter((component) => component in window);
+        if (loadedComponents.length === components.length) {
+            break;
+        }
+        await sleep(100);
+    }
+}
+
 class DDDot {
     static X_JOP_NOTE_IDS = "text/x-jop-note-ids";
 
@@ -72,18 +82,8 @@ class DDDot {
             this.fullSceenDialogOpen(message);
         });
 
-        let loaded = false;
-        while (!loaded) {
-            try {
-                loaded = CodeMirror !== undefined
-                         && Sortable !== undefined
-                         && FullScreenDialog !== undefined
-                         && $ !== undefined;
-            } catch (e) {
-                // continue regardless of error
-            }
-            await sleep(100);
-        }
+        const components = ["CodeMirror", "Sortable", "FullScreenDialog", "$", "CodeMirror5Manager"];
+        await waitUntilLoaded(components);
 
         const container = document.getElementById("dddot-panel-container");
 
@@ -119,13 +119,14 @@ class DDDot {
 
     static async start(message) {
         const { tools, theme } = message;
-        for (;;) {
-            const loadedTools = tools.filter((tool) => tool.workerFunctionName in window);
-            if (loadedTools.length === tools.length) {
-                break;
-            }
-            await sleep(100);
-        }
+
+        const codeMirror5Manager = new CodeMirror5Manager();
+        codeMirror5Manager.init(theme);
+
+        const workerFunctionNames = tools.map((tool) => tool.workerFunctionName);
+
+        await waitUntilLoaded(workerFunctionNames);
+
         await Promise.all(tools.map(async (tool) => {
             const {
                 workerFunctionName,

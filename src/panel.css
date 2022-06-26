@@ -120,6 +120,39 @@
   background-color: var(--joplin-background-color);
 }
 
+.dddot-fullscreen-dialog-header {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.dddot-fullscreen-dialog-close-button-holder {
+  margin-right: 4px;
+}
+
+.dddot-fullscreen-dialog-title {
+  flex-grow: 1;
+}
+
+.dddot-fullscreen-dialog-container .CodeMirror {
+  border: 1px solid #000;
+  border-radius: 2px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.dddot-fullscreen-dialog-container .CodeMirror-wrap pre {
+  word-break: break-word;
+}
+
+.dddot-fullscreen-dialog-texarea-handle {
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  cursor: ns-resize;
+}
+
 /*  Scrollbar style
   https://github.com/laurent22/joplin/blob/571147acbbf9ea61fd287ba05008727201bea951/packages/app-desktop/main.scss#L29 
 */

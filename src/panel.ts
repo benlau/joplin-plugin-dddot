@@ -24,9 +24,10 @@ export default class Panel {
     async loadResources() {
         const resources = [
             "./panel.css",
-            "./dddot.js",
-            "./fullscreendialog.js",
+            "./sandbox/dddot.js",
+            "./sandbox/fullscreendialog.js",
             "./libs/jquery.min.js",
+            "./sandbox/codemirror5manager.js",
             "./libs/codemirror.js",
             "./libs/codemirror.css",
             "./libs/Sortable.min.js",

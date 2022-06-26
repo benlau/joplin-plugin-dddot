@@ -98,15 +98,22 @@ export default class RecentNotes extends Tool {
     }
 
     async openNoteDetailDialog(noteId: string) {
-        const note = await this.joplinRepo.getNote(noteId, ["body"]);
+        const note = await this.joplinRepo.getNote(noteId, ["title", "body"]);
         const {
+            title,
             body,
         } = note;
 
         const message = {
             type: "dddot.fullScreenDialog.open",
-            title: "test",
-            html: `<div>${body}</div>`,
+            title,
+            // @TODO - Render by NoteDialogService
+            html: `<div>
+                <div>
+                    <textarea id="dddot-fullscreen-dialog-texarea" rows="10">${body}</textarea>
+                    <div class="fas fa-ellipsis-h dddot-fullscreen-dialog-texarea-handle"></div>
+                </div>
+            </div>`,
         };
         this.joplinRepo.panelPostMessage(message);
     }

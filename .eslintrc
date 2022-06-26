@@ -14,7 +14,8 @@
     "CodeMirror": true,
     "DDDot": true,
     "Sortable": true,
-    "FullScreenDialog": true
+    "FullScreenDialog": true,
+    "CodeMirror5Manager": true
   }, 
   "parser": "@typescript-eslint/parser",
   "plugins": [
