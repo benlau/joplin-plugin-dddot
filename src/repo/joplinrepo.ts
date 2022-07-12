@@ -32,7 +32,12 @@ export default class JoplinRepo {
         return joplin.data.get(path, query);
     }
 
+    async dataPut(path: any, query?: any, data ?: any) {
+        return joplin.data.put(path, query, data);
+    }
+
     async getNote(noteId: string, fields = undefined) {
+        // @FIXME - Move this function to the joplin service
         const options : any = {};
         if (fields !== undefined) {
             options.fields = fields;

@@ -4,7 +4,7 @@ async function scratchpadWorker() {
 
     const refresh = async (content, height) => {
         $(contentId).html(content);
-        const textArea = document.getElementById("dddot-scratchpad-textarea");
+        const textArea = $("#dddot-scratchpad-textarea")[0];
 
         const cm = CodeMirror.fromTextArea(textArea, {
             mode: "markdown",

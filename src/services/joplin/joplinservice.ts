@@ -97,4 +97,40 @@ export default class JoplinService {
     async queryThemeType(): Promise<ThemeType> {
         return await this.repo.settingsLoadGlobal("theme", ThemeType.THEME_UNKNOWN) as ThemeType;
     }
+
+    async updateNoteBody(noteId: string, body: string) {
+        return this.repo.dataPut(["notes", noteId], null, { body });
+    }
+
+    async appendTextToNote(noteId: string, text: string) {
+        const {
+            repo,
+        } = this;
+
+        const {
+            id: currentNoteId,
+        } = await repo.workspaceSelectedNote();
+        if (currentNoteId === noteId) {
+            await repo.commandsExecute("textSelectAll");
+            const selectedText = (await repo.commandsExecute("selectedText") as string);
+            const newBody = selectedText + text;
+            await repo.commandsExecute("replaceSelection", newBody);
+            return newBody;
+        }
+
+        const note = await repo.getNote(noteId, ["body"]);
+        const {
+            body,
+        } = note;
+        const newBody = body + text;
+        await this.updateNoteBody(noteId, newBody);
+        return newBody;
+    }
+
+    openNote(noteId: string) {
+        const {
+            repo,
+        } = this;
+        repo.commandsExecute("openNote", noteId);
+    }
 }

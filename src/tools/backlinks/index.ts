@@ -40,6 +40,10 @@ export default class BackLinks extends Tool {
                         type: "dddot.openNote",
                         noteId: note.id,
                     },
+                    onContextMenu: {
+                        type: "backlinks.tool.openNoteDetailDialog",
+                        noteId: note.id,
+                    },
                     isTodo: note.isTodo,
                     isTodoCompleted: note.isTodoCompleted,
                 },
@@ -51,8 +55,15 @@ export default class BackLinks extends Tool {
     }
 
     async onMessage(message: any) {
-        if (message.type === "backlinks.onReady") {
+        switch (message.type) {
+        case "backlinks.onReady":
             this.query();
+            break;
+        case "backlinks.tool.openNoteDetailDialog":
+            this.openNoteDetailDialog(message.noteId);
+            break;
+        default:
+            break;
         }
     }
 
@@ -83,5 +94,13 @@ export default class BackLinks extends Tool {
         };
 
         this.joplinRepo.panelPostMessage(message);
+    }
+
+    async openNoteDetailDialog(noteId: string) {
+        const {
+            noteDialogService,
+        } = this.servicePool;
+
+        await noteDialogService.open(noteId);
     }
 }

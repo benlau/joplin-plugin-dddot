@@ -78,11 +78,7 @@ class DDDot {
             this.setToolOrder(message);
         });
 
-        this.onMessage("dddot.fullScreenDialog.open", (message) => {
-            this.fullSceenDialogOpen(message);
-        });
-
-        const components = ["CodeMirror", "Sortable", "FullScreenDialog", "$", "CodeMirror5Manager"];
+        const components = ["CodeMirror", "Sortable", "$", "CodeMirror5Manager"];
         await waitUntilLoaded(components);
 
         const container = document.getElementById("dddot-panel-container");
@@ -110,15 +106,13 @@ class DDDot {
         });
         this.sortable = sortable;
 
-        this.fullSceenDialog = new FullScreenDialog();
-
         this.postMessage({
             type: "dddot.onLoaded",
         });
     }
 
     static async start(message) {
-        const { tools, theme } = message;
+        const { tools, theme, serviceWorkerFunctions } = message;
 
         const codeMirror5Manager = new CodeMirror5Manager();
         codeMirror5Manager.init(theme);
@@ -156,6 +150,12 @@ class DDDot {
             } else {
                 $(`#${containerId}`).addClass("dddot-hidden");
             }
+        }));
+
+        await waitUntilLoaded(serviceWorkerFunctions);
+
+        await Promise.all(serviceWorkerFunctions.map(async (serviceWorkerFunction) => {
+            await window[serviceWorkerFunction]({ theme });
         }));
     }
 
@@ -225,12 +225,13 @@ class DDDot {
         this.eventListeners.push(listener);
     }
 
-    static fullSceenDialogOpen(message) {
-        const {
-            title,
-            html,
-        } = message;
-        this.fullSceenDialog.open(title, html);
+    static setupDraggableLinks(selector) {
+        // eslint-disable-next-line
+        $(selector).on("dragstart", function (event) {
+            const id = $(this).attr("dddot-note-id");
+            event.originalEvent.dataTransfer.clearData();
+            event.originalEvent.dataTransfer.setData(DDDot.X_JOP_NOTE_IDS, `["${id}"]`);
+        });
     }
 }
 DDDot.load();

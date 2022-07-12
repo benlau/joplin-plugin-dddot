@@ -25,14 +25,13 @@ export default class Panel {
         const resources = [
             "./panel.css",
             "./sandbox/dddot.js",
-            "./sandbox/fullscreendialog.js",
             "./libs/jquery.min.js",
             "./sandbox/codemirror5manager.js",
             "./libs/codemirror.js",
             "./libs/codemirror.css",
             "./libs/Sortable.min.js",
             "./theme/codemirror/blackboard.css",
-        ];
+        ].concat(this.servicePool.assetFiles);
 
         await Promise.all(
             resources.map(
@@ -131,6 +130,9 @@ export default class Panel {
             if (target === "dddot" || target === "panel") {
                 return this.onMessage(message);
             }
+            if (target === "notedialog") {
+                return this.servicePool.noteDialogService.onMessage(message);
+            }
             const module = tools.filter((item) => item.key === target);
             return module[0].onMessage(message);
         });
@@ -215,10 +217,12 @@ export default class Panel {
             }),
         );
         const currentTheme = await joplinService.queryThemeType();
+        const serviceWorkerFunctions = ["noteDialogWorker"];
 
         this.joplinRepo.panelPostMessage({
             type: "dddot.start",
             tools,
+            serviceWorkerFunctions,
             theme: {
                 name: ThemeType[currentTheme],
                 isDarkTheme: ThemeType.isDarkTheme(currentTheme),

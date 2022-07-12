@@ -1,0 +1,13 @@
+
+.dddot-note-dialog-title-text a {
+  color: var(--joplin-color);
+}
+
+.dddot-note-dialog-command-panel {
+  text-align: center;
+}
+
+.dddot-note-dialog-command-panel .dddot-tooltip {
+  margin-top: 4px;
+  display: block;
+}
