@@ -3,6 +3,7 @@ import JoplinService from "./joplin/joplinservice";
 import LinkGraphService from "./linkgraph/linkgraphservice";
 import RendererService from "./renderer/rendererservice";
 import NoteDialogService from "./notedialog/notedialogservice";
+import ToolbarService from "./toolbar/toolbarservice";
 
 export default class ServicePool {
     joplinService: JoplinService;
@@ -15,18 +16,53 @@ export default class ServicePool {
 
     noteDialogService: NoteDialogService;
 
+    toolbarService: ToolbarService;
+
+    receivers: { [key: string]: any } = {};
+
     constructor(joplinRepo: JoplinRepo) {
         this.joplinRepo = joplinRepo;
         this.joplinService = new JoplinService(this.joplinRepo);
         this.linkGraphService = new LinkGraphService(this.joplinService);
         this.rendererService = new RendererService();
         this.noteDialogService = new NoteDialogService(this.joplinService, this.rendererService);
+        this.toolbarService = new ToolbarService(this.joplinService);
+
+        this.receivers = {
+            notedialog: this.noteDialogService,
+            toolbar: this.toolbarService,
+        };
     }
 
     get assetFiles() {
         return [
             "./services/notedialog/notedialogworker.js",
             "./services/notedialog/notedialog.css",
+            "./services/toolbar/toolbarworker.js",
         ];
+    }
+
+    get serviceWorkerFunctions() {
+        return [
+            "noteDialogWorker",
+            "toolbarWorker",
+        ];
+    }
+
+    async onLoaded() {
+        const services = [
+            this.toolbarService,
+        ];
+        await Promise.all(services.map((service) => service.onLoaded()));
+    }
+
+    hasReceiver(target: string) {
+        return target in this.receivers;
+    }
+
+    async onMessage(message: any) {
+        const token = message.type.split(".");
+        const target = token[0];
+        return this.receivers[target].onMessage(message);
     }
 }

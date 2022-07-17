@@ -75,4 +75,7 @@ export default class Tool {
 
     async registerCommands() {
     }
+
+    async onLoaded() {
+    }
 }

@@ -66,6 +66,7 @@ export default class Panel {
         }).join("\n");
         const html = `
         <div id="dddot-panel-container">
+            <div id="dddot-toolbar-container"></div>
             ${toolHtmls}
         </div>
         `;
@@ -130,8 +131,8 @@ export default class Panel {
             if (target === "dddot" || target === "panel") {
                 return this.onMessage(message);
             }
-            if (target === "notedialog") {
-                return this.servicePool.noteDialogService.onMessage(message);
+            if (this.servicePool.hasReceiver(target)) {
+                return this.servicePool.onMessage(message);
             }
             const module = tools.filter((item) => item.key === target);
             return module[0].onMessage(message);
@@ -190,6 +191,8 @@ export default class Panel {
             joplinService,
         } = this.servicePool;
 
+        await this.servicePool.onLoaded();
+
         const toolIds = await this.joplinRepo.settingsLoad(ToolOrder, []);
         this.joplinRepo.panelPostMessage({
             type: "dddot.setToolOrder",
@@ -208,6 +211,10 @@ export default class Panel {
 
                 const enabled = await tool.updateEnabledFromSetting();
 
+                if (enabled) {
+                    await tool.onLoaded();
+                }
+
                 return {
                     workerFunctionName,
                     containerId,
@@ -217,7 +224,7 @@ export default class Panel {
             }),
         );
         const currentTheme = await joplinService.queryThemeType();
-        const serviceWorkerFunctions = ["noteDialogWorker"];
+        const { serviceWorkerFunctions } = this.servicePool;
 
         this.joplinRepo.panelPostMessage({
             type: "dddot.start",
