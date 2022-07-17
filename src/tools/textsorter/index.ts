@@ -2,11 +2,15 @@ import { MenuItemLocation } from "api/types";
 import Tool from "../tool";
 
 export default class TextSorter extends Tool {
-    get hasView() {
+    get hasView(): boolean {
         return false;
     }
 
-    get isDefaultEnabled() {
+    get hasWorkerFunction(): boolean {
+        return false;
+    }
+
+    get isDefaultEnabled(): boolean {
         return false;
     }
 
