@@ -1,7 +1,12 @@
+const crypto = require('crypto');
 import ThemeType from "../../types/themetype";
 import JoplinRepo from "../../repo/joplinrepo";
 import PlatformRepo from "../../repo/platformrepo";
 import Link from "../../types/link";
+
+export async function sha256(message) {
+    return crypto.createHash('sha256').update(message).digest('hex')
+}
 
 export default class JoplinService {
     static Cancel = "Cancel";
@@ -132,5 +137,9 @@ export default class JoplinService {
             repo,
         } = this;
         repo.commandsExecute("openNote", noteId);
+    }
+
+    async urlToId(url: string): Promise<string> {
+        return (await sha256(url)).slice(0, 32);
     }
 }
