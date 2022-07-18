@@ -1,4 +1,5 @@
 import { t } from "i18next";
+import DateTimeService from "src/services/datetime/datetimeservice";
 import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
@@ -6,9 +7,12 @@ import ServicePool from "../../services/servicepool";
 export default class DailyNoteTool extends Tool {
     toolbarService: ToolbarService;
 
+    dateTimeService: DateTimeService;
+
     constructor(servicePool: ServicePool) {
         super(servicePool);
         this.toolbarService = servicePool.toolbarService;
+        this.dateTimeService = servicePool.dateTimeService;
     }
 
     settings(_: string) {
@@ -38,5 +42,26 @@ export default class DailyNoteTool extends Tool {
     }
 
     async onMessage(_: any) {
+    }
+
+    async createDailyNote() {
+        const {
+            joplinService,
+            dateTimeService,
+        } = this;
+
+        const startHour = 7; // @FIXME read from settings
+
+        const today = dateTimeService.getNormalizedToday(startHour);
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1; // @FIXME - zero padding
+        const day = today.getDate();
+        const url = `calendar://default/${year}/${month}/${day}`;
+
+        const id = await joplinService.urlToId(url);
+
+        const title = `${year}-${month}-${day}`; // @FIXME - read format from settings
+
+        await joplinService.createNoteWithId(id, title);
     }
 }

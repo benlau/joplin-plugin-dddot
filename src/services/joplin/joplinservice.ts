@@ -142,4 +142,13 @@ export default class JoplinService {
     async urlToId(url: string): Promise<string> {
         return (await sha256(url)).slice(0, 32);
     }
+
+    async createNoteWithId(noteId: string, title: string) {
+        const {
+            repo,
+        } = this;
+        return repo.dataPost(["notes", noteId], {
+            title,
+        });
+    }
 }

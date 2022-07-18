@@ -1,12 +1,4 @@
-import JoplinRepo from "src/repo/joplinrepo";
-
 export default class DateTimeService {
-    joplinRepo: JoplinRepo;
-
-    constructor(joplinRepo: JoplinRepo) {
-        this.joplinRepo = joplinRepo;
-    }
-
     normalizeDate(date: Date, startHour: number): Date {
         if (date.getHours() < startHour) {
             const newDate = new Date(date.getTime());
@@ -19,9 +11,7 @@ export default class DateTimeService {
         return date;
     }
 
-    async getToday(): Promise<Date> {
-        // FIXME: get start hour from setting
-        const startHour = 8;
+    getNormalizedToday(startHour: number) {
         const today = new Date();
         return this.normalizeDate(today, startHour);
     }

@@ -4,6 +4,7 @@ import LinkGraphService from "./linkgraph/linkgraphservice";
 import RendererService from "./renderer/rendererservice";
 import NoteDialogService from "./notedialog/notedialogservice";
 import ToolbarService from "./toolbar/toolbarservice";
+import DateTimeService from "./datetime/datetimeservice";
 
 export default class ServicePool {
     joplinService: JoplinService;
@@ -18,6 +19,8 @@ export default class ServicePool {
 
     toolbarService: ToolbarService;
 
+    dateTimeService: DateTimeService;
+
     receivers: { [key: string]: any } = {};
 
     constructor(joplinRepo: JoplinRepo) {
@@ -27,6 +30,7 @@ export default class ServicePool {
         this.rendererService = new RendererService();
         this.noteDialogService = new NoteDialogService(this.joplinService, this.rendererService);
         this.toolbarService = new ToolbarService(this.joplinService);
+        this.dateTimeService = new DateTimeService();
 
         this.receivers = {
             notedialog: this.noteDialogService,

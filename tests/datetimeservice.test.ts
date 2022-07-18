@@ -1,11 +1,7 @@
-import JoplinRepo from "../src/repo/joplinrepo";
 import DateTimeService from "../src/services/datetime/datetimeservice";
 
-jest.mock("../src/repo/joplinrepo");
-
 test("normalizeDate", async () => {
-    const joplinRepo = (new JoplinRepo()) as any;
-    const dateTimeService = new DateTimeService(joplinRepo);
+    const dateTimeService = new DateTimeService();
 
     const today = new Date();
     today.setFullYear(2022);
