@@ -1,11 +1,11 @@
-const crypto = require('crypto');
+import * as crypto from "crypto";
 import ThemeType from "../../types/themetype";
 import JoplinRepo from "../../repo/joplinrepo";
 import PlatformRepo from "../../repo/platformrepo";
 import Link from "../../types/link";
 
 export async function sha256(message) {
-    return crypto.createHash('sha256').update(message).digest('hex')
+    return crypto.createHash("sha256").update(message).digest("hex");
 }
 
 export default class JoplinService {

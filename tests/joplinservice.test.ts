@@ -22,5 +22,5 @@ test("urlToId", async () => {
 
     expect(
         await joplinService.urlToId("https://www.google.com/"),
-    ).toBe("d0e196a0c25d35dd0a84593cbae0f383")
+    ).toBe("d0e196a0c25d35dd0a84593cbae0f383");
 });

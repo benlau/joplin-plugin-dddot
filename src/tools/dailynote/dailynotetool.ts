@@ -19,7 +19,6 @@ export default class DailyNoteTool extends Tool {
     }
 
     async onLoaded() {
-        console.log("daily note: on loaded");
         this.toolbarService.addToolbarItem({
             name: "Daily Note",
             icon: "fa-sticky-note",
@@ -38,6 +37,6 @@ export default class DailyNoteTool extends Tool {
         return "dailynote";
     }
 
-    async onMessage(message: any) {
+    async onMessage(_: any) {
     }
 }
