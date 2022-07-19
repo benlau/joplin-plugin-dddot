@@ -54,9 +54,9 @@ export default class DailyNoteTool extends Tool {
 
         const today = dateTimeService.getNormalizedToday(startHour);
         const year = today.getFullYear();
-        const month = today.getMonth() + 1; // @FIXME - zero padding
-        const day = today.getDate();
-        const url = `calendar://default/${year}/${month}/${day}`;
+        const month = (today.getMonth() + 1).toString().padStart(2, "0");
+        const day = today.getDate().toString().padStart(2, "0");
+        const url = `calendar://default/day/${year}/${month}/${day}`;
 
         const id = await joplinService.urlToId(url);
 

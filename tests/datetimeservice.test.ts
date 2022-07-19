@@ -3,10 +3,7 @@ import DateTimeService from "../src/services/datetime/datetimeservice";
 test("normalizeDate", async () => {
     const dateTimeService = new DateTimeService();
 
-    const today = new Date();
-    today.setFullYear(2022);
-    today.setMonth(8);
-    today.setHours(2);
+    const today = new Date(2022, 8, 2);
 
     const yesterday = new Date(today.getTime());
     yesterday.setDate(today.getDate() - 1);
