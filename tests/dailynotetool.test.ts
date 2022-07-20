@@ -21,8 +21,8 @@ test("createDailyNote should create note", async () => {
     await dailyNoteTool.createDailyNote();
 
     expect(joplinService.urlToId).toHaveBeenLastCalledWith("calendar://default/day/2020/01/01");
-    expect(joplinService.createNoteWithId.mock.calls.length).toBe(1);
-    expect(joplinService.createNoteWithId.mock.calls[0][0]).toBe(
+    expect(joplinService.createNoteWithIdIfNotExists.mock.calls.length).toBe(1);
+    expect(joplinService.createNoteWithIdIfNotExists.mock.calls[0][0]).toBe(
         "hashId",
     );
 });

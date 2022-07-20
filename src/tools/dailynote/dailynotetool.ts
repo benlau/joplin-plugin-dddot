@@ -62,6 +62,6 @@ export default class DailyNoteTool extends Tool {
 
         const title = `${year}-${month}-${day}`; // @FIXME - read format from settings
 
-        await joplinService.createNoteWithId(id, title);
+        await joplinService.createNoteWithIdIfNotExists(id, title);
     }
 }

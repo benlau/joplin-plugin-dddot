@@ -143,11 +143,18 @@ export default class JoplinService {
         return (await sha256(url)).slice(0, 32);
     }
 
-    async createNoteWithId(noteId: string, title: string) {
+    async createNoteWithIdIfNotExists(noteId: string, title: string) {
         const {
             repo,
         } = this;
-        return repo.dataPost(["notes", noteId], {
+        const path = ["notes", noteId];
+
+        const note = repo.dataGet(path);
+        if (note !== undefined) {
+            return note;
+        }
+
+        return repo.dataPost(path, {
             title,
         });
     }
