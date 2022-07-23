@@ -29,7 +29,7 @@ export default class ServicePool {
         this.linkGraphService = new LinkGraphService(this.joplinService);
         this.rendererService = new RendererService();
         this.noteDialogService = new NoteDialogService(this.joplinService, this.rendererService);
-        this.toolbarService = new ToolbarService(this.joplinService);
+        this.toolbarService = new ToolbarService(this.joplinService, this.rendererService);
         this.dateTimeService = new DateTimeService();
 
         this.receivers = {
