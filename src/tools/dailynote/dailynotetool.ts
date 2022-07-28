@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import DateTimeService from "src/services/datetime/datetimeservice";
 import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
@@ -25,9 +24,9 @@ export default class DailyNoteTool extends Tool {
     async onLoaded() {
         this.toolbarService.addToolbarItem({
             name: "Daily Note",
-            icon: "fa-home",
+            icon: "fa-sticky-note",
             onClick: {
-                type: "dailynote.tool.openDailyNote",
+                type: "dailynote.service.createDailyNote",
             },
         });
     }
@@ -37,14 +36,21 @@ export default class DailyNoteTool extends Tool {
     }
 
     get title() {
-        return t("dailynote.title");
+        return "dailynote.title";
     }
 
     get key() {
         return "dailynote";
     }
 
-    async onMessage(_: any) {
+    async onMessage(message : any) {
+        const { type } = message;
+        switch (type) {
+        case "dailynote.service.createDailyNote":
+            this.createDailyNote();
+            break;
+        default: break;
+        }
     }
 
     async createDailyNote() {

@@ -184,6 +184,10 @@
   opacity: 0.5;
 }
 
+.dddot-clickable:active {
+  opacity: 0.7;
+}
+
 .dddot-tooltip {
   position: relative;
   display: inline-block;

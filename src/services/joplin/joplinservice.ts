@@ -149,12 +149,17 @@ export default class JoplinService {
         } = this;
         const path = ["notes", noteId];
 
-        const note = repo.dataGet(path);
-        if (note !== undefined) {
-            return note;
+        try {
+            const node = await repo.dataGet(path);
+            return node;
+        } catch (e) {
+            // Note does not exist, create it
         }
 
-        return repo.dataPost(path, {
+        // @FIXME set parent_id
+
+        return repo.dataPost(path, undefined, {
+            id: noteId,
             title,
         });
     }
