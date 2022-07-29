@@ -43,6 +43,7 @@ export default class ServicePool {
             "./services/notedialog/notedialogworker.js",
             "./services/notedialog/notedialog.css",
             "./services/toolbar/toolbarworker.js",
+            "./services/toolbar/toolbar.css",
         ];
     }
 

@@ -24,7 +24,7 @@ export default class DailyNoteTool extends Tool {
     async onLoaded() {
         this.toolbarService.addToolbarItem({
             name: "Daily Note",
-            icon: "fa-sticky-note",
+            icon: "fa-home",
             onClick: {
                 type: "dailynote.service.createAndOpenDailyNote",
             },

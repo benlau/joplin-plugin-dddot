@@ -1,0 +1,16 @@
+.dddot-toolbar-item-icon {
+    font-size: 16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    color: var(--joplin-color3);
+}
+
+.dddot-toolbar-content {
+    background-color: var(--joplin-background-color3);
+    height: 24px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 4px;
+    padding-right: 4px;
+}
