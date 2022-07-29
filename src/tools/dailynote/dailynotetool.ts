@@ -26,7 +26,7 @@ export default class DailyNoteTool extends Tool {
             name: "Daily Note",
             icon: "fa-sticky-note",
             onClick: {
-                type: "dailynote.service.createDailyNote",
+                type: "dailynote.service.createAndOpenDailyNote",
             },
         });
     }
@@ -46,11 +46,40 @@ export default class DailyNoteTool extends Tool {
     async onMessage(message : any) {
         const { type } = message;
         switch (type) {
-        case "dailynote.service.createDailyNote":
-            this.createDailyNote();
+        case "dailynote.service.createAndOpenDailyNote":
+            this.createAndOpenDailyNote();
             break;
         default: break;
         }
+    }
+
+    breakdownDate(date: Date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        return {
+            year, month, day,
+        };
+    }
+
+    async genNoteId(date: Date) {
+        const {
+            joplinService,
+        } = this;
+
+        const { year, month, day } = this.breakdownDate(date);
+
+        const url = `calendar://default/day/${year}/${month}/${day}`;
+
+        return joplinService.urlToId(url);
+    }
+
+    async createAndOpenDailyNote() {
+        const {
+            noteId,
+        } = await this.createDailyNote();
+
+        await this.joplinService.openNoteAndWaitOpened(noteId);
     }
 
     async createDailyNote() {
@@ -62,15 +91,16 @@ export default class DailyNoteTool extends Tool {
         const startHour = 7; // @FIXME read from settings
 
         const today = dateTimeService.getNormalizedToday(startHour);
-        const year = today.getFullYear();
-        const month = (today.getMonth() + 1).toString().padStart(2, "0");
-        const day = today.getDate().toString().padStart(2, "0");
-        const url = `calendar://default/day/${year}/${month}/${day}`;
+        const { year, month, day } = this.breakdownDate(today);
 
-        const id = await joplinService.urlToId(url);
+        const noteId = await this.genNoteId(today);
 
         const title = `${year}-${month}-${day}`; // @FIXME - read format from settings
 
-        await joplinService.createNoteWithIdIfNotExists(id, title);
+        joplinService.createNoteWithIdIfNotExists(noteId, title);
+
+        return {
+            noteId,
+        };
     }
 }

@@ -3,6 +3,9 @@ import ThemeType from "../../types/themetype";
 import JoplinRepo from "../../repo/joplinrepo";
 import PlatformRepo from "../../repo/platformrepo";
 import Link from "../../types/link";
+import TimeRepo from "../../repo/timerepo";
+
+const DEFAULT_TIMEOUT = 3000;
 
 export async function sha256(message) {
     return crypto.createHash("sha256").update(message).digest("hex");
@@ -19,9 +22,16 @@ export default class JoplinService {
 
     platformRepo: PlatformRepo;
 
-    constructor(repo: JoplinRepo, platformRepo: PlatformRepo = new PlatformRepo()) {
+    timeRepo: TimeRepo;
+
+    constructor(
+        repo: JoplinRepo,
+        platformRepo: PlatformRepo = new PlatformRepo(),
+        timeRepo: TimeRepo = new TimeRepo(),
+    ) {
         this.repo = repo;
         this.platformRepo = platformRepo;
+        this.timeRepo = timeRepo;
     }
 
     async createNoteLink(noteId: string): Promise<Link> {
@@ -137,6 +147,24 @@ export default class JoplinService {
             repo,
         } = this;
         repo.commandsExecute("openNote", noteId);
+    }
+
+    async openNoteAndWaitOpened(noteId: string, timeout: number = DEFAULT_TIMEOUT) {
+        const {
+            repo,
+            timeRepo,
+        } = this;
+        const internal = 100;
+        let remaining = timeout;
+        while (remaining > 0) {
+            this.openNote(noteId);
+            await timeRepo.sleep(internal);
+            const note = await repo.workspaceSelectedNote();
+            if (note.id === noteId) {
+                break;
+            }
+            remaining -= internal;
+        }
     }
 
     async urlToId(url: string): Promise<string> {
