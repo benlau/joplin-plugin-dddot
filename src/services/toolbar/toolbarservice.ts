@@ -37,7 +37,15 @@ export default class ToolbarService {
     }
 
     renderButton(item: ToolbarItem) {
-        const js = `onClick="${this.rendererServie.renderInlineDDDotPostMessage(item.onClick)}"`;
+        const events = ["onClick", "onContextMenu"];
+
+        const listeners = events.map((event) => {
+            if (item[event] !== undefined) {
+                return `${event.toLocaleLowerCase()}="${this.rendererServie.renderInlineDDDotPostMessage(item[event])}; return false;"`;
+            }
+            return undefined;
+        }).filter((listener) => listener !== undefined);
+        const js = listeners.join(" ");
 
         return `
       <div class="dddot-toolbar-item" ${js}>

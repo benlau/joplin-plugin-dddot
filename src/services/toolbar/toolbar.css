@@ -1,7 +1,12 @@
-.dddot-toolbar-item-icon {
-    font-size: 16px;
+.dddot-toolbar-item {
     margin-left: 4px;
     margin-right: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.dddot-toolbar-item-icon {
+    font-size: 16px;
     color: var(--joplin-color3);
 }
 

@@ -1,4 +1,5 @@
 import DateTimeService from "src/services/datetime/datetimeservice";
+import NoteDialogService from "src/services/notedialog/notedialogservice";
 import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
@@ -8,10 +9,13 @@ export default class DailyNoteTool extends Tool {
 
     dateTimeService: DateTimeService;
 
+    noteDialogService: NoteDialogService;
+
     constructor(servicePool: ServicePool) {
         super(servicePool);
         this.toolbarService = servicePool.toolbarService;
         this.dateTimeService = servicePool.dateTimeService;
+        this.noteDialogService = servicePool.noteDialogService;
     }
 
     settings(_: string) {
@@ -24,9 +28,12 @@ export default class DailyNoteTool extends Tool {
     async onLoaded() {
         this.toolbarService.addToolbarItem({
             name: "Daily Note",
-            icon: "fa-home",
+            icon: "fa-calendar-alt",
             onClick: {
-                type: "dailynote.service.createAndOpenDailyNote",
+                type: "dailynote.service.createDailyNoteAndOpenNote",
+            },
+            onContextMenu: {
+                type: "dailynote.service.createDailyNoteAndOpenDialog",
             },
         });
     }
@@ -46,8 +53,11 @@ export default class DailyNoteTool extends Tool {
     async onMessage(message : any) {
         const { type } = message;
         switch (type) {
-        case "dailynote.service.createAndOpenDailyNote":
-            this.createAndOpenDailyNote();
+        case "dailynote.service.createDailyNoteAndOpenNote":
+            this.createDailyNoteAndOpenNote();
+            break;
+        case "dailynote.service.createDailyNoteAndOpenDialog":
+            this.createDailyNoteAndOpenDialog();
             break;
         default: break;
         }
@@ -74,12 +84,20 @@ export default class DailyNoteTool extends Tool {
         return joplinService.urlToId(url);
     }
 
-    async createAndOpenDailyNote() {
+    async createDailyNoteAndOpenNote() {
         const {
             noteId,
         } = await this.createDailyNote();
 
         await this.joplinService.openNoteAndWaitOpened(noteId);
+    }
+
+    async createDailyNoteAndOpenDialog() {
+        const {
+            noteId,
+        } = await this.createDailyNote();
+
+        await this.noteDialogService.openAndWaitOpened(noteId);
     }
 
     async createDailyNote() {
