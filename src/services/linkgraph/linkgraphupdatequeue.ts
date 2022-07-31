@@ -1,4 +1,4 @@
-import TimeRepo from "../../repo/timerepo";
+import TimerRepo from "../../repo/timerrepo";
 import JoplinService from "../joplin/joplinservice";
 import LinkGraphNode from "./linkgraphnode";
 
@@ -19,13 +19,13 @@ export default class LinkGraphUpdateQueue {
 
     isRunning: Boolean = false;
 
-    timeRepo: TimeRepo;
+    timeRepo: TimerRepo;
 
     constructor(
         joplinService: JoplinService,
         graph: Map<string, LinkGraphNode>,
         interval: number,
-        timeRepo: TimeRepo = new TimeRepo(),
+        timeRepo: TimerRepo = new TimerRepo(),
     ) {
         this.joplinService = joplinService;
         this.graph = graph;

@@ -1,4 +1,4 @@
-import TimeRepo from "../../repo/timerepo";
+import TimerRepo from "../../repo/timerrepo";
 import JoplinService from "../joplin/joplinservice";
 import RendererService from "../renderer/rendererservice";
 
@@ -7,16 +7,16 @@ export default class NoteDialogService {
 
     rendererService: RendererService;
 
-    timeRepo: TimeRepo;
+    timerRepo: TimerRepo;
 
     constructor(
         joplinService: JoplinService,
         rendererService: RendererService,
-        timeRepo: TimeRepo = new TimeRepo(),
+        timerRepo: TimerRepo = new TimerRepo(),
     ) {
         this.joplinService = joplinService;
         this.rendererService = rendererService;
-        this.timeRepo = timeRepo;
+        this.timerRepo = timerRepo;
     }
 
     render(options) {
@@ -106,20 +106,19 @@ export default class NoteDialogService {
         await joplinRepo.panelPostMessage(message);
     }
 
-    async openAndWaitOpened(noteId: string, timeout = 3000) {
+    async openAndWaitOpened(noteId: string, timeout = TimerRepo.DEFAULT_TIMEOUT) {
         const interval = 100;
-        let remaining = timeout;
 
-        while (remaining > 0) {
+        await this.timerRepo.waitUntilTimeout(async () => {
+
             try {
                 await this.open(noteId);
-                return;
+                return true;
             } catch (e) {
-                // The note is not ready to read.
+                return false;
             }
-            await this.timeRepo.sleep(interval);
-            remaining -= interval;
-        }
+
+        }, timeout);
     }
 
     async onMessage(message: any) {
