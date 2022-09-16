@@ -1,6 +1,7 @@
 import DateTimeService from "src/services/datetime/datetimeservice";
 import NoteDialogService from "src/services/notedialog/notedialogservice";
 import { SettingItemType, MenuItemLocation } from "api/types";
+import { t } from "i18next";
 import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
@@ -119,14 +120,14 @@ export default class DailyNoteTool extends Tool {
             joplinRepo,
         } = this;
 
-        const startHour = 7; // @FIXME read from settings
+        const startHour = 7;
 
         const today = dateTimeService.getNormalizedToday(startHour);
         const { year, month, day } = this.breakdownDate(today);
 
         const noteId = await this.genNoteId(today);
 
-        const title = `${year}-${month}-${day}`; // @FIXME - read format from settings
+        const title = `${year}-${month}-${day}`;
 
         const defaultNotebook = await joplinRepo.settingsLoad(DailyNoteDefaultNotebook, "");
 
@@ -143,7 +144,7 @@ export default class DailyNoteTool extends Tool {
         const command = "dddot.cmd.openDailyNote";
         await this.joplinRepo.commandsRegister({
             name: command,
-            label: "Open Daily Note", // @FIXME Translation
+            label: t("dailynote.open_daily_note"),
             iconName: "fas",
             execute: async () => this.createDailyNoteAndOpenNote(),
         });

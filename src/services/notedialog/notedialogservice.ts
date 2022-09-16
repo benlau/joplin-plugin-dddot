@@ -118,7 +118,7 @@ export default class NoteDialogService {
 
         await repo.commandsRegister({
             name: command,
-            label: "Open Note in DDDot", // @FIXME - translation
+            label: t("notedialog.open_note_dddot"),
             iconName: "fas",
             execute: async (noteIds:string[]) => {
                 if (noteIds.length === 0) {

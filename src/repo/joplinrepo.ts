@@ -48,7 +48,6 @@ export default class JoplinRepo {
     }
 
     async getNote(noteId: string, fields = undefined) {
-        // @FIXME - Move this function to the joplin service
         const options : any = {};
         if (fields !== undefined) {
             options.fields = fields;

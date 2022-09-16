@@ -10,6 +10,7 @@ import BackLinks from "./tools/backlinks";
 import TextSorter from "./tools/textsorter";
 import ThemeType from "./types/themetype";
 import DailyNoteTool from "./tools/dailynote/dailynotetool";
+import RandomNoteTool from "./tools/randomnote/randomnotetool";
 
 const ToolOrder = "dddot.settings.panel.toolorder";
 
@@ -121,8 +122,11 @@ export default class Panel {
         const backLinks = new BackLinks(this.servicePool);
         const textSorter = new TextSorter(this.servicePool);
         const dailyNote = new DailyNoteTool(this.servicePool);
+        const randomNote = new RandomNoteTool(this.servicePool);
 
-        const tools = [scratchpad, shortcuts, recentlyNotes, backLinks, textSorter, dailyNote];
+        const tools = [
+            scratchpad, shortcuts, recentlyNotes, backLinks,
+            textSorter, dailyNote, randomNote];
         this.tools = tools;
 
         await this.createSettings(tools);

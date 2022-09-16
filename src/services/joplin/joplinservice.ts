@@ -147,6 +147,12 @@ export default class JoplinService {
         repo.commandsExecute("openNote", noteId);
     }
 
+    async openNoteByIndex(index: number) {
+        const notes = await this.repo.dataGet(["notes"], { limit: 1, page: index });
+        const item = notes.items[0];
+        this.openNote(item.id);
+    }
+
     async openNoteAndWaitOpened(noteId: string, timeout: number = TimerRepo.DEFAULT_TIMEOUT) {
         const {
             repo,
@@ -190,7 +196,6 @@ export default class JoplinService {
     }
 
     async queryNotebookId(name: string) {
-        // @FIXME implement has more?
         const {
             repo,
         } = this;
@@ -200,5 +205,34 @@ export default class JoplinService {
         const notebook = query.items.find((item) => item.title === name);
 
         return notebook?.id ?? "";
+    }
+
+    async calcNoteCount() {
+        let page = 24;
+        let maxPage = null;
+        let minPage = 0;
+        let lastPage = 0;
+        let lastItemCount = 0;
+        const pageSize = 10;
+
+        while (page > minPage) {
+            const notes = await this.repo.dataGet(["notes"], { limit: pageSize, page });
+            lastPage = page;
+            lastItemCount = notes.items.length;
+
+            if (notes.has_more) {
+                minPage = page;
+                if (maxPage === null) {
+                    page *= 2;
+                } else {
+                    page = Math.floor((maxPage - page) / 2 + page);
+                }
+            } else { // no more items
+                maxPage = page;
+                page = Math.floor((page - minPage) / 2 + minPage);
+            }
+        }
+
+        return (lastPage - 1) * pageSize + lastItemCount;
     }
 }

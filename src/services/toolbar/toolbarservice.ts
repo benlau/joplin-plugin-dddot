@@ -4,8 +4,8 @@ import RendererService from "../renderer/rendererservice";
 interface ToolbarItem {
   name: string;
   icon: string;
-  onClick: any; // @FIXME - message type
-  onContextMenu?: any; // @FIXME - message type
+  onClick: any;
+  onContextMenu?: any;
 }
 
 export default class ToolbarService {

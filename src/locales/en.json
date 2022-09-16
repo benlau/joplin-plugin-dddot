@@ -8,5 +8,7 @@
     "notedialog.swap": "Swap",
     "notedialog.swap_tooltip": "Swap editing note to the note above",
     "notedialog.note": "Note",
-    "notedialog.sidebar": "Sidebar"
+    "notedialog.sidebar": "Sidebar",
+    "notedialog.open_note_dddot": "Open Note in DDDot",
+    "dailynote.open_daily_note": "Open Daily Note"
 }
