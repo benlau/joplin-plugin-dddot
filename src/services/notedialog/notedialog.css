@@ -1,13 +1,103 @@
 
+.dddot-notedialog-close-button-holder {
+  vertical-align: middle;
+}
+
+.dddot-notedialog-close-button {
+  min-width: 40px;
+  border: 1px solid var(--joplin-color);
+  border-radius: 4px 4px;
+  min-height: 18px;
+  margin-right: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dddot-notedialog-close-button h3 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  vertical-align: bottom;
+  line-height: 12px;
+}
+
+.dddot-notedialog-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .dddot-note-dialog-title-text a {
   color: var(--joplin-color);
 }
 
-.dddot-note-dialog-command-panel {
-  text-align: center;
+.dddot-notedialog-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.dddot-note-dialog-command-panel .dddot-tooltip {
+.dddot-notedialog-editor {
+  flex-grow: 1;
+  position: relative;
+  opacity: 0.7;
+}
+
+.dddot-notedialog-editor .cm-editor { border: none; }
+.dddot-notedialog-editor .cm-editor.cm-focused { border: none }
+
+.dddot-notedialog-editor-content {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 4px;
+  border: 1 solid var(--joplin-color);
+}
+
+.dddot-notedialog-tool-panel {
+  text-align: right;
+  margin-top: 8px;
+  margin-right: 8px;
+}
+
+.dddot-note-dialog-command-panel {
+  margin-bottom: 8px;
+  margin-left: 4px;
+  position: relative;
+}
+
+.dddot-note-dialog-command-panel:before  {
+  content: " ";
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  right: 4px;
+  height: 1px;
+  background-color: var(--joplin-divider-color);
+}
+
+.dddot-note-dialog-command-panel-content {
+  text-align: left;
+}
+
+.dddot-notedialog-content .dddot-tooltip {
   margin-top: 4px;
   display: block;
+}
+
+.dddot-notedialog-content button {
+  background-color: transparent;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 4px;
+  border: 1px solid var(--joplin-color);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.dddot-note-dialog-command-panel-content h3 {
+  margin-block-start: 8px;
+  margin-block-end: 8px;
 }

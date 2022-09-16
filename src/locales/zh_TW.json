@@ -1,6 +1,11 @@
 {
     "backlinks.title": "反向鏈結",
     "shortcuts.title": "捷徑",
+    "shortcuts.drag_note_here": "將筆記拉到這裡",
     "scratchpad.title": "拍紙簿",
-    "recentnotes.title": "最近更新"
+    "recentnotes.title": "最近更新",
+    "notedialog.swap": "交換",
+    "notedialog.swap_tooltip": "交換編輯中的筆記與側欄的筆記",
+    "notedialog.note": "筆記",
+    "notedialog.sidebar": "側欄"
 }

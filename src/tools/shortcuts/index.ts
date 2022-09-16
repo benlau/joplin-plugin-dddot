@@ -68,7 +68,7 @@ export default class Shortcuts extends Tool {
         } = this.servicePool;
 
         if (links.length === 0) {
-            return "<div class='dddot-tool-help-text'>Drag a note here</div>";
+            return `<div class='dddot-tool-help-text'>${t("shortcuts.drag_note_here")}</div>`;
         }
         const list = links.map((link: any) => {
             const options = (link.type === LinkType.NoteLink) ? {

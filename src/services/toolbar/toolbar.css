@@ -1,0 +1,34 @@
+.dddot-toolbar-item {
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.dddot-toolbar-item-icon {
+    font-size: 16px;
+    color: var(--joplin-color);
+}
+
+.dddot-toolbar-content {
+    background-color: var(--joplin-background-color);
+    height: 26px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-top: 4px;
+    position: relative;
+}
+
+.dddot-toolbar-content:before  {
+    content: " ";
+    position: absolute;
+    left: 4px;
+    bottom: 0px;
+    right: 4px;
+    height: 1px;
+    background-color: var(--joplin-divider-color);
+  }
+  

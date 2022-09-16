@@ -56,6 +56,10 @@ export default class Tool {
         return true;
     }
 
+    get hasWorkerFunction() {
+        return true;
+    }
+
     async updateEnabledFromSetting() {
         const res = await this.joplinRepo.settingsLoad(this.genSettingKey("enabled"), true);
         this.isEnabled = res as Boolean;

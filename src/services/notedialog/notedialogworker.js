@@ -1,46 +1,32 @@
 // eslint-disable-next-line
 async function noteDialogWorker() {
-    let selectedHeight = 200;
     let currentEditor = null;
 
     const closeDialog = () => {
-        $(".dddot-fullscreen-dialog-container").remove();
+        $(".dddot-notedialog-container").remove();
         currentEditor = null;
     };
 
     const openDialog = (noteId, html) => {
         const container = $(html);
         $(document.body).append(container);
-        DDDot.setupDraggableLinks(".dddot-note-dialog-title");
-        const closeButton = $(".dddot-fullscreen-dialog-close-button-holder");
+
+        const closeButton = $(".dddot-notedialog-close-button-holder");
         closeButton.on("click", closeDialog);
-        const textArea = $("#dddot-fullscreen-dialog-texarea")[0];
+        const textArea = $("#dddot-notedialog-texarea")[0];
         if (textArea) {
             const cm = CodeMirror.fromTextArea(textArea, {
                 mode: "markdown",
                 lineWrapping: true,
                 highlightFormatting: true,
-                readOnly: "nocursor",
+                readOnly: true,
                 theme: CodeMirror5Manager.instance.themeName,
             });
+            cm.setSize(null, "100%");
             currentEditor = cm;
-
-            const height = selectedHeight;
-            const minHeight = 80;
-            cm.setSize(null, `${height}px`);
-
-            CodeMirror5Manager.instance.setupResizable(
-                cm,
-                height,
-                minHeight,
-                ".dddot-fullscreen-dialog-texarea-handle",
-                (newHeight) => {
-                    selectedHeight = newHeight;
-                },
-            );
         }
 
-        $(".dddot-note-dialog-command-panel button").each((index, button) => {
+        $(".dddot-notedialog-content button").each((index, button) => {
             const command = $(button).attr("command");
             $(button).on("click", () => {
                 DDDot.postMessage({

@@ -1,3 +1,6 @@
+import { MenuItemLocation } from "api/types";
+import { t } from "i18next";
+import TimerRepo from "../../repo/timerrepo";
 import JoplinService from "../joplin/joplinservice";
 import RendererService from "../renderer/rendererservice";
 
@@ -6,9 +9,16 @@ export default class NoteDialogService {
 
     rendererService: RendererService;
 
-    constructor(joplinService: JoplinService, rendererService: RendererService) {
+    timerRepo: TimerRepo;
+
+    constructor(
+        joplinService: JoplinService,
+        rendererService: RendererService,
+        timerRepo: TimerRepo = new TimerRepo(),
+    ) {
         this.joplinService = joplinService;
         this.rendererService = rendererService;
+        this.timerRepo = timerRepo;
     }
 
     render(options) {
@@ -19,29 +29,43 @@ export default class NoteDialogService {
         } = options;
 
         const titleLink = this.renderTitle(noteId, title);
-        const buttons = [
-            ["swap", "Swap", "Swap editing note to this note"],
-            ["append-selected-text", "Append selected text", "Append selected text to this note"],
+        const tools = [
+            ["swap", t("notedialog.swap"), t("notedialog.swap_tooltip")],
+        ];
+
+        const toolHtml = tools.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "right")).join("\n");
+
+        const commands = [
+            ["append-selected-text", "Cut and append selected text", "Append selected text to this note"],
             ["append-note-link", "Append note link", "Append note link to this note"],
         ];
 
-        const buttonHtml = buttons.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip)).join("\n");
+        const commandHtml = commands.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "left")).join("\n");
 
         const html = `<div>
-<div class="dddot-fullscreen-dialog-container">
-  <div class="dddot-fullscreen-dialog-header">
-      <div class="dddot-fullscreen-dialog-title">${titleLink}</div>
-      <div class="dddot-fullscreen-dialog-close-button-holder dddot-clickable">
-        <h3><i class="fas fa-times"></i></h3>
+<div class="dddot-notedialog-container">
+  <div class="dddot-notedialog-header">
+      <div class="dddot-notedialog-title">${titleLink}</div>
+      <div class="dddot-notedialog-close-button-holder ">
+        <div class="dddot-notedialog-close-button dddot-clickable">
+            <h3><i class="fas fa-times"></i></h3>
+        </div>
       </div>
   </div>
-  <div class="dddot-fullscreen-dialog-content">
-    <div>
-      <textarea id="dddot-fullscreen-dialog-texarea" rows="10">${body}</textarea>
-      <div class="fas fa-ellipsis-h dddot-fullscreen-dialog-texarea-handle"></div>
+  <div class="dddot-notedialog-content">
+    <div class="dddot-notedialog-editor">
+        <div class="dddot-notedialog-editor-content">
+            <textarea id="dddot-notedialog-texarea" rows="10">${body}</textarea>
+        </div>
+    </div>
+    <div class="dddot-notedialog-tool-panel">
+        ${toolHtml}
     </div>
     <div class="dddot-note-dialog-command-panel">
-        ${buttonHtml}
+        <div class="dddot-note-dialog-command-panel-content">
+            <h3>${t("notedialog.note")} ⮕ ${t("notedialog.sidebar")}</h3>
+            ${commandHtml}
+        </div>
     </div>
   </div>
 </div>`;
@@ -73,11 +97,45 @@ export default class NoteDialogService {
         `;
     }
 
-    renderButton(command: string, title: string, tooltip: string) {
+    renderButton(
+        command: string,
+        title: string,
+        tooltip: string,
+        alignment: string,
+    ) {
         return `<div class="dddot-tooltip">
-            <button command="${command}">${title}</button>
-            <span class="dddot-tooltiptext">${tooltip}</span>
+            <button class="dddot-clickable" command="${command}">${title}</button>
+            <span class="dddot-tooltiptext  dddot-tooltiptext-${alignment}">${tooltip}</span>
         </div>`;
+    }
+
+    async registerCommands() {
+        const {
+            repo,
+        } = this.joplinService;
+
+        const command = "dddot.cmd.openNoteInSideBar";
+
+        await repo.commandsRegister({
+            name: command,
+            label: "Open Note in DDDot", // @FIXME - translation
+            iconName: "fas",
+            execute: async (noteIds:string[]) => {
+                if (noteIds.length === 0) {
+                    return;
+                }
+
+                const noteId = noteIds[0];
+
+                this.open(noteId);
+            },
+        });
+
+        await repo.menuItemsCreate(
+            `${command}:NoteListContextMenu`,
+            command,
+            MenuItemLocation.NoteListContextMenu,
+        );
     }
 
     async open(noteId: string) {
@@ -94,7 +152,19 @@ export default class NoteDialogService {
             title,
             html: this.render({ title, body, noteId }),
         };
-        joplinRepo.panelPostMessage(message);
+
+        await joplinRepo.panelPostMessage(message);
+    }
+
+    async openAndWaitOpened(noteId: string, timeout = TimerRepo.DEFAULT_TIMEOUT) {
+        await this.timerRepo.tryWaitUntilTimeout(async () => {
+            try {
+                await this.open(noteId);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }, timeout);
     }
 
     async onMessage(message: any) {

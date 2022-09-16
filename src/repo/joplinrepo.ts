@@ -1,3 +1,10 @@
+/** Wrapper of Joplin API
+ *
+ * Reference:
+ * joplin.data
+ * https://joplinapp.org/api/references/plugin_api/classes/joplindata.html
+ */
+
 import joplin from "api";
 import {
     ButtonSpec, DialogResult, ViewHandle, CreateMenuItemOptions, MenuItemLocation,
@@ -28,6 +35,10 @@ export default class JoplinRepo {
         return await joplin.settings.globalValue(key) ?? defaults;
     }
 
+    async dataPost(path: any, query?: any, data ?: any) {
+        return joplin.data.post(path, query, data);
+    }
+
     async dataGet(path: any, query?: any) {
         return joplin.data.get(path, query);
     }
@@ -47,6 +58,14 @@ export default class JoplinRepo {
 
     async workspaceSelectedNote() {
         return joplin.workspace.selectedNote();
+    }
+
+    async workspaceSelectedNoteIds() {
+        return joplin.workspace.selectedNoteIds();
+    }
+
+    async workspaceSelectedFolder() {
+        return joplin.workspace.selectedFolder();
     }
 
     async workspaceOnNoteChange(listener) {

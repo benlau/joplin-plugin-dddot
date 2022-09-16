@@ -1,7 +1,13 @@
+import * as crypto from "crypto";
 import ThemeType from "../../types/themetype";
 import JoplinRepo from "../../repo/joplinrepo";
 import PlatformRepo from "../../repo/platformrepo";
 import Link from "../../types/link";
+import TimerRepo from "../../repo/timerrepo";
+
+export async function sha256(message) {
+    return crypto.createHash("sha256").update(message).digest("hex");
+}
 
 export default class JoplinService {
     static Cancel = "Cancel";
@@ -14,9 +20,16 @@ export default class JoplinService {
 
     platformRepo: PlatformRepo;
 
-    constructor(repo: JoplinRepo, platformRepo: PlatformRepo = new PlatformRepo()) {
+    timerRepo: TimerRepo;
+
+    constructor(
+        repo: JoplinRepo,
+        platformRepo: PlatformRepo = new PlatformRepo(),
+        timerRepo: TimerRepo = new TimerRepo(),
+    ) {
         this.repo = repo;
         this.platformRepo = platformRepo;
+        this.timerRepo = timerRepo;
     }
 
     async createNoteLink(noteId: string): Promise<Link> {
@@ -132,5 +145,60 @@ export default class JoplinService {
             repo,
         } = this;
         repo.commandsExecute("openNote", noteId);
+    }
+
+    async openNoteAndWaitOpened(noteId: string, timeout: number = TimerRepo.DEFAULT_TIMEOUT) {
+        const {
+            repo,
+            timerRepo,
+        } = this;
+
+        await timerRepo.tryWaitUntilTimeout(async () => {
+            this.openNote(noteId);
+            const note = await repo.workspaceSelectedNote();
+            return note.id === noteId;
+        }, timeout);
+    }
+
+    async urlToId(url: string): Promise<string> {
+        return (await sha256(url)).slice(0, 32);
+    }
+
+    async createNoteWithIdIfNotExists(noteId: string, title: string, options: any = undefined) {
+        const {
+            repo,
+        } = this;
+
+        const {
+            parentId,
+        } = options;
+
+        const path = ["notes", noteId];
+
+        try {
+            const node = await repo.dataGet(path);
+            return node;
+        } catch (e) {
+            // Note does not exist, create it
+        }
+
+        return repo.dataPost(path, undefined, {
+            id: noteId,
+            title,
+            parent_id: parentId,
+        });
+    }
+
+    async queryNotebookId(name: string) {
+        // @FIXME implement has more?
+        const {
+            repo,
+        } = this;
+
+        const query = await repo.dataGet(["folders"], { fields: ["id", "title"] });
+
+        const notebook = query.items.find((item) => item.title === name);
+
+        return notebook?.id ?? "";
     }
 }

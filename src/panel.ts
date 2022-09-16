@@ -9,6 +9,7 @@ import ServicePool from "./services/servicepool";
 import BackLinks from "./tools/backlinks";
 import TextSorter from "./tools/textsorter";
 import ThemeType from "./types/themetype";
+import DailyNoteTool from "./tools/dailynote/dailynotetool";
 
 const ToolOrder = "dddot.settings.panel.toolorder";
 
@@ -38,7 +39,7 @@ export default class Panel {
                 async (resource) => joplin.views.panels.addScript(this.view, resource),
             ),
         );
-        const scripts = this.tools.filter((tool) => tool.hasView).map((tool) => {
+        const scripts = this.tools.filter((tool) => tool.hasWorkerFunction).map((tool) => {
             const { key } = tool;
             return [
                 `./tools/${key}/worker.js`,
@@ -119,8 +120,9 @@ export default class Panel {
         const shortcuts = new Shortcuts(this.servicePool);
         const backLinks = new BackLinks(this.servicePool);
         const textSorter = new TextSorter(this.servicePool);
+        const dailyNote = new DailyNoteTool(this.servicePool);
 
-        const tools = [scratchpad, shortcuts, recentlyNotes, backLinks, textSorter];
+        const tools = [scratchpad, shortcuts, recentlyNotes, backLinks, textSorter, dailyNote];
         this.tools = tools;
 
         await this.createSettings(tools);
@@ -149,6 +151,7 @@ export default class Panel {
 
         await this.render();
         await this.loadResources();
+        await this.servicePool.registerCommands();
     }
 
     async toggleVisibility() {
@@ -194,6 +197,7 @@ export default class Panel {
         await this.servicePool.onLoaded();
 
         const toolIds = await this.joplinRepo.settingsLoad(ToolOrder, []);
+
         this.joplinRepo.panelPostMessage({
             type: "dddot.setToolOrder",
             toolIds,
@@ -201,7 +205,7 @@ export default class Panel {
 
         const tools = await Promise.all(
             this.tools.filter(
-                (tool) => tool.hasView,
+                (tool) => tool.hasWorkerFunction,
             ).map(async (tool) => {
                 const {
                     workerFunctionName,

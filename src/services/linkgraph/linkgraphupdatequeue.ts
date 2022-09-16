@@ -1,3 +1,4 @@
+import TimerRepo from "../../repo/timerrepo";
 import JoplinService from "../joplin/joplinservice";
 import LinkGraphNode from "./linkgraphnode";
 
@@ -7,16 +8,10 @@ interface LinkGraphUpdateQueueItem {
     callbacks: ((value: LinkGraphNode | PromiseLike<LinkGraphNode>) => void)[];
 }
 
-async function sleep(ms: number) {
-    await new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
-
 export default class LinkGraphUpdateQueue {
     graph: Map<string, LinkGraphNode>;
 
-    internal = 100;
+    interval = 100;
 
     queue: LinkGraphUpdateQueueItem[];
 
@@ -24,11 +19,19 @@ export default class LinkGraphUpdateQueue {
 
     isRunning: Boolean = false;
 
-    constructor(joplinService: JoplinService, graph: Map<string, LinkGraphNode>, internal: number) {
+    timeRepo: TimerRepo;
+
+    constructor(
+        joplinService: JoplinService,
+        graph: Map<string, LinkGraphNode>,
+        interval: number,
+        timeRepo: TimerRepo = new TimerRepo(),
+    ) {
         this.joplinService = joplinService;
         this.graph = graph;
-        this.internal = internal;
+        this.interval = interval;
         this.queue = [];
+        this.timeRepo = timeRepo;
     }
 
     // Update a node immediately
@@ -73,7 +76,7 @@ export default class LinkGraphUpdateQueue {
         this.isRunning = true;
 
         for (;;) {
-            await sleep(this.internal);
+            await this.timeRepo.sleep(this.interval);
 
             if (this.queue.length === 0) {
                 break;

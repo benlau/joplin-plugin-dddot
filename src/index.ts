@@ -26,10 +26,10 @@ joplin.plugins.register({
 
         const panel = new Panel();
 
-        const toggleDDDotVisibility = "dddot.toggleVisibility";
+        const command = "dddot.cmd.toggleSideBar";
 
         await joplin.commands.register({
-            name: toggleDDDotVisibility,
+            name: command,
             label: "Joplin DDDot",
             iconName: "fas fa-braille",
             execute: async () => {
@@ -39,6 +39,6 @@ joplin.plugins.register({
 
         await panel.start();
 
-        await joplin.views.toolbarButtons.create("joplinDDDotToggleVisibilityButton", toggleDDDotVisibility, ToolbarButtonLocation.NoteToolbar);
+        await joplin.views.toolbarButtons.create("joplinDDDotToggleVisibilityButton", command, ToolbarButtonLocation.NoteToolbar);
     },
 });

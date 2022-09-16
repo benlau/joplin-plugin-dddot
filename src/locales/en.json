@@ -1,7 +1,12 @@
 {
     "backlinks.title": "Backlink",
     "shortcuts.title": "Shortcuts",
+    "shortcuts.drag_note_here": "Drag a note here",
     "scratchpad.title": "Scratchpad",
     "recentnotes.title": "Recent Notes",
-    "scratchpad.settings.height": "Scratchpad Height(px)"
+    "scratchpad.settings.height": "Scratchpad Height(px)",
+    "notedialog.swap": "Swap",
+    "notedialog.swap_tooltip": "Swap editing note to the note above",
+    "notedialog.note": "Note",
+    "notedialog.sidebar": "Sidebar"
 }

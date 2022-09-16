@@ -4,6 +4,7 @@ import LinkGraphService from "./linkgraph/linkgraphservice";
 import RendererService from "./renderer/rendererservice";
 import NoteDialogService from "./notedialog/notedialogservice";
 import ToolbarService from "./toolbar/toolbarservice";
+import DateTimeService from "./datetime/datetimeservice";
 
 export default class ServicePool {
     joplinService: JoplinService;
@@ -18,6 +19,8 @@ export default class ServicePool {
 
     toolbarService: ToolbarService;
 
+    dateTimeService: DateTimeService;
+
     receivers: { [key: string]: any } = {};
 
     constructor(joplinRepo: JoplinRepo) {
@@ -26,7 +29,8 @@ export default class ServicePool {
         this.linkGraphService = new LinkGraphService(this.joplinService);
         this.rendererService = new RendererService();
         this.noteDialogService = new NoteDialogService(this.joplinService, this.rendererService);
-        this.toolbarService = new ToolbarService(this.joplinService);
+        this.toolbarService = new ToolbarService(this.joplinService, this.rendererService);
+        this.dateTimeService = new DateTimeService();
 
         this.receivers = {
             notedialog: this.noteDialogService,
@@ -39,6 +43,7 @@ export default class ServicePool {
             "./services/notedialog/notedialogworker.js",
             "./services/notedialog/notedialog.css",
             "./services/toolbar/toolbarworker.js",
+            "./services/toolbar/toolbar.css",
         ];
     }
 
@@ -54,6 +59,10 @@ export default class ServicePool {
             this.toolbarService,
         ];
         await Promise.all(services.map((service) => service.onLoaded()));
+    }
+
+    async registerCommands() {
+        await this.noteDialogService.registerCommands();
     }
 
     hasReceiver(target: string) {

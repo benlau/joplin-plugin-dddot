@@ -15,3 +15,12 @@ test("appendTextToNote should append text via dataPut", async () => {
 
     expect(joplinRepo.dataPut.mock.calls[0][2].body).toBe("headertext");
 });
+
+test("urlToId", async () => {
+    const joplinRepo = (new JoplinRepo()) as any;
+    const joplinService = new JoplinService(joplinRepo);
+
+    expect(
+        await joplinService.urlToId("https://www.google.com/"),
+    ).toBe("d0e196a0c25d35dd0a84593cbae0f383");
+});
