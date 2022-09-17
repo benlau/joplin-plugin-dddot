@@ -1,4 +1,6 @@
 import NoteDialogService from "src/services/notedialog/notedialogservice";
+import { MenuItemLocation } from "api/types";
+import { t } from "i18next";
 import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
@@ -59,5 +61,21 @@ export default class RandomNoteTool extends Tool {
         const count = await this.joplinService.calcNoteCount();
         const index = Math.floor(Math.random() * count);
         await this.joplinService.openNoteByIndex(index);
+    }
+
+    async registerCommands() {
+        const command = "dddot.cmd.openRandomNote";
+        await this.joplinRepo.commandsRegister({
+            name: command,
+            label: t("randomnote.open_random_note"),
+            iconName: "fas",
+            execute: async () => this.openRandomNote(),
+        });
+
+        await this.joplinRepo.menuItemsCreate(
+            `${command}:Tools`,
+            command,
+            MenuItemLocation.Tools,
+        );
     }
 }

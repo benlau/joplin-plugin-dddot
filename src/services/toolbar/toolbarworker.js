@@ -2,7 +2,11 @@
 async function toolbarWorker() {
 
     const refresh = (content) => {
-        $("#dddot-toolbar-container").html(content);
+        if (content === undefined) {
+            $("#dddot-toolbar-container").css("display", "none");
+        } else {
+            $("#dddot-toolbar-container").html(content);
+        }
     };
 
     const response = await DDDot.postMessage({ type: "toolbar.service.onReady" });

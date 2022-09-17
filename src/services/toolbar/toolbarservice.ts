@@ -29,6 +29,9 @@ export default class ToolbarService {
     }
 
     render() {
+        if (this.toolbarItems.length === 0) {
+            return undefined;
+        }
         const buttons = this.toolbarItems.map((item) => this.renderButton(item)).join("\n");
         return `
       <div class="dddot-toolbar-content">

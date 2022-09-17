@@ -10,5 +10,8 @@
     "notedialog.note": "Note",
     "notedialog.sidebar": "Sidebar",
     "notedialog.open_note_dddot": "Open Note in DDDot",
-    "dailynote.open_daily_note": "Open Daily Note"
+    "dailynote.title": "Daily Note",
+    "dailynote.open_daily_note": "Open Daily Note",
+    "randomnote.title": "Random Note",
+    "randomnote.open_random_note": "Open Random Note"
 }

@@ -1,5 +1,6 @@
 import joplin from "api";
 import { SettingItemType } from "api/types";
+import { t } from "i18next";
 import ScratchPad from "./tools/scratchpad";
 import RecentNotes from "./tools/recentnotes";
 import Shortcuts from "./tools/shortcuts";
@@ -90,7 +91,7 @@ export default class Panel {
                 value: tool.isDefaultEnabled,
                 type: SettingItemType.Bool,
                 public: true,
-                label: `Enable ${tool.title}`,
+                label: `Enable ${t(tool.title)}`,
                 section: SECTION,
             };
             return {
