@@ -2,6 +2,7 @@ import DateTimeService from "src/services/datetime/datetimeservice";
 import NoteDialogService from "src/services/notedialog/notedialogservice";
 import { SettingItemType, MenuItemLocation } from "api/types";
 import { t } from "i18next";
+import { format } from "fecha";
 import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
@@ -123,11 +124,12 @@ export default class DailyNoteTool extends Tool {
         const startHour = 7;
 
         const today = dateTimeService.getNormalizedToday(startHour);
-        const { year, month, day } = this.breakdownDate(today);
 
         const noteId = await this.genNoteId(today);
 
-        const title = `${year}-${month}-${day}`;
+        const dateFormat = await joplinRepo.settingsLoadGlobal("dateFormat", "YYYY-MM-DD");
+
+        const title = format(today, dateFormat);
 
         const defaultNotebook = await joplinRepo.settingsLoad(DailyNoteDefaultNotebook, "");
 
