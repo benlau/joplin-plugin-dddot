@@ -8,6 +8,7 @@ import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
 
 const DailyNoteDefaultNotebook = "dddot.settings.dailynote.defaultNotebook";
+const DailyNoteStartTime = "dddot.settings.dailynote.startTime";
 
 export default class DailyNoteTool extends Tool {
     toolbarService: ToolbarService;
@@ -25,12 +26,27 @@ export default class DailyNoteTool extends Tool {
     }
 
     settings(section: string) {
+        const options = Array.from(Array(24).keys()).map((index) => {
+            const key = `${index}`;
+            const value = `${key.padStart(2, "0")}:00`;
+            return { key, value };
+        }).reduce((acc, cur) => { acc[cur.key] = cur.value; return acc; }, {});
+
         return {
             [DailyNoteDefaultNotebook]: {
                 value: "",
                 type: SettingItemType.String,
                 public: true,
-                label: "Daily Note Default Notebook",
+                label: "Daily Note: Default Notebook",
+                section,
+            },
+            [DailyNoteStartTime]: {
+                value: "7",
+                type: SettingItemType.String,
+                public: true,
+                label: "Daily Note: Start time of a day",
+                isEnum: true,
+                options,
                 section,
             },
         };
@@ -121,7 +137,7 @@ export default class DailyNoteTool extends Tool {
             joplinRepo,
         } = this;
 
-        const startHour = 7;
+        const startHour = parseInt(await joplinRepo.settingsLoad(DailyNoteStartTime, "7"), 10);
 
         const today = dateTimeService.getNormalizedToday(startHour);
 

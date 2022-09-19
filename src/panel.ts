@@ -85,7 +85,7 @@ export default class Panel {
         });
 
         const allSettings = tools.reduce((acc, tool) => {
-            const settings = tool.settings(SECTION);
+            let settings = {};
             const enabledKey = tool.genSettingKey("enabled");
             settings[enabledKey] = {
                 value: tool.isDefaultEnabled,
@@ -94,6 +94,10 @@ export default class Panel {
                 label: `Enable ${t(tool.title)}`,
                 section: SECTION,
             };
+
+            const toolSettings = tool.settings(SECTION);
+            settings = { ...settings, ...toolSettings };
+
             return {
                 ...acc,
                 ...settings,
@@ -127,7 +131,7 @@ export default class Panel {
 
         const tools = [
             scratchpad, shortcuts, recentlyNotes, backLinks,
-            textSorter, dailyNote, randomNote];
+            dailyNote, randomNote, textSorter];
         this.tools = tools;
 
         await this.createSettings(tools);
