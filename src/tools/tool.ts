@@ -23,7 +23,7 @@ export default class Tool {
         const {
             joplinService,
         } = servicePool;
-        this.joplinRepo = joplinService.repo;
+        this.joplinRepo = joplinService.joplinRepo;
         this.joplinService = joplinService;
         this.servicePool = servicePool;
     }

@@ -111,12 +111,12 @@ export default class NoteDialogService {
 
     async registerCommands() {
         const {
-            repo,
+            joplinRepo,
         } = this.joplinService;
 
         const command = "dddot.cmd.openNoteInSideBar";
 
-        await repo.commandsRegister({
+        await joplinRepo.commandsRegister({
             name: command,
             label: t("notedialog.open_note_dddot"),
             iconName: "fas",
@@ -131,7 +131,7 @@ export default class NoteDialogService {
             },
         });
 
-        await repo.menuItemsCreate(
+        await joplinRepo.menuItemsCreate(
             `${command}:NoteListContextMenu`,
             command,
             MenuItemLocation.NoteListContextMenu,
@@ -139,7 +139,7 @@ export default class NoteDialogService {
     }
 
     async open(noteId: string) {
-        const joplinRepo = this.joplinService.repo;
+        const { joplinRepo } = this.joplinService;
         const note = await joplinRepo.getNote(noteId, ["title", "body"]);
         const {
             title,
@@ -206,7 +206,7 @@ export default class NoteDialogService {
         const {
             joplinService,
         } = this;
-        const joplinRepo = this.joplinService.repo;
+        const { joplinRepo } = this.joplinService;
 
         const selectedText = (await joplinRepo.commandsExecute("selectedText") as string);
         if (selectedText === undefined || selectedText === "") {
@@ -227,7 +227,7 @@ export default class NoteDialogService {
             joplinService,
             rendererService,
         } = this;
-        const joplinRepo = this.joplinService.repo;
+        const { joplinRepo } = this.joplinService;
 
         const activeNote = await joplinRepo.workspaceSelectedNote();
         if (activeNote === undefined) {
@@ -249,7 +249,7 @@ export default class NoteDialogService {
             joplinService,
         } = this;
 
-        const joplinRepo = this.joplinService.repo;
+        const { joplinRepo } = this.joplinService;
 
         const activeNote = await joplinRepo.workspaceSelectedNote();
 
@@ -262,7 +262,7 @@ export default class NoteDialogService {
     }
 
     refresh(content: string) {
-        const joplinRepo = this.joplinService.repo;
+        const { joplinRepo } = this.joplinService;
 
         const message = {
             type: "notedialog.worker.refresh",

@@ -16,24 +16,24 @@ export default class JoplinService {
 
     dialogHandle = "";
 
-    repo: JoplinRepo;
+    joplinRepo: JoplinRepo;
 
     platformRepo: PlatformRepo;
 
     timerRepo: TimerRepo;
 
     constructor(
-        repo: JoplinRepo,
+        joplinRepo: JoplinRepo,
         platformRepo: PlatformRepo = new PlatformRepo(),
         timerRepo: TimerRepo = new TimerRepo(),
     ) {
-        this.repo = repo;
+        this.joplinRepo = joplinRepo;
         this.platformRepo = platformRepo;
         this.timerRepo = timerRepo;
     }
 
     async createNoteLink(noteId: string): Promise<Link> {
-        const note = await this.repo.dataGet(
+        const note = await this.joplinRepo.dataGet(
             ["notes", noteId],
             {
                 fields: ["id", "title", "is_todo", "todo_completed"],
@@ -43,7 +43,7 @@ export default class JoplinService {
     }
 
     async createFolderLink(folderId: string): Promise<Link> {
-        const folder = await this.repo.dataGet(
+        const folder = await this.joplinRepo.dataGet(
             ["folders", folderId],
             {
                 fields: ["id", "title"],
@@ -57,7 +57,7 @@ export default class JoplinService {
         let page = 1;
         let items = [];
         while (hasMore) {
-            const notes = await this.repo.dataGet(
+            const notes = await this.joplinRepo.dataGet(
                 ["search"],
                 {
                     query: id,
@@ -83,12 +83,12 @@ export default class JoplinService {
 
     async showMessageBoxCustom(message: string) {
         if (this.dialogHandle === "") {
-            this.dialogHandle = await this.repo.dialogCreate("dddot.joplinservice.messageBox");
+            this.dialogHandle = await this.joplinRepo.dialogCreate("dddot.joplinservice.messageBox");
         }
 
-        await this.repo.dialogSetHtml(this.dialogHandle, `<h3>${message}</h3>`);
+        await this.joplinRepo.dialogSetHtml(this.dialogHandle, `<h3>${message}</h3>`);
 
-        await this.repo.dialogSetButtons(this.dialogHandle, [
+        await this.joplinRepo.dialogSetButtons(this.dialogHandle, [
             {
                 id: "ok",
             },
@@ -97,41 +97,41 @@ export default class JoplinService {
             },
         ]);
 
-        const result = await this.repo.dialogOpen(this.dialogHandle);
+        const result = await this.joplinRepo.dialogOpen(this.dialogHandle);
 
         return result.id === "ok" ? JoplinService.OK : JoplinService.Cancel;
     }
 
     async showMessageBoxNative(message: string) {
-        const result = await this.repo.dialogShowMessageBox(message);
+        const result = await this.joplinRepo.dialogShowMessageBox(message);
         return result === 0 ? JoplinService.OK : JoplinService.Cancel;
     }
 
     async queryThemeType(): Promise<ThemeType> {
-        return await this.repo.settingsLoadGlobal("theme", ThemeType.THEME_UNKNOWN) as ThemeType;
+        return await this.joplinRepo.settingsLoadGlobal("theme", ThemeType.THEME_UNKNOWN) as ThemeType;
     }
 
     async updateNoteBody(noteId: string, body: string) {
-        return this.repo.dataPut(["notes", noteId], null, { body });
+        return this.joplinRepo.dataPut(["notes", noteId], null, { body });
     }
 
     async appendTextToNote(noteId: string, text: string) {
         const {
-            repo,
+            joplinRepo,
         } = this;
 
         const {
             id: currentNoteId,
-        } = await repo.workspaceSelectedNote();
+        } = await joplinRepo.workspaceSelectedNote();
         if (currentNoteId === noteId) {
-            await repo.commandsExecute("textSelectAll");
-            const selectedText = (await repo.commandsExecute("selectedText") as string);
+            await joplinRepo.commandsExecute("textSelectAll");
+            const selectedText = (await joplinRepo.commandsExecute("selectedText") as string);
             const newBody = selectedText + text;
-            await repo.commandsExecute("replaceSelection", newBody);
+            await joplinRepo.commandsExecute("replaceSelection", newBody);
             return newBody;
         }
 
-        const note = await repo.getNote(noteId, ["body"]);
+        const note = await joplinRepo.getNote(noteId, ["body"]);
         const {
             body,
         } = note;
@@ -142,26 +142,26 @@ export default class JoplinService {
 
     openNote(noteId: string) {
         const {
-            repo,
+            joplinRepo,
         } = this;
-        repo.commandsExecute("openNote", noteId);
+        joplinRepo.commandsExecute("openNote", noteId);
     }
 
     async openNoteByIndex(index: number) {
-        const notes = await this.repo.dataGet(["notes"], { limit: 1, page: index });
+        const notes = await this.joplinRepo.dataGet(["notes"], { limit: 1, page: index });
         const item = notes.items[0];
         this.openNote(item.id);
     }
 
     async openNoteAndWaitOpened(noteId: string, timeout: number = TimerRepo.DEFAULT_TIMEOUT) {
         const {
-            repo,
+            joplinRepo,
             timerRepo,
         } = this;
 
         await timerRepo.tryWaitUntilTimeout(async () => {
             this.openNote(noteId);
-            const note = await repo.workspaceSelectedNote();
+            const note = await joplinRepo.workspaceSelectedNote();
             return note.id === noteId;
         }, timeout);
     }
@@ -172,7 +172,7 @@ export default class JoplinService {
 
     async createNoteWithIdIfNotExists(noteId: string, title: string, options: any = undefined) {
         const {
-            repo,
+            joplinRepo,
         } = this;
 
         const {
@@ -182,13 +182,13 @@ export default class JoplinService {
         const path = ["notes", noteId];
 
         try {
-            const node = await repo.dataGet(path);
+            const node = await joplinRepo.dataGet(path);
             return node;
         } catch (e) {
             // Note does not exist, create it
         }
 
-        return repo.dataPost(path, undefined, {
+        return joplinRepo.dataPost(path, undefined, {
             id: noteId,
             title,
             parent_id: parentId,
@@ -197,10 +197,10 @@ export default class JoplinService {
 
     async queryNotebookId(name: string) {
         const {
-            repo,
+            joplinRepo,
         } = this;
 
-        const query = await repo.dataGet(["folders"], { fields: ["id", "title"] });
+        const query = await joplinRepo.dataGet(["folders"], { fields: ["id", "title"] });
 
         const notebook = query.items.find((item) => item.title === name);
 
@@ -216,7 +216,7 @@ export default class JoplinService {
         const pageSize = 10;
 
         while (page > minPage) {
-            const notes = await this.repo.dataGet(["notes"], { limit: pageSize, page });
+            const notes = await this.joplinRepo.dataGet(["notes"], { limit: pageSize, page });
             lastPage = page;
             lastItemCount = notes.items.length;
 
