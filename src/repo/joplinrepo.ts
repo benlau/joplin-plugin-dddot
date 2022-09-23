@@ -47,14 +47,6 @@ export default class JoplinRepo {
         return joplin.data.put(path, query, data);
     }
 
-    async getNote(noteId: string, fields = undefined) {
-        const options : any = {};
-        if (fields !== undefined) {
-            options.fields = fields;
-        }
-        return joplin.data.get(["notes", noteId], options);
-    }
-
     async workspaceSelectedNote() {
         return joplin.workspace.selectedNote();
     }

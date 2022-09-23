@@ -32,6 +32,29 @@ export default class JoplinService {
         this.timerRepo = timerRepo;
     }
 
+    async* dataGet(query, options) {
+        let hasMore = true;
+        let page = 1;
+
+        while (hasMore) {
+            const result = await this.joplinRepo.dataGet(query, { ...options, page });
+            yield result;
+            if (result.has_more) {
+                page += 1;
+            } else {
+                hasMore = false;
+            }
+        }
+    }
+
+    async getNote(noteId: string, fields = undefined) {
+        const options : any = {};
+        if (fields !== undefined) {
+            options.fields = fields;
+        }
+        return this.joplinRepo.dataGet(["notes", noteId], options);
+    }
+
     async createNoteLink(noteId: string): Promise<Link> {
         const note = await this.joplinRepo.dataGet(
             ["notes", noteId],
@@ -131,7 +154,7 @@ export default class JoplinService {
             return newBody;
         }
 
-        const note = await joplinRepo.getNote(noteId, ["body"]);
+        const note = await this.getNote(noteId, ["body"]);
         const {
             body,
         } = note;
@@ -196,13 +219,15 @@ export default class JoplinService {
     }
 
     async queryNotebookId(name: string) {
-        const {
-            joplinRepo,
-        } = this;
+        let items = [];
+        const query = this.dataGet(["folders"], { fields: ["id", "title"] });
 
-        const query = await joplinRepo.dataGet(["folders"], { fields: ["id", "title"] });
+        // eslint-disable-next-line
+        for await (const result of query) {
+            items = items.concat(result.items);
+        }
 
-        const notebook = query.items.find((item) => item.title === name);
+        const notebook = items.find((item) => item.title === name);
 
         return notebook?.id ?? "";
     }

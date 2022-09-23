@@ -139,8 +139,10 @@ export default class NoteDialogService {
     }
 
     async open(noteId: string) {
-        const { joplinRepo } = this.joplinService;
-        const note = await joplinRepo.getNote(noteId, ["title", "body"]);
+        const {
+            joplinRepo,
+        } = this.joplinService;
+        const note = await this.joplinService.getNote(noteId, ["title", "body"]);
         const {
             title,
             body,

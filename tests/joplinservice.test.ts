@@ -9,7 +9,7 @@ test("appendTextToNote should append text via dataPut", async () => {
     const noteId = "noteId";
     const text = "text";
     joplinRepo.workspaceSelectedNote.mockReturnValueOnce({ id: "another-id" });
-    joplinRepo.getNote.mockReturnValueOnce({ body: "header" });
+    joplinRepo.dataGet.mockReturnValueOnce({ body: "header" });
 
     await joplinService.appendTextToNote(noteId, text);
 

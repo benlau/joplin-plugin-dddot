@@ -29,7 +29,7 @@ export default class Shortcuts extends Tool {
         await this.joplinRepo.workspaceOnNoteChange(async (change) => {
             const { id, event } = change;
             if (event === ItemChangeEventType.Update) {
-                const note = await this.joplinRepo.getNote(id);
+                const note = await this.joplinService.getNote(id);
                 const {
                     title,
                 } = note;
