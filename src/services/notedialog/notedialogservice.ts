@@ -63,7 +63,7 @@ export default class NoteDialogService {
     </div>
     <div class="dddot-note-dialog-command-panel">
         <div class="dddot-note-dialog-command-panel-content">
-            <h3>${t("notedialog.note")} ⮕ ${t("notedialog.sidebar")}</h3>
+            <h3>${t("notedialog.note_editor")} ⮕ ${t("notedialog.quick_view")}</h3>
             ${commandHtml}
         </div>
     </div>
