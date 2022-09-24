@@ -33,14 +33,14 @@ export default class NoteDialogService {
             ["swap", t("notedialog.swap"), t("notedialog.swap_tooltip")],
         ];
 
-        const toolHtml = tools.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "right")).join("\n");
+        const toolHtml = tools.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "top-right")).join("\n");
 
         const commands = [
             ["append-selected-text", "Cut and append selected text", "Append selected text to this note"],
             ["append-note-link", "Append note link", "Append note link to this note"],
         ];
 
-        const commandHtml = commands.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "left")).join("\n");
+        const commandHtml = commands.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "top-lefft")).join("\n");
 
         const html = `<div>
 <div class="dddot-notedialog-container">
@@ -101,12 +101,14 @@ export default class NoteDialogService {
         command: string,
         title: string,
         tooltip: string,
-        alignment: string,
+        alignment = "",
     ) {
-        return `<div class="dddot-tooltip">
+        const position = alignment !== "" ? `tooltip-${alignment}` : "";
+
+        return `<div class="tooltip-multiline ${position}" data-tooltip="${tooltip}">
             <button class="dddot-clickable" command="${command}">${title}</button>
-            <span class="dddot-tooltiptext  dddot-tooltiptext-${alignment}">${tooltip}</span>
-        </div>`;
+        </div>
+`;
     }
 
     async registerCommands() {

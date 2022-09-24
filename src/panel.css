@@ -188,40 +188,6 @@
   opacity: 0.7;
 }
 
-.dddot-tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-
-.dddot-tooltip .dddot-tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  border-radius: 6px;
-
-  padding: 4px 4px;
- 
-  position: absolute;
-  z-index: 1;
-
-  bottom: 100%;
-  margin-bottom: 8px;
-}
-
-.dddot-tooltip .dddot-tooltiptext-left {
-  left: 0px;
-}
-
-.dddot-tooltip .dddot-tooltiptext-right {
-  right: 0px;
-}
-
-.dddot-tooltip:hover .dddot-tooltiptext {
-  visibility: visible;
-}
-
 /*  Scrollbar style
   https://github.com/laurent22/joplin/blob/571147acbbf9ea61fd287ba05008727201bea951/packages/app-desktop/main.scss#L29 
 */

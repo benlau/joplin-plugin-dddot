@@ -22,8 +22,9 @@ export default class RandomNoteTool extends Tool {
 
     async onLoaded() {
         this.toolbarService.addToolbarItem({
-            name: "Daily Note",
+            name: "Random Note",
             icon: "fa-dice",
+            tooltip: "Open Random Note",
             onClick: {
                 type: "randomnote.tool.openRandomNote",
             },

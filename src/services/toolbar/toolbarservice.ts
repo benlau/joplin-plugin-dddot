@@ -4,6 +4,7 @@ import RendererService from "../renderer/rendererservice";
 interface ToolbarItem {
   name: string;
   icon: string;
+  tooltip: string;
   onClick: any;
   onContextMenu?: any;
 }
@@ -51,7 +52,7 @@ export default class ToolbarService {
         const js = listeners.join(" ");
 
         return `
-      <div class="dddot-toolbar-item" ${js}>
+      <div class="dddot-toolbar-item tooltip-bottom-left" data-tooltip="${item.tooltip}" ${js}>
         <div class="dddot-toolbar-item-icon dddot-clickable">
           <i class="${item.icon} fas"></i>
         </div>

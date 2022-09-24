@@ -59,6 +59,7 @@ export default class DailyNoteTool extends Tool {
         this.toolbarService.addToolbarItem({
             name: "Daily Note",
             icon: "fa-calendar-alt",
+            tooltip: "Open Daily Note",
             onClick: {
                 type: "dailynote.service.createDailyNoteAndOpenNote",
             },
