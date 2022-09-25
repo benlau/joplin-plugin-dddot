@@ -105,8 +105,11 @@ export default class NoteDialogService {
     ) {
         const position = alignment !== "" ? `tooltip-${alignment}` : "";
 
-        return `<div class="tooltip-multiline ${position} dddot-notedialog-button" data-tooltip="${tooltip}">
-            <button class="dddot-clickable" command="${command}">${title}</button>
+        return `
+        <div>
+            <div class="tooltip-multiline ${position} dddot-notedialog-button" data-tooltip="${tooltip}">
+                <button class="dddot-clickable" command="${command}">${title}</button>
+            </div>
         </div>
 `;
     }

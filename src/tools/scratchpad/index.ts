@@ -1,4 +1,4 @@
-import { SettingItemType } from "api/types";
+import { SettingItemType, MenuItem } from "api/types";
 import { t } from "i18next";
 import Tool from "../tool";
 
@@ -78,5 +78,28 @@ export default class ScratchPad extends Tool {
 
     get key() {
         return "scratchpad";
+    }
+
+    focusScratchPad() {
+        this.joplinRepo.panelPostMessage({
+            type: "scratchpad.worker.focus",
+        });
+    }
+
+    async registerCommands(): Promise<MenuItem[]> {
+        const command = "dddot.cmd.focusScratchPad";
+        await this.joplinRepo.commandsRegister({
+            name: command,
+            label: "Focus Scratchpad",
+            iconName: "fas",
+            execute: async () => this.focusScratchPad(),
+        });
+
+        return [
+            {
+                commandName: command,
+                accelerator: "Option+Cmd+S",
+            },
+        ];
     }
 }

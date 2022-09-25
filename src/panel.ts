@@ -173,7 +173,7 @@ export default class Panel {
         await joplinRepo.menusCreate("DDDotToolMenu", "DDDot", [
             {
                 commandName: "dddot.cmd.toggleDDDot",
-                accelerator: "Alt+J",
+                accelerator: "Option+Shift+D",
             },
             ...registeredCommands,
         ]);

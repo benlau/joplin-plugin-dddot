@@ -1,12 +1,13 @@
 // eslint-disable-next-line
 async function scratchpadWorker() {
     const contentId = "#dddot-scratchpad-tool-content";
+    let cm = null;
 
     const refresh = async (content, height) => {
         $(contentId).html(content);
         const textArea = $("#dddot-scratchpad-textarea")[0];
 
-        const cm = CodeMirror.fromTextArea(textArea, {
+        cm = CodeMirror.fromTextArea(textArea, {
             mode: "markdown",
             lineWrapping: true,
             highlightFormatting: true,
@@ -81,6 +82,10 @@ async function scratchpadWorker() {
             cm.setValue(response);
         });
     };
+
+    DDDot.onMessage("scratchpad.worker.focus", (_) => {
+        cm.focus();
+    });
 
     const { content, height } = await DDDot.postMessage({
         type: "scratchpad.onReady",

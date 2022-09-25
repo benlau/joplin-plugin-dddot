@@ -171,7 +171,7 @@ export default class DailyNoteTool extends Tool {
         return [
             {
                 commandName: command,
-                accelerator: "Alt+O",
+                accelerator: "Cmd+O",
             },
         ];
     }

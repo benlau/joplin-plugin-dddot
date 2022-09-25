@@ -75,7 +75,7 @@ export default class RandomNoteTool extends Tool {
 
         return [{
             commandName: command,
-            accelerator: "Ctrl+R",
+            accelerator: "Cmd+R",
         }];
     }
 }
