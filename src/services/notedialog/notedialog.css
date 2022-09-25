@@ -78,11 +78,12 @@
 }
 
 .dddot-note-dialog-command-panel-content {
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .dddot-notedialog-content button {
-  display: inline;
   background-color: transparent;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -93,10 +94,6 @@
   margin-top: 4px;
   margin-bottom: 4px;
   color: var(--joplin-color);
-}
-
-.dddot-notedialog-content [data-tooltip] {
-  text-align: center;
 }
 
 .dddot-note-dialog-command-panel-content h3 {

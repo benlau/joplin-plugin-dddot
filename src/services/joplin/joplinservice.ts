@@ -233,18 +233,12 @@ export default class JoplinService {
     }
 
     async calcNoteCount() {
-        let page = 24;
+        let page = 512;
         let maxPage = null;
         let minPage = 0;
-        let lastPage = 0;
-        let lastItemCount = 0;
-        const pageSize = 10;
 
         while (page > minPage) {
-            const notes = await this.joplinRepo.dataGet(["notes"], { limit: pageSize, page });
-            lastPage = page;
-            lastItemCount = notes.items.length;
-
+            const notes = await this.joplinRepo.dataGet(["notes"], { limit: 1, page });
             if (notes.has_more) {
                 minPage = page;
                 if (maxPage === null) {
@@ -258,6 +252,6 @@ export default class JoplinService {
             }
         }
 
-        return (lastPage - 1) * pageSize + lastItemCount;
+        return minPage;
     }
 }

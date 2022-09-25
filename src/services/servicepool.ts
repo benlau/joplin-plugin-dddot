@@ -1,4 +1,5 @@
 import JoplinRepo from "src/repo/joplinrepo";
+import { MenuItem } from "api/types";
 import JoplinService from "./joplin/joplinservice";
 import LinkGraphService from "./linkgraph/linkgraphservice";
 import RendererService from "./renderer/rendererservice";
@@ -61,8 +62,10 @@ export default class ServicePool {
         await Promise.all(services.map((service) => service.onLoaded()));
     }
 
-    async registerCommands() {
-        await this.noteDialogService.registerCommands();
+    async registerCommands(): Promise<MenuItem[]> {
+        let res = [];
+        res = res.concat(await this.noteDialogService.registerCommands());
+        return res;
     }
 
     hasReceiver(target: string) {

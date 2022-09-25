@@ -135,6 +135,8 @@ export default class Panel {
             dailyNote, randomNote, textSorter];
         this.tools = tools;
 
+        let registeredCommands = [];
+
         await this.createSettings(tools);
 
         await joplin.views.panels.onMessage(this.view, async (message:any) => {
@@ -152,16 +154,29 @@ export default class Panel {
 
         await Promise.all(tools.map((tool) => tool.start()));
 
-        await Promise.all(tools.map(async (tool) => {
-            const enabled = await tool.updateEnabledFromSetting();
-            if (enabled) {
-                await tool.registerCommands();
-            }
-        }));
+        registeredCommands = registeredCommands.concat(
+            await Promise.all(tools.map(async (tool) => {
+                const enabled = await tool.updateEnabledFromSetting();
+                if (enabled) {
+                    return tool.registerCommands();
+                }
+                return [];
+            })),
+        );
 
         await this.render();
         await this.loadResources();
-        await this.servicePool.registerCommands();
+        registeredCommands = registeredCommands.concat(
+            await this.servicePool.registerCommands(),
+        ).flat();
+
+        await joplinRepo.menusCreate("DDDotToolMenu", "DDDot", [
+            {
+                commandName: "dddot.cmd.toggleDDDot",
+                accelerator: "Alt+J",
+            },
+            ...registeredCommands,
+        ]);
     }
 
     async toggleVisibility() {

@@ -1,4 +1,4 @@
-import { MenuItemLocation } from "api/types";
+import { MenuItemLocation, MenuItem } from "api/types";
 import { t } from "i18next";
 import TimerRepo from "../../repo/timerrepo";
 import JoplinService from "../joplin/joplinservice";
@@ -105,13 +105,13 @@ export default class NoteDialogService {
     ) {
         const position = alignment !== "" ? `tooltip-${alignment}` : "";
 
-        return `<div class="tooltip-multiline ${position}" data-tooltip="${tooltip}">
+        return `<div class="tooltip-multiline ${position} dddot-notedialog-button" data-tooltip="${tooltip}">
             <button class="dddot-clickable" command="${command}">${title}</button>
         </div>
 `;
     }
 
-    async registerCommands() {
+    async registerCommands(): Promise<MenuItem[]> {
         const {
             joplinRepo,
         } = this.joplinService;
@@ -138,6 +138,8 @@ export default class NoteDialogService {
             command,
             MenuItemLocation.NoteListContextMenu,
         );
+
+        return [];
     }
 
     async open(noteId: string) {

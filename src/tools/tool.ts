@@ -1,3 +1,4 @@
+import { MenuItem } from "api/types";
 import JoplinRepo from "../repo/joplinrepo";
 import JoplinService from "../services/joplin/joplinservice";
 import ServicePool from "../services/servicepool";
@@ -77,7 +78,8 @@ export default class Tool {
     async start() {
     }
 
-    async registerCommands() {
+    async registerCommands(): Promise<MenuItem[]> {
+        return [];
     }
 
     async onLoaded() {

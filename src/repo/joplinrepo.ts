@@ -8,6 +8,7 @@
 import joplin from "api";
 import {
     ButtonSpec, DialogResult, ViewHandle, CreateMenuItemOptions, MenuItemLocation,
+    MenuItem,
 } from "api/types";
 
 export enum ItemChangeEventType {
@@ -110,5 +111,13 @@ export default class JoplinRepo {
         options?: CreateMenuItemOptions,
     ) {
         return joplin.views.menuItems.create(id, commandName, location, options);
+    }
+
+    async menusCreate(
+        id: string,
+        title: string,
+        menuItems: MenuItem[],
+    ) {
+        return joplin.views.menus.create(id, title, menuItems);
     }
 }

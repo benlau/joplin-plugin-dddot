@@ -1,4 +1,4 @@
-import { MenuItemLocation } from "api/types";
+import { MenuItemLocation, MenuItem } from "api/types";
 import Tool from "../tool";
 
 export default class TextSorter extends Tool {
@@ -14,7 +14,7 @@ export default class TextSorter extends Tool {
         return false;
     }
 
-    async registerCommands() {
+    async registerCommands(): Promise<MenuItem[]> {
         const command = "dddot.textsorter.sortselected";
         await this.joplinRepo.commandsRegister({
             name: command,
@@ -24,6 +24,7 @@ export default class TextSorter extends Tool {
         });
 
         await this.joplinRepo.menuItemsCreate("sortSelectedTextMenu", command, MenuItemLocation.EditorContextMenu);
+        return [];
     }
 
     async sortSelectedText() {

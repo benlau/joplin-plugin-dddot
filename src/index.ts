@@ -26,11 +26,11 @@ joplin.plugins.register({
 
         const panel = new Panel();
 
-        const command = "dddot.cmd.toggleSideBar";
+        const command = "dddot.cmd.toggleDDDot";
 
         await joplin.commands.register({
             name: command,
-            label: "Joplin DDDot",
+            label: "Toggle DDDot Visibility",
             iconName: "fas fa-braille",
             execute: async () => {
                 await panel.toggleVisibility();

@@ -1,6 +1,6 @@
 import DateTimeService from "src/services/datetime/datetimeservice";
 import NoteDialogService from "src/services/notedialog/notedialogservice";
-import { SettingItemType, MenuItemLocation } from "api/types";
+import { SettingItemType, MenuItem } from "api/types";
 import { t } from "i18next";
 import { format } from "fecha";
 import Tool from "../tool";
@@ -159,7 +159,7 @@ export default class DailyNoteTool extends Tool {
         };
     }
 
-    async registerCommands() {
+    async registerCommands(): Promise<MenuItem[]> {
         const command = "dddot.cmd.openDailyNote";
         await this.joplinRepo.commandsRegister({
             name: command,
@@ -168,10 +168,11 @@ export default class DailyNoteTool extends Tool {
             execute: async () => this.createDailyNoteAndOpenNote(),
         });
 
-        await this.joplinRepo.menuItemsCreate(
-            `${command}:Tools`,
-            command,
-            MenuItemLocation.Tools,
-        );
+        return [
+            {
+                commandName: command,
+                accelerator: "Alt+O",
+            },
+        ];
     }
 }
