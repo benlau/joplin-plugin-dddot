@@ -8,7 +8,6 @@ import Tool from "./tools/tool";
 import JoplinRepo from "./repo/joplinrepo";
 import ServicePool from "./services/servicepool";
 import BackLinks from "./tools/backlinks";
-import TextSorter from "./tools/textsorter";
 import ThemeType from "./types/themetype";
 import DailyNoteTool from "./tools/dailynote/dailynotetool";
 import RandomNoteTool from "./tools/randomnote/randomnotetool";
@@ -128,13 +127,12 @@ export default class Panel {
         const recentlyNotes = new RecentNotes(this.servicePool);
         const shortcuts = new Shortcuts(this.servicePool);
         const backLinks = new BackLinks(this.servicePool);
-        const textSorter = new TextSorter(this.servicePool);
         const dailyNote = new DailyNoteTool(this.servicePool);
         const randomNote = new RandomNoteTool(this.servicePool);
 
         const tools = [
             scratchpad, shortcuts, recentlyNotes, backLinks,
-            dailyNote, randomNote, textSorter];
+            dailyNote, randomNote];
         this.tools = tools;
 
         let registeredCommands = [];
