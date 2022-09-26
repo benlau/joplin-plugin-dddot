@@ -88,11 +88,13 @@ export default class Panel {
         const allSettings = tools.reduce((acc, tool) => {
             let settings = {};
             const enabledKey = tool.genSettingKey("enabled");
+            const label = t(`${tool.key}.enable`);
+
             settings[enabledKey] = {
                 value: tool.isDefaultEnabled,
                 type: SettingItemType.Bool,
                 public: true,
-                label: `Enable ${t(tool.title)}`,
+                label,
                 section: SECTION,
             };
 

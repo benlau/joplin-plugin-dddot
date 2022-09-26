@@ -36,8 +36,12 @@ export default class NoteDialogService {
         const toolHtml = tools.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "top-right")).join("\n");
 
         const commands = [
-            ["append-selected-text", "Cut and append selected text", "Append selected text to this note"],
-            ["append-note-link", "Append note link", "Append note link to this note"],
+            ["append-selected-text",
+                t("notedialog.cut_append_selected_text"),
+                t("notedialog.cut_append_selected_text_tooltip")],
+            ["append-note-link",
+                t("notedialog.append_note_link"),
+                t("notedialog.append_note_link_tooltip")],
         ];
 
         const commandHtml = commands.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "top-lefft")).join("\n");
