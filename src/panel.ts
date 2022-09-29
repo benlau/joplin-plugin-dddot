@@ -173,7 +173,7 @@ export default class Panel {
         await joplinRepo.menusCreate("DDDotToolMenu", "DDDot", [
             {
                 commandName: "dddot.cmd.toggleDDDot",
-                accelerator: "Option+Shift+D",
+                accelerator: "Shift+Cmd+.",
             },
             ...registeredCommands,
         ]);
@@ -196,6 +196,9 @@ export default class Panel {
             return { note: await joplin.data.get(["notes", noteId]) };
         case "dddot.openNote":
             joplin.commands.execute("openNote", noteId);
+            break;
+        case "dddot.focusNoteBody":
+            joplin.commands.execute("focusElementNoteBody");
             break;
         case "panel.openFolder":
             this.openFolder(message.folderId);

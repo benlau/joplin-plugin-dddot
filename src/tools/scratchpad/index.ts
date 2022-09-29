@@ -80,25 +80,25 @@ export default class ScratchPad extends Tool {
         return "scratchpad";
     }
 
-    focusScratchPad() {
+    toggleScratchPadFocus() {
         this.joplinRepo.panelPostMessage({
-            type: "scratchpad.worker.focus",
+            type: "scratchpad.worker.toggleFocus",
         });
     }
 
     async registerCommands(): Promise<MenuItem[]> {
-        const command = "dddot.cmd.focusScratchPad";
+        const command = "dddot.cmd.toggleScratchPadFocus";
         await this.joplinRepo.commandsRegister({
             name: command,
-            label: "Focus Scratchpad",
+            label: "Switch Focus between ScratchPad and Editor",
             iconName: "fas",
-            execute: async () => this.focusScratchPad(),
+            execute: async () => this.toggleScratchPadFocus(),
         });
 
         return [
             {
                 commandName: command,
-                accelerator: "Option+Cmd+S",
+                accelerator: "Shift+Cmd+Enter",
             },
         ];
     }

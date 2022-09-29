@@ -83,8 +83,14 @@ async function scratchpadWorker() {
         });
     };
 
-    DDDot.onMessage("scratchpad.worker.focus", (_) => {
-        cm.focus();
+    DDDot.onMessage("scratchpad.worker.toggleFocus", (_) => {
+        if (!cm.hasFocus()) {
+            cm.focus();
+        } else {
+            DDDot.postMessage({
+                type: "dddot.focusNoteBody",
+            });
+        }
     });
 
     const { content, height } = await DDDot.postMessage({
