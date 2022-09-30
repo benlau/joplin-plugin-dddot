@@ -3,6 +3,7 @@ import NoteDialogService from "src/services/notedialog/notedialogservice";
 import { SettingItemType, MenuItem } from "api/types";
 import { t } from "i18next";
 import { format } from "fecha";
+import PlatformRepo from "src/repo/platformrepo";
 import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
@@ -17,12 +18,15 @@ export default class DailyNoteTool extends Tool {
 
     noteDialogService: NoteDialogService;
 
+    platformRepo: PlatformRepo;
+
     constructor(servicePool: ServicePool) {
         super(servicePool);
         this.toolbarService = servicePool.toolbarService;
         this.dateTimeService = servicePool.dateTimeService;
         this.noteDialogService = servicePool.noteDialogService;
         this.joplinRepo = servicePool.joplinRepo;
+        this.platformRepo = servicePool.platformRepo;
     }
 
     settings(section: string) {
@@ -171,7 +175,7 @@ export default class DailyNoteTool extends Tool {
         return [
             {
                 commandName: command,
-                accelerator: "Cmd+O",
+                accelerator: this.platformRepo.isMac() ? "Cmd+O" : "Ctrl+O",
             },
         ];
     }

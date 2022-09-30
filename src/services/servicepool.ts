@@ -6,6 +6,7 @@ import RendererService from "./renderer/rendererservice";
 import NoteDialogService from "./notedialog/notedialogservice";
 import ToolbarService from "./toolbar/toolbarservice";
 import DateTimeService from "./datetime/datetimeservice";
+import PlatformRepo from "../repo/platformrepo";
 
 export default class ServicePool {
     joplinService: JoplinService;
@@ -22,11 +23,14 @@ export default class ServicePool {
 
     dateTimeService: DateTimeService;
 
+    platformRepo: PlatformRepo;
+
     receivers: { [key: string]: any } = {};
 
     constructor(joplinRepo: JoplinRepo) {
         this.joplinRepo = joplinRepo;
-        this.joplinService = new JoplinService(this.joplinRepo);
+        this.platformRepo = new PlatformRepo();
+        this.joplinService = new JoplinService(this.joplinRepo, this.platformRepo);
         this.linkGraphService = new LinkGraphService(this.joplinService);
         this.rendererService = new RendererService();
         this.noteDialogService = new NoteDialogService(this.joplinService, this.rendererService);

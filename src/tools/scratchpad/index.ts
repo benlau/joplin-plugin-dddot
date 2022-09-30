@@ -1,11 +1,20 @@
 import { SettingItemType, MenuItem } from "api/types";
 import { t } from "i18next";
+import PlatformRepo from "src/repo/platformrepo";
+import ServicePool from "src/services/servicepool";
 import Tool from "../tool";
 
 const ScratchPadContent = "dddot.settings.scratchpad.content";
 const ScratchPadHeight = "dddot.settings.scratchpad.height";
 
 export default class ScratchPad extends Tool {
+    platformRepo: PlatformRepo;
+
+    constructor(servicePool: ServicePool) {
+        super(servicePool);
+        this.platformRepo = servicePool.platformRepo;
+    }
+
     get title() {
         return t("scratchpad.title");
     }
@@ -98,7 +107,7 @@ export default class ScratchPad extends Tool {
         return [
             {
                 commandName: command,
-                accelerator: "Shift+Cmd+Enter",
+                accelerator: this.platformRepo.isMac() ? "Shift+Cmd+Enter" : "Ctrl+Shift+Enter",
             },
         ];
     }

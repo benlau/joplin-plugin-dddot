@@ -1,6 +1,7 @@
 import NoteDialogService from "src/services/notedialog/notedialogservice";
 import { MenuItem } from "api/types";
 import { t } from "i18next";
+import PlatformRepo from "src/repo/platformrepo";
 import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
@@ -10,11 +11,14 @@ export default class RandomNoteTool extends Tool {
 
     noteDialogService: NoteDialogService;
 
+    platformRepo: PlatformRepo;
+
     constructor(servicePool: ServicePool) {
         super(servicePool);
         this.toolbarService = servicePool.toolbarService;
         this.noteDialogService = servicePool.noteDialogService;
         this.joplinRepo = servicePool.joplinRepo;
+        this.platformRepo = servicePool.platformRepo;
     }
 
     async start() {
@@ -75,7 +79,7 @@ export default class RandomNoteTool extends Tool {
 
         return [{
             commandName: command,
-            accelerator: "Cmd+R",
+            accelerator: this.platformRepo.isMac() ? "Cmd+R" : "Ctrl+R",
         }];
     }
 }

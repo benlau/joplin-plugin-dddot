@@ -11,6 +11,7 @@ import BackLinks from "./tools/backlinks";
 import ThemeType from "./types/themetype";
 import DailyNoteTool from "./tools/dailynote/dailynotetool";
 import RandomNoteTool from "./tools/randomnote/randomnotetool";
+import PlatformRepo from "./repo/platformrepo";
 
 const ToolOrder = "dddot.settings.panel.toolorder";
 
@@ -135,6 +136,8 @@ export default class Panel {
             dailyNote, randomNote];
         this.tools = tools;
 
+        const platformRepo = new PlatformRepo();
+
         let registeredCommands = [];
 
         await this.createSettings(tools);
@@ -173,7 +176,7 @@ export default class Panel {
         await joplinRepo.menusCreate("DDDotToolMenu", "DDDot", [
             {
                 commandName: "dddot.cmd.toggleDDDot",
-                accelerator: "Shift+Cmd+.",
+                accelerator: platformRepo.isMac() ? "Shift+Cmd+." : "Ctrl+Shift+.",
             },
             ...registeredCommands,
         ]);
