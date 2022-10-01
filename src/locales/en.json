@@ -10,7 +10,7 @@
     "recentnotes.enable": "Enable Recent Notes",
     "scratchpad.settings.height": "Scratchpad Height(px)",
     "notedialog.swap": "Swap",
-    "notedialog.swap_tooltip": "Swap editing note to the note above",
+    "notedialog.swap_tooltip": "Swap editor note and Quick View note",
     "notedialog.note_editor": "Editor",
     "notedialog.quick_view": "Quick View",
     "notedialog.open_note_dddot": "Open Note in DDDot Quick View",
