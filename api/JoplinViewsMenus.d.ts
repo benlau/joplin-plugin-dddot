@@ -1,5 +1,5 @@
-import { MenuItem, MenuItemLocation } from "./types";
-import Plugin from "../Plugin";
+import { MenuItem, MenuItemLocation } from './types';
+import Plugin from '../Plugin';
 /**
  * Allows creating menus.
  *
@@ -7,13 +7,9 @@ import Plugin from "../Plugin";
  */
 export default class JoplinViewsMenus {
     private store;
-
     private plugin;
-
     constructor(plugin: Plugin, store: any);
-
     private registerCommandAccelerators;
-
     /**
      * Creates a new menu from the provided menu items and place it at the given location. As of now, it is only possible to place the
      * menu as a sub-menu of the application build-in menus.

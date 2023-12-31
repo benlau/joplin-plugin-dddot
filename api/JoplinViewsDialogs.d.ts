@@ -1,5 +1,5 @@
-import Plugin from "../Plugin";
-import { ButtonSpec, ViewHandle, DialogResult } from "./types";
+import Plugin from '../Plugin';
+import { ButtonSpec, ViewHandle, DialogResult } from './types';
 /**
  * Allows creating and managing dialogs. A dialog is modal window that
  * contains a webview and a row of buttons. You can update the
@@ -31,45 +31,40 @@ import { ButtonSpec, ViewHandle, DialogResult } from "./types";
  */
 export default class JoplinViewsDialogs {
     private store;
-
     private plugin;
-
     private implementation_;
-
     constructor(implementation: any, plugin: Plugin, store: any);
-
     private controller;
-
     /**
      * Creates a new dialog
      */
     create(id: string): Promise<ViewHandle>;
-
     /**
      * Displays a message box with OK/Cancel buttons. Returns the button index that was clicked - "0" for OK and "1" for "Cancel"
      */
     showMessageBox(message: string): Promise<number>;
-
+    /**
+     * Displays a dialog to select a file or a directory. Same options and
+     * output as
+     * https://www.electronjs.org/docs/latest/api/dialog#dialogshowopendialogbrowserwindow-options
+     */
+    showOpenDialog(options: any): Promise<any>;
     /**
      * Sets the dialog HTML content
      */
     setHtml(handle: ViewHandle, html: string): Promise<string>;
-
     /**
      * Adds and loads a new JS or CSS files into the dialog.
      */
     addScript(handle: ViewHandle, scriptPath: string): Promise<void>;
-
     /**
      * Sets the dialog buttons.
      */
     setButtons(handle: ViewHandle, buttons: ButtonSpec[]): Promise<ButtonSpec[]>;
-
     /**
      * Opens the dialog
      */
     open(handle: ViewHandle): Promise<DialogResult>;
-
     /**
      * Toggle on whether to fit the dialog size to the content or not.
      * When set to false, the dialog is set to 90vw and 80vh

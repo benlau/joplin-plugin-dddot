@@ -2,13 +2,14 @@
   "name": "joplin-plugin-joplin-dddot",
   "version": "0.2.0",
   "scripts": {
-    "dist": "webpack --joplin-plugin-config buildMain && webpack --joplin-plugin-config buildExtraScripts && webpack --joplin-plugin-config createArchive",
+    "dist": "webpack --env joplin-plugin-config=buildMain && webpack --env joplin-plugin-config=buildExtraScripts && webpack --env joplin-plugin-config=createArchive",
     "prepare": "npm run dist",
-    "update": "npm install -g generator-joplin && yo joplin --update",
+    "update": "npm install -g generator-joplin && yo joplin --node-package-manager npm --update --force",
     "lint": "eslint . --ext .ts --ext .js",
     "lint:fix": "eslint . --ext .ts --ext .js --fix",
     "test": "jest --silent false --verbose false",
-    "test:watch": "jest --watch --silent false --verbose false"
+    "test:watch": "jest --watch --silent false --verbose false",
+    "updateVersion": "webpack --env joplin-plugin-config=updateVersion"
   },
   "license": "MIT",
   "keywords": [
@@ -18,33 +19,37 @@
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
+    "@joplin/lib": "~2.9",
     "@types/jest": "^27.4.1",
-    "@types/node": "^14.0.14",
+    "@types/node": "^18.7.13",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
     "babel-jest": "^27.5.1",
     "chalk": "^4.1.0",
-    "copy-webpack-plugin": "^6.1.0",
+    "copy-webpack-plugin": "^11.0.0",
     "eslint": "^8.9.0",
     "eslint-plugin-import": "^2.25.4",
-    "fs-extra": "^9.0.1",
-    "glob": "^7.1.6",
+    "fs-extra": "^10.1.0",
+    "glob": "^8.0.3",
     "jest": "^27.5.1",
     "jest-config": "^27.5.1",
     "on-build-webpack": "^0.1.0",
-    "tar": "^6.0.5",
+    "tar": "^6.1.11",
     "ts-jest": "^27.1.3",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.3",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.8.2",
     "wait-for-expect": "^3.0.2",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
     "yargs": "^16.2.0"
   },
   "dependencies": {
     "eslint-config-airbnb-base": "^15.0.0",
     "fecha": "^4.2.3",
     "i18next": "^21.6.16",
-    "i18next-resources-to-backend": "^1.0.0"
-  }
+    "i18next-resources-to-backend": "^1.2.0"
+  },
+  "files": [
+    "publish"
+  ]
 }

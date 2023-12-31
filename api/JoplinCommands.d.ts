@@ -1,4 +1,4 @@
-import { Command } from "./types";
+import { Command } from './types';
 /**
  * This class allows executing or registering new Joplin commands. Commands
  * can be executed or associated with
@@ -15,7 +15,7 @@ import { Command } from "./types";
  *
  * * [Main screen commands](https://github.com/laurent22/joplin/tree/dev/packages/app-desktop/gui/MainScreen/commands)
  * * [Global commands](https://github.com/laurent22/joplin/tree/dev/packages/app-desktop/commands)
- * * [Editor commands](https://github.com/laurent22/joplin/tree/dev/packages/app-desktop/gui/NoteEditor/commands/editorCommandDeclarations.ts)
+ * * [Editor commands](https://github.com/laurent22/joplin/tree/dev/packages/app-desktop/gui/NoteEditor/editorCommandDeclarations.ts)
  *
  * To view what arguments are supported, you can open any of these files
  * and look at the `execute()` command.
@@ -69,7 +69,6 @@ export default class JoplinCommands {
      * ```
      */
     execute(commandName: string, ...args: any[]): Promise<any | void>;
-
     /**
      * <span class="platform-desktop">desktop</span> Registers a new command.
      *

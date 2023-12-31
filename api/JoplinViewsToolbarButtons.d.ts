@@ -1,5 +1,5 @@
-import { ToolbarButtonLocation } from "./types";
-import Plugin from "../Plugin";
+import { ToolbarButtonLocation } from './types';
+import Plugin from '../Plugin';
 /**
  * Allows creating and managing toolbar buttons.
  *
@@ -7,11 +7,8 @@ import Plugin from "../Plugin";
  */
 export default class JoplinViewsToolbarButtons {
     private store;
-
     private plugin;
-
     constructor(plugin: Plugin, store: any);
-
     /**
      * Creates a new toolbar button and associate it with the given command.
      */

@@ -1,6 +1,6 @@
 import joplin from "api";
 import { ToolbarButtonLocation } from "api/types";
-import i18next from "i18next";
+import * as i18next from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import Panel from "./panel";
 

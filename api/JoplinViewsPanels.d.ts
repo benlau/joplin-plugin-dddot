@@ -1,5 +1,5 @@
-import Plugin from "../Plugin";
-import { ViewHandle } from "./types";
+import Plugin from '../Plugin';
+import { ViewHandle } from './types';
 /**
  * Allows creating and managing view panels. View panels currently are
  * displayed at the right of the sidebar and allows displaying any HTML
@@ -11,28 +11,21 @@ import { ViewHandle } from "./types";
  */
 export default class JoplinViewsPanels {
     private store;
-
     private plugin;
-
     constructor(plugin: Plugin, store: any);
-
     private controller;
-
     /**
      * Creates a new panel
      */
     create(id: string): Promise<ViewHandle>;
-
     /**
      * Sets the panel webview HTML
      */
     setHtml(handle: ViewHandle, html: string): Promise<string>;
-
     /**
      * Adds and loads a new JS or CSS files into the panel.
      */
     addScript(handle: ViewHandle, scriptPath: string): Promise<void>;
-
     /**
      * Called when a message is sent from the webview (using postMessage).
      *
@@ -53,7 +46,6 @@ export default class JoplinViewsPanels {
      *
      */
     onMessage(handle: ViewHandle, callback: Function): Promise<void>;
-
     /**
      * Sends a message to the webview.
      *
@@ -71,17 +63,14 @@ export default class JoplinViewsPanels {
      * It is particularly useful when the webview needs to react to events emitted by the plugin or the joplin api.
      */
     postMessage(handle: ViewHandle, message: any): void;
-
     /**
      * Shows the panel
      */
     show(handle: ViewHandle, show?: boolean): Promise<void>;
-
     /**
      * Hides the panel
      */
     hide(handle: ViewHandle): Promise<void>;
-
     /**
      * Tells whether the panel is visible or not
      */

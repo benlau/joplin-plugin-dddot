@@ -1,13 +1,13 @@
-import Plugin from "../Plugin";
-import { SettingItem, SettingSection } from "./types";
-
+import Plugin from '../Plugin';
+import { SettingItem, SettingSection } from './types';
 export interface ChangeEvent {
     /**
      * Setting keys that have been changed
      */
     keys: string[];
 }
-export declare type ChangeHandler = (event: ChangeEvent) => void;
+export type ChangeHandler = (event: ChangeEvent) => void;
+export declare const namespacedKey: (pluginId: string, key: string) => string;
 /**
  * This API allows registering new settings and setting sections, as well as getting and setting settings. Once a setting has been registered it will appear in the config screen and be editable by the user.
  *
@@ -19,13 +19,7 @@ export declare type ChangeHandler = (event: ChangeEvent) => void;
  */
 export default class JoplinSettings {
     private plugin_;
-
     constructor(plugin: Plugin);
-
-    private get keyPrefix();
-
-    private namespacedKey;
-
     /**
      * Registers new settings.
      * Note that registering a setting item is dynamic and will be gone next time Joplin starts.
@@ -34,29 +28,24 @@ export default class JoplinSettings {
      * reason the plugin fails to start at some point.
      */
     registerSettings(settings: Record<string, SettingItem>): Promise<void>;
-
     /**
      * @deprecated Use joplin.settings.registerSettings()
      *
      * Registers a new setting.
      */
     registerSetting(key: string, settingItem: SettingItem): Promise<void>;
-
     /**
      * Registers a new setting section. Like for registerSetting, it is dynamic and needs to be done every time the plugin starts.
      */
     registerSection(name: string, section: SettingSection): Promise<void>;
-
     /**
      * Gets a setting value (only applies to setting you registered from your plugin)
      */
     value(key: string): Promise<any>;
-
     /**
      * Sets a setting value (only applies to setting you registered from your plugin)
      */
     setValue(key: string, value: any): Promise<void>;
-
     /**
      * Gets a global setting value, including app-specific settings and those set by other plugins.
      *
@@ -65,7 +54,6 @@ export default class JoplinSettings {
      * https://github.com/laurent22/joplin/blob/dev/packages/lib/models/Setting.ts#L142
      */
     globalValue(key: string): Promise<any>;
-
     /**
      * Called when one or multiple settings of your plugin have been changed.
      * - For performance reasons, this event is triggered with a delay.

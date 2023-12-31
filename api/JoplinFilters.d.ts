@@ -6,6 +6,5 @@
  */
 export default class JoplinFilters {
     on(name: string, callback: Function): Promise<void>;
-
     off(name: string, callback: Function): Promise<void>;
 }
