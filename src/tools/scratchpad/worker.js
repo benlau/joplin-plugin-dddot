@@ -4,7 +4,8 @@ async function scratchpadWorker() {
     let cm = null;
 
     const refresh = async (content, height) => {
-        $(contentId).html(content);
+        App.setSectionViewProp("scratchpad", "html", content);
+
         const textArea = $("#dddot-scratchpad-textarea")[0];
 
         cm = CodeMirror.fromTextArea(textArea, {

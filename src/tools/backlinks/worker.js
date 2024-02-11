@@ -3,8 +3,7 @@ async function backlinksWorker() {
     const contentId = "#dddot-backlinks-tool-content";
 
     const refresh = (content) => {
-        $(contentId).html(content);
-
+        App.setSectionViewProp("backlinks", "html", content);
         DDDot.setupDraggableLinks(`${contentId} .dddot-note-item`);
     };
 

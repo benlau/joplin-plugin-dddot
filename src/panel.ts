@@ -12,6 +12,7 @@ import ThemeType from "./types/themetype";
 import DailyNoteTool from "./tools/dailynote/dailynotetool";
 import RandomNoteTool from "./tools/randomnote/randomnotetool";
 import PlatformRepo from "./repo/platformrepo";
+import { ToolInfo } from "./types/toolinfo";
 
 const ToolOrder = "dddot.settings.panel.toolorder";
 
@@ -27,6 +28,7 @@ export default class Panel {
     async loadResources() {
         const resources = [
             "./panel.css",
+            "./sandbox/app.js",
             "./sandbox/dddot.js",
             "./libs/jquery.min.js",
             "./sandbox/codemirror5manager.js",
@@ -56,22 +58,8 @@ export default class Panel {
     }
 
     async render() {
-        const toolHtmls = this.tools.filter((tool) => tool.hasView).map((tool: Tool) => {
-            const content = `
-            <div class="dddot-tool dddot-hidden" data-id="${tool.key}" id="${tool.containerId}">
-            <div class="dddot-tool-header">
-                <h3><i class="fas fa-bars"></i> ${tool.title}</h3>
-                <h3 class="dddot-expand-button dddot-expand-button-active"><i class="fas fa-play"></i></h3>
-            </div>
-                <div id="${tool.contentId}"></div>
-            </div>
-            `;
-            return content;
-        }).join("\n");
         const html = `
-        <div id="dddot-panel-container">
-            <div id="dddot-toolbar-container"></div>
-            ${toolHtmls}
+        <div id="dddot-app">
         </div>
         `;
         await joplin.views.panels.setHtml(this.view, html);
@@ -242,6 +230,9 @@ export default class Panel {
                     workerFunctionName,
                     containerId,
                     contentId,
+                    key,
+                    title,
+                    hasView,
                 } = tool;
 
                 const enabled = await tool.updateEnabledFromSetting();
@@ -251,11 +242,14 @@ export default class Panel {
                 }
 
                 return {
+                    title: t(title),
+                    key,
                     workerFunctionName,
                     containerId,
                     contentId,
                     enabled,
-                };
+                    hasView,
+                } as ToolInfo;
             }),
         );
         const currentTheme = await joplinService.queryThemeType();

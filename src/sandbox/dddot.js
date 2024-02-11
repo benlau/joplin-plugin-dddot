@@ -38,6 +38,16 @@ async function waitUntilLoaded(components) {
     }
 }
 
+async function waitUntilCreated(id) {
+    for (;;) {
+        const container = document.getElementById(id);
+        if (container) {
+            break;
+        }
+        await sleep(100);
+    }
+}
+
 class DDDot {
     static X_JOP_NOTE_IDS = "text/x-jop-note-ids";
 
@@ -78,33 +88,8 @@ class DDDot {
             this.setToolOrder(message);
         });
 
-        const components = ["CodeMirror", "Sortable", "$", "CodeMirror5Manager"];
+        const components = ["CodeMirror", "Sortable", "$", "CodeMirror5Manager", "App"];
         await waitUntilLoaded(components);
-
-        const container = document.getElementById("dddot-panel-container");
-
-        const sortable = Sortable.create(container, {
-            ghostClass: "dddot-sortable-ghost",
-            handle: ".dddot-tool-header",
-            onStart: () => {
-                this.postEvent({
-                    type: this.Event.SortableDragStarted,
-                });
-            },
-            onEnd: () => {
-                const toolIds = sortable.toArray();
-
-                this.postEvent({
-                    type: this.Event.SortableDragEnded,
-                });
-
-                this.postMessage({
-                    type: "dddot.onToolOrderChanged",
-                    toolIds,
-                });
-            },
-        });
-        this.sortable = sortable;
 
         this.postMessage({
             type: "dddot.onLoaded",
@@ -113,6 +98,9 @@ class DDDot {
 
     static async start(message) {
         const { tools, theme, serviceWorkerFunctions } = message;
+        App.render("dddot-app", tools);
+
+        await waitUntilCreated("dddot-panel-container");
 
         const codeMirror5Manager = new CodeMirror5Manager();
         codeMirror5Manager.init(theme);
@@ -125,28 +113,12 @@ class DDDot {
             const {
                 workerFunctionName,
                 containerId,
-                contentId,
                 enabled,
             } = tool;
 
             if (enabled) {
                 await window[workerFunctionName]({ theme });
                 $(`#${containerId}`).removeClass("dddot-hidden");
-                const content = $(`#${contentId}`);
-
-                const expandButton = $(`#${containerId} .dddot-expand-button`);
-
-                expandButton.on("click", () => {
-                    if (expandButton.hasClass("dddot-expand-button-active")) {
-                        expandButton.removeClass("dddot-expand-button-active");
-                        expandButton.addClass("dddot-expand-button-inactive");
-                        content.addClass("dddot-hidden");
-                    } else {
-                        expandButton.removeClass("dddot-expand-button-inactive");
-                        expandButton.addClass("dddot-expand-button-active");
-                        content.removeClass("dddot-hidden");
-                    }
-                });
             } else {
                 $(`#${containerId}`).addClass("dddot-hidden");
             }
@@ -161,7 +133,7 @@ class DDDot {
 
     static setToolOrder(message) {
         const { toolIds } = message;
-        this.sortable.sort(toolIds);
+        App.setToolsOrder(toolIds);
     }
 
     static onMessage(type, callback) {

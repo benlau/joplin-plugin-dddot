@@ -1,3 +1,5 @@
 {
-	"extraScripts": []
+	"extraScripts": [
+		"sandbox/app.tsx"
+	]
 }

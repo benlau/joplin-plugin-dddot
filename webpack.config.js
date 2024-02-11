@@ -250,9 +250,12 @@ function resolveExtraScriptPath(name) {
 		output: {
 			filename: `${nameNoExt}.js`,
 			path: distDir,
-			library: 'default',
-			libraryTarget: 'commonjs',
-			libraryExport: 'default',
+
+			// Those lines are needed for content scripts but it will 
+			// throw `exports is not defined` error for webview scripts
+			// library: 'default',
+			// libraryTarget: 'commonjs',
+			// libraryExport: 'default',
 		},
 	};
 }

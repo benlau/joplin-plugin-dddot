@@ -2,7 +2,8 @@
 async function shortcutsWorker() {
     const contentId = "#dddot-shortcuts-tool-content";
     const refresh = (content) => {
-        $(contentId).html(content);
+        App.setSectionViewProp("shortcuts", "html", content);
+
         const list = document.getElementById("dddot-shortcuts-list");
         if (list === null) {
             return;

@@ -14,7 +14,8 @@
     "CodeMirror": true,
     "DDDot": true,
     "Sortable": true,
-    "CodeMirror5Manager": true
+    "CodeMirror5Manager": true,
+    "App": true
   }, 
   "parser": "@typescript-eslint/parser",
   "plugins": [
@@ -47,6 +48,7 @@
         "varsIgnorePattern": '^_',
         "caughtErrorsIgnorePattern": "^_",
       }
-    ]   
+    ],
+    "import/prefer-default-export": "off"
   }
 }

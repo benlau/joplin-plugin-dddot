@@ -3,7 +3,7 @@ async function recentnotesWorker() {
     const contentId = "#dddot-recentnotes-tool-content";
 
     const refresh = (content) => {
-        $(contentId).html(content);
+        App.setSectionViewProp("recentnotes", "html", content);
 
         DDDot.setupDraggableLinks(`${contentId} .dddot-note-item`);
     };
