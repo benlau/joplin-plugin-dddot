@@ -2,13 +2,12 @@
 async function backlinksWorker() {
     const contentId = "#dddot-backlinks-tool-content";
 
-    const refresh = (content) => {
-        App.setSectionViewProp("backlinks", "html", content);
-        DDDot.setupDraggableLinks(`${contentId} .dddot-note-item`);
+    const refresh = (links) => {
+        App.setSectionViewProp("backlinks", "links", links);
     };
 
     DDDot.onMessage("backlinks.refresh", (message) => {
-        refresh(message.html);
+        refresh(message.links);
     });
 
     const response = await DDDot.postMessage({

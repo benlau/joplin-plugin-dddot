@@ -5,7 +5,7 @@ type Props = {
     links?: Link[];
 }
 
-export function BacklinksView(props: Props) {
+export function RecentNotesView(props: Props) {
     const onClick = React.useCallback((link: Link) => {
         DDDot.postMessage({
             type: "dddot.openNote",
@@ -15,7 +15,7 @@ export function BacklinksView(props: Props) {
 
     const onContextMenu = React.useCallback((link: Link) => {
         DDDot.postMessage({
-            type: "backlinks.tool.openNoteDetailDialog",
+            type: "recentnotes.tool.openNoteDetailDialog",
             noteId: link.id,
         });
     }, []);

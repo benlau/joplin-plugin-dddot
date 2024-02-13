@@ -2,14 +2,12 @@
 async function recentnotesWorker() {
     const contentId = "#dddot-recentnotes-tool-content";
 
-    const refresh = (content) => {
-        App.setSectionViewProp("recentnotes", "html", content);
-
-        DDDot.setupDraggableLinks(`${contentId} .dddot-note-item`);
+    const refresh = (links) => {
+        App.setSectionViewProp("recentnotes", "links", links);
     };
 
     DDDot.onMessage("recentnotes.refresh", (message) => {
-        refresh(message.html);
+        refresh(message.links);
     });
 
     const response = await DDDot.postMessage({

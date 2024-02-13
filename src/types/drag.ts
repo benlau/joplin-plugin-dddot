@@ -1,3 +1,4 @@
 export enum DragItemType {
-    Section = "dddot.section"
+    Section = "dddot.section",
+    Link = "dddot.link"
 }

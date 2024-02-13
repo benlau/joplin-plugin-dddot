@@ -8,7 +8,7 @@ class App {
     static render(id: string, tools: any[]) {
         const domNode = document.getElementById(id);
         const root = createRoot(domNode);
-         
+
         root.render(<MainPanel tools={tools} defaultToolsOrder={this.toolsOrder}/>);
     }
 
@@ -20,5 +20,5 @@ class App {
         App.toolsOrder = order;
     }
 }
-  
+
 (window as any).App = App;

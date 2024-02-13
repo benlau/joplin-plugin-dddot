@@ -65,14 +65,24 @@ export default class RecentNotes extends Tool {
     }
 
     async refresh() {
-        const html = this.render();
-
+        const links = this.read();
         const message = {
             type: "recentnotes.refresh",
-            html,
+            links,
         };
 
         this.joplinRepo.panelPostMessage(message);
+        return links;
+    }
+
+    read() {
+        return this.linkListModel.links.map((link) => ({
+            id: link.id,
+            title: link.title,
+            type: link.type,
+            isTodo: link.isTodo,
+            isTodoCompleted: link.isTodoCompleted,
+        }));
     }
 
     async insertLink(note) {
@@ -111,7 +121,7 @@ export default class RecentNotes extends Tool {
 
     async onReady() {
         await this.truncate();
-        return this.render();
+        return this.read();
     }
 
     async truncate() {

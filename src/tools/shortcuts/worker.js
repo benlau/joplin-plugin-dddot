@@ -1,6 +1,5 @@
 // eslint-disable-next-line
 async function shortcutsWorker() {
-    const contentId = "#dddot-shortcuts-tool-content";
     const refresh = (content) => {
         App.setSectionViewProp("shortcuts", "html", content);
 

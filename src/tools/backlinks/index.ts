@@ -25,35 +25,6 @@ export default class BackLinks extends Tool {
         });
     }
 
-    render(node: LinkGraphNode) {
-        const links = node.backlinks;
-        const {
-            rendererService,
-        } = this.servicePool;
-
-        const list = links.map((note: any) => {
-            const link = rendererService.renderNoteLink(
-                note.id,
-                note.title,
-                {
-                    onClick: {
-                        type: "dddot.openNote",
-                        noteId: note.id,
-                    },
-                    onContextMenu: {
-                        type: "backlinks.tool.openNoteDetailDialog",
-                        noteId: note.id,
-                    },
-                    isTodo: note.isTodo,
-                    isTodoCompleted: note.isTodoCompleted,
-                },
-            );
-            return link;
-        });
-        const html = ["<div class=dddot-note-list>", ...list, "</div>"];
-        return html.join("\n");
-    }
-
     async onMessage(message: any) {
         switch (message.type) {
         case "backlinks.onReady":
@@ -86,11 +57,17 @@ export default class BackLinks extends Tool {
 
     @blockDisabled
     async refresh(node: LinkGraphNode) {
-        const html = this.render(node);
+        const links = node.backlinks.map((link) => ({
+            id: link.id,
+            title: link.title,
+            type: link.type,
+            isTodo: link.isTodo,
+            isTodoCompleted: link.isTodoCompleted,
+        }));
 
         const message = {
             type: "backlinks.refresh",
-            html,
+            links,
         };
 
         this.joplinRepo.panelPostMessage(message);
