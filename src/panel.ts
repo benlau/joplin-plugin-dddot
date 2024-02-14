@@ -255,10 +255,13 @@ export default class Panel {
         const currentTheme = await joplinService.queryThemeType();
         const { serviceWorkerFunctions } = this.servicePool;
 
+        const locale = await joplin.settings.globalValue("locale");
+
         this.joplinRepo.panelPostMessage({
             type: "dddot.start",
             tools,
             serviceWorkerFunctions,
+            locale,
             theme: {
                 name: ThemeType[currentTheme],
                 isDarkTheme: ThemeType.isDarkTheme(currentTheme),

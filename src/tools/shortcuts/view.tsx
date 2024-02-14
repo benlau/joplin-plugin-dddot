@@ -1,8 +1,8 @@
 import React from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { t } from "i18next";
 import { LinkType } from "../../types/link";
 import { DragItemType } from "../../types/drag";
-import { t } from "i18next";
 
 // @FIXME - move to types
 export type Link = {
@@ -166,16 +166,16 @@ export function ShortcutsView(props: Props) {
                         {t("shortcuts.drag_note_here")}
                     </div>
                 ) : (
-                links?.map((link, index) => (
-                    <React.Fragment key={link.id}>
-                        <ShortcutItem link={link}
-                            moveRow={moveRow}
-                            index={index}
-                            onClick={onClick}
-                            onDragged={onDragged}
-                            onContextMenu={onContextMenu}/>
-                    </React.Fragment>
-                ))
+                    links?.map((link, index) => (
+                        <React.Fragment key={link.id}>
+                            <ShortcutItem link={link}
+                                moveRow={moveRow}
+                                index={index}
+                                onClick={onClick}
+                                onDragged={onDragged}
+                                onContextMenu={onContextMenu}/>
+                        </React.Fragment>
+                    ))
                 )
             }
         </div>

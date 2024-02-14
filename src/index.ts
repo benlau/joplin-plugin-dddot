@@ -1,39 +1,13 @@
 import joplin from "api";
 import { ToolbarButtonLocation } from "api/types";
-import * as i18next from "i18next";
-import resourcesToBackend from "i18next-resources-to-backend";
 import Panel from "./panel";
-import en from "./locales/en.json";
-// eslint-disable-next-line camelcase
-import zh_TW from "./locales/zh_TW.json";
-// eslint-disable-next-line camelcase
-import fr_FR from "./locales/fr_FR.json";
-
-const locales = {
-    en,
-    // eslint-disable-next-line camelcase
-    zh_TW,
-    // eslint-disable-next-line camelcase
-    fr_FR,
-};
+import { initializeI18N } from "./i18n";
 
 joplin.plugins.register({
     async onStart() {
         const locale = await joplin.settings.globalValue("locale");
 
-        i18next
-            .use(resourcesToBackend((language, namespace, callback) => {
-                if (locales[language] === undefined) {
-                    callback(new Error(`Language ${language} not supported`), null);
-                } else {
-                    callback(null, locales[language]);
-                }
-            }))
-            .init({
-                lng: locale,
-                debug: true,
-                fallbackLng: "en",
-            });
+        initializeI18N(locale);
 
         const panel = new Panel();
 

@@ -97,7 +97,10 @@ class DDDot {
     }
 
     static async start(message) {
-        const { tools, theme, serviceWorkerFunctions } = message;
+        const {
+            tools, theme, serviceWorkerFunctions, locale,
+        } = message;
+        App.setupLocale(locale);
         App.render("dddot-app", tools);
 
         await waitUntilCreated("dddot-panel-container");
