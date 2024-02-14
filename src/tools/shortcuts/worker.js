@@ -1,24 +1,7 @@
 // eslint-disable-next-line
 async function shortcutsWorker() {
-    const refresh = (content) => {
-        App.setSectionViewProp("shortcuts", "html", content);
-
-        const list = document.getElementById("dddot-shortcuts-list");
-        if (list === null) {
-            return;
-        }
-
-        const sortable = Sortable.create(list, {
-            ghostClass: "dddot-sortable-ghost",
-            dataIdAttr: "dddot-note-id",
-            onEnd: () => {
-                const noteIds = sortable.toArray();
-                DDDot.postMessage({
-                    type: "shortcuts.onOrderChanged",
-                    noteIds,
-                });
-            },
-        });
+    const refresh = (links) => {
+        App.setSectionViewProp("shortcuts", "links", links);
     };
 
     DDDot.onNoteDropped("#dddot-shortcuts-tool-container", async (noteId) => {
@@ -40,7 +23,7 @@ async function shortcutsWorker() {
     });
 
     DDDot.onMessage("shortcuts.refresh", (message) => {
-        refresh(message.html);
+        refresh(message.links);
     });
 
     const response = await DDDot.postMessage({ type: "shortcuts.onReady" });

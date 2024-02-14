@@ -6,6 +6,7 @@ import { Section } from "./section";
 import { BacklinksView } from "../tools/backlinks/view";
 import { RawHtml } from "./rawhtml";
 import { RecentNotesView } from "../tools/recentnotes/view";
+import { ShortcutsView } from "../tools/shortcuts/view";
 
 type Props = {
   tools: ToolInfo[];
@@ -15,6 +16,7 @@ type Props = {
 const Views = {
     backlinks: BacklinksView,
     recentnotes: RecentNotesView,
+    shortcuts: ShortcutsView,
 };
 
 let singletonRef = null as null | {

@@ -1,5 +1,6 @@
 import React from "react";
-import { LinkList, Link } from "../../views/linklist";
+import { LinkList } from "../../views/linklist";
+import { Link } from "../../views/linkitem";
 
 type Props = {
     links?: Link[];
