@@ -8,6 +8,7 @@ import { RawHtml } from "./rawhtml";
 import { RecentNotesView } from "../tools/recentnotes/view";
 import { ShortcutsView } from "../tools/shortcuts/view";
 import { ScratchpadView } from "../tools/scratchpad/view";
+import { NoteDialogView } from "../services/notedialog/notedialogview";
 
 type Props = {
   tools: ToolInfo[];
@@ -19,10 +20,12 @@ const Views = {
     recentnotes: RecentNotesView,
     shortcuts: ShortcutsView,
     scratchpad: ScratchpadView,
+    notedialog: NoteDialogView,
 };
 
 let singletonRef = null as null | {
   setSectionViewProp: (tool, key, value) => void;
+  setNoteDialogVisible: (visible: boolean) => void;
 };
 
 export function MainPanel(props: Props) {
@@ -30,6 +33,12 @@ export function MainPanel(props: Props) {
     const [viewPropsMap, setSectionViewPropMap] = React.useState(
         {} as {[key: string]: {[key:string]: any}},
     );
+
+    const [isNoteDialogOpened, setIsNoteDialogOpened] = React.useState(false);
+
+    const closeNoteDialog = React.useCallback(() => {
+        setIsNoteDialogOpened(false);
+    }, []);
 
     const [availableTools, setAvailableTools] = React.useState<ToolInfo[]>(
         () => tools.filter((tool) => tool.hasView).sort((a, b) => {
@@ -67,6 +76,9 @@ export function MainPanel(props: Props) {
                     };
                 });
             },
+            setNoteDialogVisible: (visible: boolean) => {
+                setIsNoteDialogOpened(visible);
+            },
         };
         return () => {
             singletonRef = null;
@@ -93,10 +105,22 @@ export function MainPanel(props: Props) {
                     }
                 </>
             </div>
+            {isNoteDialogOpened
+            && <div key={viewPropsMap.notedialog.noteId ?? 0}>
+                <NoteDialogView
+                    {...viewPropsMap.notedialog}
+                    onCloseClick={closeNoteDialog}
+                />
+            </div>
+            }
         </DndProvider>
     );
 }
 
 MainPanel.setSectionViewProp = (tool, key, value) => {
     singletonRef?.setSectionViewProp(tool, key, value);
+};
+
+MainPanel.setNoteDialogVisible = (visible: boolean) => {
+    singletonRef?.setNoteDialogVisible(visible);
 };

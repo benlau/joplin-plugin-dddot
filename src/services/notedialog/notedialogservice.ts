@@ -21,103 +21,6 @@ export default class NoteDialogService {
         this.timerRepo = timerRepo;
     }
 
-    render(options) {
-        const {
-            title,
-            body,
-            noteId,
-        } = options;
-
-        const titleLink = this.renderTitle(noteId, title);
-        const tools = [
-            ["swap", t("notedialog.swap"), t("notedialog.swap_tooltip")],
-        ];
-
-        const toolHtml = tools.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "top-right")).join("\n");
-
-        const commands = [
-            ["append-selected-text",
-                t("notedialog.cut_append_selected_text"),
-                t("notedialog.cut_append_selected_text_tooltip")],
-            ["append-note-link",
-                t("notedialog.append_note_link"),
-                t("notedialog.append_note_link_tooltip")],
-        ];
-
-        const commandHtml = commands.map(([command, label, tooltip]) => this.renderButton(command, label, tooltip, "top-lefft")).join("\n");
-
-        const html = `<div>
-<div class="dddot-notedialog-container">
-  <div class="dddot-notedialog-header">
-      <div class="dddot-notedialog-title">${titleLink}</div>
-      <div class="dddot-notedialog-close-button-holder ">
-        <div class="dddot-notedialog-close-button dddot-clickable">
-            <h3><i class="fas fa-times"></i></h3>
-        </div>
-      </div>
-  </div>
-  <div class="dddot-notedialog-content">
-    <div class="dddot-notedialog-editor">
-        <div class="dddot-notedialog-editor-content">
-            <textarea id="dddot-notedialog-texarea" rows="10">${body}</textarea>
-        </div>
-    </div>
-    <div class="dddot-notedialog-tool-panel">
-        ${toolHtml}
-    </div>
-    <div class="dddot-note-dialog-command-panel">
-        <div class="dddot-note-dialog-command-panel-content">
-            <h3>${t("notedialog.note_editor")} ⮕ ${t("notedialog.quick_view")}</h3>
-            ${commandHtml}
-        </div>
-    </div>
-  </div>
-</div>`;
-        return html;
-    }
-
-    renderTitle(noteId, title) {
-        const {
-            rendererService,
-        } = this;
-
-        const escapedTitle = rendererService.escapeInline(title);
-        const openLink = {
-            type: "dddot.openNote",
-            noteId,
-        };
-        const js = `onClick="${rendererService.renderInlineDDDotPostMessage(openLink)}; return false;"`;
-
-        return `
-        <div draggable="true" 
-             class="dddot-text-decoration-none dddot-note-dialog-title" 
-             dddot-note-id="${noteId}" dddot-note-title="${escapedTitle}" ${js}>
-            <div>
-                <h3 class="dddot-note-dialog-title-text">
-                    <a href="#">${title}</a>
-                </h3>
-            </div>
-        </div>        
-        `;
-    }
-
-    renderButton(
-        command: string,
-        title: string,
-        tooltip: string,
-        alignment = "",
-    ) {
-        const position = alignment !== "" ? `tooltip-${alignment}` : "";
-
-        return `
-        <div>
-            <div class="tooltip-multiline ${position} dddot-notedialog-button" data-tooltip="${tooltip}">
-                <button class="dddot-clickable" command="${command}">${title}</button>
-            </div>
-        </div>
-`;
-    }
-
     async registerCommands(): Promise<MenuItem[]> {
         const {
             joplinRepo,
@@ -163,7 +66,7 @@ export default class NoteDialogService {
             type: "notedialog.worker.open",
             noteId,
             title,
-            html: this.render({ title, body, noteId }),
+            content: body,
         };
 
         await joplinRepo.panelPostMessage(message);

@@ -17,6 +17,10 @@ class App {
         MainPanel.setSectionViewProp(toolId, key, value);
     }
 
+    static setNoteDialogVisible(visible: boolean) {
+        MainPanel.setNoteDialogVisible(visible);
+    }
+
     static setToolsOrder(order: string[]) {
         App.toolsOrder = order;
     }

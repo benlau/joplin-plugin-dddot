@@ -132,35 +132,6 @@ export default class RecentNotes extends Tool {
         this.linkListModel.links = this.linkListModel.links.slice(0, maxVisibleItemCount);
     }
 
-    render() {
-        const { links } = this.linkListModel;
-        const {
-            rendererService,
-        } = this.servicePool;
-
-        const list = links.map((note: any) => {
-            const link = rendererService.renderNoteLink(
-                note.id,
-                note.title,
-                {
-                    onClick: {
-                        type: "dddot.openNote",
-                        noteId: note.id,
-                    },
-                    onContextMenu: {
-                        type: "recentnotes.tool.openNoteDetailDialog",
-                        noteId: note.id,
-                    },
-                    isTodo: note.isTodo,
-                    isTodoCompleted: note.isTodoCompleted,
-                },
-            );
-            return link;
-        });
-        const html = ["<div class=dddot-note-list>", ...list, "</div>"];
-        return html.join("\n");
-    }
-
     get key() {
         return "recentnotes";
     }
