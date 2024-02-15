@@ -1,14 +1,10 @@
 // eslint-disable-next-line
 async function toolbarWorker() {
 
-    const refresh = (content) => {
-        if (content === undefined) {
-            $("#dddot-toolbar-container").css("display", "none");
-        } else {
-            $("#dddot-toolbar-container").html(content);
-        }
+    const refresh = (toolbarItems) => {
+        App.setSectionViewProp("toolbar", "toolbarItems", toolbarItems);
     };
 
-    const response = await DDDot.postMessage({ type: "toolbar.service.onReady" });
-    refresh(response);
+    const toolbarItems = await DDDot.postMessage({ type: "toolbar.service.onReady" });
+    refresh(toolbarItems);
 }

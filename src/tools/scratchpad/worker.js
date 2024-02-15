@@ -1,6 +1,5 @@
 // eslint-disable-next-line
 async function scratchpadWorker() {
-    const contentId = "#dddot-scratchpad-tool-content";
     const cm = null;
 
     const refresh = async (content, height) => {

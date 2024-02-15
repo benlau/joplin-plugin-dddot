@@ -9,6 +9,7 @@ import { RecentNotesView } from "../tools/recentnotes/view";
 import { ShortcutsView } from "../tools/shortcuts/view";
 import { ScratchpadView } from "../tools/scratchpad/view";
 import { NoteDialogView } from "../services/notedialog/notedialogview";
+import { ToolbarView } from "../services/toolbar/toolbarview";
 
 type Props = {
   tools: ToolInfo[];
@@ -21,6 +22,7 @@ const Views = {
     shortcuts: ShortcutsView,
     scratchpad: ScratchpadView,
     notedialog: NoteDialogView,
+    toolbar: ToolbarView,
 };
 
 let singletonRef = null as null | {
@@ -88,7 +90,9 @@ export function MainPanel(props: Props) {
     return (
         <DndProvider backend={HTML5Backend}>
             <div id="dddot-panel-container">
-                <div id="dddot-toolbar-container"></div>
+                <ToolbarView
+                    {...viewPropsMap.toolbar}
+                />
                 <>
                     {
                         availableTools.map((tool: ToolInfo, index: number) => {
