@@ -7,6 +7,7 @@ import { BacklinksView } from "../tools/backlinks/view";
 import { RawHtml } from "./rawhtml";
 import { RecentNotesView } from "../tools/recentnotes/view";
 import { ShortcutsView } from "../tools/shortcuts/view";
+import { ScratchpadView } from "../tools/scratchpad/view";
 
 type Props = {
   tools: ToolInfo[];
@@ -17,6 +18,7 @@ const Views = {
     backlinks: BacklinksView,
     recentnotes: RecentNotesView,
     shortcuts: ShortcutsView,
+    scratchpad: ScratchpadView,
 };
 
 let singletonRef = null as null | {
@@ -25,7 +27,9 @@ let singletonRef = null as null | {
 
 export function MainPanel(props: Props) {
     const { tools, defaultToolsOrder } = props;
-    const [viewPropsMap, setSectionViewPropMap] = React.useState({} as {[key: string]: {[key:string]: any}});
+    const [viewPropsMap, setSectionViewPropMap] = React.useState(
+        {} as {[key: string]: {[key:string]: any}},
+    );
 
     const [availableTools, setAvailableTools] = React.useState<ToolInfo[]>(
         () => tools.filter((tool) => tool.hasView).sort((a, b) => {

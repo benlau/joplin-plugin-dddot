@@ -71,7 +71,7 @@ export default class ScratchPad extends Tool {
             joplinRepo,
         } = this;
 
-        const content = this.render();
+        const content = await this.joplinRepo.settingsLoad(ScratchPadContent, "");
         const height = await joplinRepo.settingsLoad(ScratchPadHeight, 200);
         return { content, height };
     }

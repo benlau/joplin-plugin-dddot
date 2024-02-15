@@ -79,10 +79,8 @@ export function SectionImpl(props: ReturnType<typeof useSectionState>) {
     const {
         tool,
         onHeaderClick,
-        dragRef,
         itemRef,
         isDragging,
-        rawHtml,
     } = props;
 
     const buttonClass = cn("dddot-expand-button", {

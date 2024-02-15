@@ -100,13 +100,14 @@ class DDDot {
         const {
             tools, theme, serviceWorkerFunctions, locale,
         } = message;
+
+        const codeMirror5Manager = new CodeMirror5Manager();
+        codeMirror5Manager.init(theme);
+
         App.setupLocale(locale);
         App.render("dddot-app", tools);
 
         await waitUntilCreated("dddot-panel-container");
-
-        const codeMirror5Manager = new CodeMirror5Manager();
-        codeMirror5Manager.init(theme);
 
         const workerFunctionNames = tools.map((tool) => tool.workerFunctionName);
 

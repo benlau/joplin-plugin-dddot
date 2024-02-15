@@ -16,6 +16,10 @@ class CodeMirror5Manager {
         return this.theme.isDarkTheme ? "blackboard" : "default";
     }
 
+    create(textArea, options) {
+        return CodeMirror.fromTextArea(textArea, options);
+    }
+
     setupResizable(cm, height, minHeight, handleName, onHeightChanged) {
         let isResizing = false;
         let lastY = 0;
