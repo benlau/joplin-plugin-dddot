@@ -1,4 +1,4 @@
-import Link from "../types/link";
+import { Link } from "../types/link";
 
 export default class LinkListModel {
     links: Link[];
@@ -26,7 +26,7 @@ export default class LinkListModel {
     }
 
     rehydrate(items) {
-        this.links = items.map((item) => Link.rehydrate(item)).filter((item) => item !== undefined);
+        this.links = items.filter((item) => item != null && item.type != null);
     }
 
     reorder(orderedIds: string[]) {

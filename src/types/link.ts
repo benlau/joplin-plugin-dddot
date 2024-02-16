@@ -3,7 +3,7 @@ export enum LinkType {
   FolderLink = "FolderLink"
 }
 
-export default class Link {
+export type Link = {
     id: string;
 
     title: string;
@@ -13,42 +13,39 @@ export default class Link {
     isTodo: boolean | undefined;
 
     isTodoCompleted: boolean | undefined;
+}
 
-    static rehydrate(object: any): Link|undefined {
-        if (!Object.values(LinkType).includes(object.type)) {
-            return undefined;
-        }
-        const link = new Link();
-        Object.assign(link, object);
-        return link;
-    }
-
+export class LinkMonad {
     static createNoteLink(
         id: string,
         title: string,
     ): Link {
-        const link = new Link();
-        link.id = id;
-        link.title = title;
-        link.type = LinkType.NoteLink;
-        return link;
+        return {
+            id,
+            title,
+            isTodo: false,
+            isTodoCompleted: false,
+            type: LinkType.NoteLink,
+        };
     }
 
     static createFolderLink(id: string, title: string): Link {
-        const link = new Link();
-        link.id = id;
-        link.title = title;
-        link.type = LinkType.FolderLink;
-        return link;
+        return {
+            id,
+            title,
+            isTodo: false,
+            isTodoCompleted: false,
+            type: LinkType.FolderLink,
+        };
     }
 
-    static createNoteLinkFromRawData(data) {
-        const link = new Link();
-        link.id = data.id ?? "";
-        link.title = data.title ?? "";
-        link.isTodo = data.is_todo === 1;
-        link.isTodoCompleted = data.todo_completed > 0;
-        link.type = LinkType.NoteLink;
-        return link;
+    static createNoteLinkFromRawData(data): Link {
+        return {
+            id: data.id ?? "",
+            title: data.title ?? "",
+            isTodo: data.is_todo === 1,
+            isTodoCompleted: data.todo_completed > 0,
+            type: LinkType.NoteLink,
+        };
     }
 }

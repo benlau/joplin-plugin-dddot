@@ -2,8 +2,8 @@ import { SettingItemType } from "api/types";
 import { t } from "i18next";
 import Tool from "../tool";
 import LinkListModel from "../../models/linklistmodel";
-import Link from "../../types/link";
 import { ItemChangeEventType } from "../../repo/joplinrepo";
+import { LinkMonad } from "../../types/link";
 
 const RecentNotesContentSetting = "dddot.settings.recentnotes.content";
 const RecentNotesMaxNotesSetting = "dddot.settings.recentnotes.maxnotes";
@@ -86,7 +86,7 @@ export default class RecentNotes extends Tool {
     }
 
     async insertLink(note) {
-        const prependLink = Link.createNoteLinkFromRawData(note);
+        const prependLink = LinkMonad.createNoteLinkFromRawData(note);
 
         this.linkListModel.unshift(prependLink);
 

@@ -1,10 +1,10 @@
 import LinkListModel from "../src/models/linklistmodel";
-import Link from "../src/types/link";
+import { LinkMonad } from "../src/types/link";
 
 test("push", () => {
     const model = new LinkListModel();
     expect(model.links).toStrictEqual([]);
-    const link = Link.createNoteLink("id", "title");
+    const link = LinkMonad.createNoteLink("id", "title");
     model.push(link);
     expect(model.links).toStrictEqual([link]);
 });
@@ -13,11 +13,11 @@ test("push duplicated should remove", () => {
     const ids = ["1", "2", "3"];
     const model = new LinkListModel();
     ids.forEach((id) => {
-        const link = Link.createNoteLink(id, "title");
+        const link = LinkMonad.createNoteLink(id, "title");
         model.push(link);
     });
 
-    const link = Link.createNoteLink("1", "title");
+    const link = LinkMonad.createNoteLink("1", "title");
     model.push(link);
 
     expect(model.links.length).toBe(3);
@@ -30,8 +30,7 @@ test("reoreder", () => {
     const model = new LinkListModel();
 
     ids.forEach((id) => {
-        const link = new Link();
-        link.id = id;
+        const link = LinkMonad.createNoteLink(id, "title");
         model.push(link);
     });
 
@@ -51,8 +50,7 @@ test("update", () => {
     const model = new LinkListModel();
 
     ids.forEach((id) => {
-        const link = new Link();
-        link.id = id;
+        const link = LinkMonad.createNoteLink(id, "title");
         model.push(link);
     });
 
@@ -76,9 +74,7 @@ test("update - return false if nothing changed", () => {
     const model = new LinkListModel();
 
     ids.forEach((id) => {
-        const link = new Link();
-        link.id = id;
-        link.title = title;
+        const link = LinkMonad.createNoteLink(id, "title");
         model.push(link);
     });
 
@@ -98,10 +94,17 @@ test("update - return false if nothing changed", () => {
 test("dehydrate", () => {
     const model = new LinkListModel();
 
-    model.push(Link.createNoteLink("1", "1"));
-    model.push(Link.createNoteLink("2", "2"));
+    model.push(LinkMonad.createNoteLink("1", "1"));
+    model.push(LinkMonad.createNoteLink("2", "2"));
     const json = model.dehydrate();
-    const expected = [{ id: "1", title: "1", type: "NoteLink" }, { id: "2", title: "2", type: "NoteLink" }];
+    const expected = [
+        {
+            id: "1", title: "1", type: "NoteLink", isTodo: false, isTodoCompleted: false,
+        },
+        {
+            id: "2", title: "2", type: "NoteLink", isTodo: false, isTodoCompleted: false,
+        },
+    ];
     expect(json).toStrictEqual(expected);
 });
 

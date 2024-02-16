@@ -1,20 +1,7 @@
 import React from "react";
 import { useDrag } from "react-dnd";
 import { DragItemType } from "../types/drag";
-import { LinkType } from "../types/link";
-
-// @FIXME - move to types
-export type Link = {
-    id: string;
-
-    title: string;
-
-    type: LinkType;
-
-    isTodo: boolean | undefined;
-
-    isTodoCompleted: boolean | undefined;
-}
+import { Link } from "../types/link";
 
 export function LinkItem(props: {
     link: Link

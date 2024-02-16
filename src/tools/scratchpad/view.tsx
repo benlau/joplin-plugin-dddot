@@ -143,9 +143,9 @@ export function ScratchpadView(props: Props) {
         };
 
         const onMouseMove = (e: MouseEvent) => {
-            e.preventDefault();
-            e.stopPropagation();
             if (state.current.isMouseDown) {
+                e.preventDefault();
+                e.stopPropagation();
                 const newHeight = state.current.dragStartHeight + e.clientY - state.current.startY;
                 if (newHeight >= MIN_HEIGHT) {
                     updateHeight(newHeight);
@@ -154,10 +154,10 @@ export function ScratchpadView(props: Props) {
         };
 
         const onMouseUp = (e: MouseEvent) => {
-            e.preventDefault();
-            e.stopPropagation();
             if (state.current.isMouseDown) {
                 state.current.isMouseDown = false;
+                e.preventDefault();
+                e.stopPropagation();
 
                 const newHeight = Math.max(
                     state.current.dragStartHeight + e.clientY - state.current.startY,

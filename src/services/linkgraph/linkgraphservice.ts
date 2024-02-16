@@ -1,7 +1,7 @@
 import LinkGraphNode from "./linkgraphnode";
 import JoplinService from "../joplin/joplinservice";
 import LinkGraphUpdateQueue from "./linkgraphupdatequeue";
-import Link from "../../types/link";
+import { Link } from "../../types/link";
 
 const UpdateInterval = 100;
 

@@ -1,21 +1,8 @@
 import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { t } from "i18next";
-import { LinkType } from "../../types/link";
+import { Link, LinkType } from "../../types/link";
 import { DragItemType } from "../../types/drag";
-
-// @FIXME - move to types
-export type Link = {
-    id: string;
-
-    title: string;
-
-    type: LinkType;
-
-    isTodo: boolean | undefined;
-
-    isTodoCompleted: boolean | undefined;
-}
 
 export function ShortcutItem(props: {
     link: Link

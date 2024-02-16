@@ -2,7 +2,7 @@ import * as crypto from "crypto";
 import ThemeType from "../../types/themetype";
 import JoplinRepo from "../../repo/joplinrepo";
 import PlatformRepo from "../../repo/platformrepo";
-import Link from "../../types/link";
+import { Link, LinkMonad } from "../../types/link";
 import TimerRepo from "../../repo/timerrepo";
 
 export async function sha256(message) {
@@ -62,7 +62,7 @@ export default class JoplinService {
                 fields: ["id", "title", "is_todo", "todo_completed"],
             },
         );
-        return Link.createNoteLinkFromRawData(note);
+        return LinkMonad.createNoteLinkFromRawData(note);
     }
 
     async createFolderLink(folderId: string): Promise<Link> {
@@ -72,7 +72,7 @@ export default class JoplinService {
                 fields: ["id", "title"],
             },
         );
-        return Link.createFolderLink(folder.id, folder.title);
+        return LinkMonad.createFolderLink(folder.id, folder.title);
     }
 
     async searchBacklinks(id: string): Promise<Link[]> {
@@ -93,7 +93,7 @@ export default class JoplinService {
         }
 
         const links = items.map(
-            (item) => Link.createNoteLinkFromRawData(item),
+            (item) => LinkMonad.createNoteLinkFromRawData(item),
         );
         return links;
     }

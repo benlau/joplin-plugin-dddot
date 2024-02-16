@@ -4,7 +4,7 @@ import Tool from "../tool";
 import LinkListModel from "../../models/linklistmodel";
 import { ItemChangeEventType } from "../../repo/joplinrepo";
 import JoplinService from "../../services/joplin/joplinservice";
-import { Link } from "../../views/linkitem";
+import { Link } from "../../types/link";
 
 const ShortcutsContent = "dddot.settings.shortcuts.content";
 

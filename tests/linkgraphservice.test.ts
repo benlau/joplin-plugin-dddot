@@ -1,7 +1,7 @@
 import waitForExpect from "wait-for-expect";
 import JoplinRepo from "../src/repo/joplinrepo";
 import LinkGraphService, { QueryBacklinksResult } from "../src/services/linkgraph/linkgraphservice";
-import Link from "../src/types/link";
+import { LinkMonad } from "../src/types/link";
 import LinkGraphNode from "../src/services/linkgraph/linkgraphnode";
 import JoplinService from "../src/services/joplin/joplinservice";
 
@@ -26,7 +26,7 @@ test("queryBacklinks should trigger onNodeUpdated", async () => {
     const noteLinkage = new LinkGraphNode();
     noteLinkage.id = id;
     noteLinkage.backlinks = [
-        Link.createNoteLink("dst", "title"),
+        LinkMonad.createNoteLink("dst", "title"),
     ];
 
     joplinService.searchBacklinks.mockReturnValueOnce(noteLinkage.backlinks);
@@ -53,7 +53,7 @@ test("queryBacklinks should not trigger onNodeUpdate if nothing changed", async 
     const noteLinkage = new LinkGraphNode();
     noteLinkage.id = id;
     noteLinkage.backlinks = [
-        Link.createNoteLink("dst", "title"),
+        LinkMonad.createNoteLink("dst", "title"),
     ];
     service.graph.set(id, noteLinkage);
 
@@ -94,8 +94,8 @@ test("queryBaclinksAdv - it should query latest backlinks", async () => {
     const node = new LinkGraphNode();
     node.id = id;
     node.backlinks = [
-        Link.createNoteLink("2", "2"),
-        Link.createNoteLink("3", "3"),
+        LinkMonad.createNoteLink("2", "2"),
+        LinkMonad.createNoteLink("3", "3"),
     ];
     queue.enqueue.mockReturnValueOnce(node);
 
@@ -120,8 +120,8 @@ test("queryBaclinksAdv - it should deduplicate the result", async () => {
     const node = new LinkGraphNode();
     node.id = id;
     node.backlinks = [
-        Link.createNoteLink("2", "2"),
-        Link.createNoteLink("3", "3"),
+        LinkMonad.createNoteLink("2", "2"),
+        LinkMonad.createNoteLink("3", "3"),
     ];
     service.graph.set(id, node);
     queue.enqueue.mockReturnValueOnce(node);
@@ -150,13 +150,13 @@ test("queryBaclinksAdv - recursive on cached data", async () => {
     const node1 = new LinkGraphNode();
     node1.id = id;
     node1.backlinks = [
-        Link.createNoteLink("2", "2"),
+        LinkMonad.createNoteLink("2", "2"),
     ];
 
     const node2 = new LinkGraphNode();
     node2.id = "2";
     node2.backlinks = [
-        Link.createNoteLink("3", "3"),
+        LinkMonad.createNoteLink("3", "3"),
     ];
 
     service.graph.set(id, node1);

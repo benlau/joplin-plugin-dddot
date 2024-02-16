@@ -1,7 +1,7 @@
 import RecentNotes from "../src/tools/recentnotes";
 import JoplinRepo from "../src/repo/joplinrepo";
 import ServicePool from "../src/services/servicepool";
-import Link from "../src/types/link";
+import { LinkMonad } from "../src/types/link";
 import LinkListModel from "../src/models/linklistmodel";
 
 jest.mock("../src/repo/joplinrepo");
@@ -14,7 +14,7 @@ test("truncate - it should remove items more than maxnotes value", async () => {
     const ids = ["1", "2", "3"];
     const model = new LinkListModel();
     ids.forEach((id) => {
-        const link = Link.createNoteLink(id, "title");
+        const link = LinkMonad.createNoteLink(id, "title");
         model.push(link);
     });
     const max = 1;
