@@ -5,7 +5,7 @@ async function noteDialogWorker() {
         App.setNoteDialogVisible(false);
     };
 
-    const openDialog = (noteId, html) => {
+    const openDialog = () => {
         App.setNoteDialogVisible(true);
     };
 

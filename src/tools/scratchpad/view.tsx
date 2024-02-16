@@ -103,9 +103,9 @@ export function ScratchpadView(props: Props) {
         });
 
         DDDot.onMessage("scratchpad.worker.toggleFocus", (_) => {
-            const { cm } = state.current;
-            if (!cm.hasFocus()) {
-                cm.focus();
+            const currentEditor = state.current.cm;
+            if (!currentEditor.hasFocus()) {
+                currentEditor.focus();
             } else {
                 DDDot.postMessage({
                     type: "dddot.focusNoteBody",
@@ -159,7 +159,10 @@ export function ScratchpadView(props: Props) {
             if (state.current.isMouseDown) {
                 state.current.isMouseDown = false;
 
-                const newHeight = Math.max(state.current.dragStartHeight + e.clientY - state.current.startY, MIN_HEIGHT);
+                const newHeight = Math.max(
+                    state.current.dragStartHeight + e.clientY - state.current.startY,
+                    MIN_HEIGHT,
+                );
 
                 DDDot.postMessage({
                     type: "scratchpad.tool.setHeight",

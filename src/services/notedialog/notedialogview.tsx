@@ -82,14 +82,6 @@ export function NoteDialogView(props: Props) {
         }
     }, []);
 
-    const swap = React.useCallback(() => {
-        DDDot.postMessage({
-            type: "notedialog.service.command",
-            command: "swap",
-            noteId,
-        });
-    }, [noteId]);
-
     React.useEffect(() => {
         const textArea = textareaRef.current;
         const cm = CodeMirror5Manager.instance.create(textArea, {
@@ -139,6 +131,7 @@ export function NoteDialogView(props: Props) {
                         <div class="dddot-note-dialog-command-panel-content">
                             <h3>{t("notedialog.note_editor")} ⮕ {t("notedialog.quick_view")}</h3>
                             {
+                                // eslint-disable-next-line @typescript-eslint/no-shadow
                                 commands.map(([command, title, tooltip]) => (
                                     <CommandButton
                                         noteId={noteId}

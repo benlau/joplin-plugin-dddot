@@ -71,6 +71,7 @@ export function ShortcutItem(props: {
             if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return;
 
             moveRow(dragIndex, hoverIndex);
+            // eslint-disable-next-line no-param-reassign
             item.index = hoverIndex;
         },
         drop: () => {

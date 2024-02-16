@@ -1,7 +1,5 @@
 // eslint-disable-next-line
 async function recentnotesWorker() {
-    const contentId = "#dddot-recentnotes-tool-content";
-
     const refresh = (links) => {
         App.setSectionViewProp("recentnotes", "links", links);
     };

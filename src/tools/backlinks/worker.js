@@ -1,7 +1,5 @@
 // eslint-disable-next-line
 async function backlinksWorker() {
-    const contentId = "#dddot-backlinks-tool-content";
-
     const refresh = (links) => {
         App.setSectionViewProp("backlinks", "links", links);
     };

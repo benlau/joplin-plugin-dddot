@@ -49,6 +49,7 @@
         "caughtErrorsIgnorePattern": "^_",
       }
     ],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-empty-function": "off"
   }
 }

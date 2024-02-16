@@ -30,7 +30,7 @@ export function useSectionState(props: Props) {
     });
     const ref = React.useRef(null);
 
-    const [spec, dropRef] = useDrop({
+    const [_, dropRef] = useDrop({
         accept: DragItemType.Section,
         hover: (item: any, monitor) => {
             // Ref: https://dev.to/crishanks/transfer-lists-with-react-dnd-3ifo
@@ -48,6 +48,7 @@ export function useSectionState(props: Props) {
             if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return;
 
             moveListItem(dragIndex, hoverIndex);
+            // eslint-disable-next-line no-param-reassign
             item.index = hoverIndex;
         },
     });
