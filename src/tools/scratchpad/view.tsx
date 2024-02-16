@@ -5,21 +5,35 @@ type Props = {
     height?: number;
 };
 
+const MIN_HEIGHT = 50;
+
 type State = {
     cm: any;
+    isMouseDown: boolean;
+    startY: number;
+    height: number;
+    dragStartHeight: number;
 }
+
+// Bug: Drag link to scratchpad is not working
 
 export function ScratchpadView(props: Props) {
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+    const handleRef = React.useRef<HTMLDivElement>(null);
 
     const state = React.useRef<State>({
         cm: null,
+        isMouseDown: false,
+        startY: -1,
+        height: MIN_HEIGHT,
+        dragStartHeight: 0,
     });
 
     const updateHeight = React.useCallback((newHeight: number) => {
         if (state.current.cm && newHeight != null) {
             state.current.cm.setSize(null, `${newHeight}px`);
         }
+        state.current.height = newHeight;
     }, []);
 
     const updateContent = React.useCallback((newContent?: string) => {
@@ -30,7 +44,7 @@ export function ScratchpadView(props: Props) {
 
     React.useEffect(() => {
         const textArea = textareaRef.current;
-        const height = props.height ?? 80;
+        const height = props.height ?? MIN_HEIGHT;
 
         const cm = CodeMirror5Manager.instance.create(textArea, {
             mode: "markdown",
@@ -41,20 +55,6 @@ export function ScratchpadView(props: Props) {
         state.current.cm = cm;
 
         cm.setSize(null, `${height}px`);
-        const minHeight = 50;
-
-        CodeMirror5Manager.instance.setupResizable(
-            cm,
-            height,
-            minHeight,
-            ".dddot-scratchpad-handle",
-            (newHeight) => {
-                DDDot.postMessage({
-                    type: "scratchpad.tool.setHeight",
-                    height: newHeight,
-                });
-            },
-        );
 
         cm.on("change", async () => {
             const value = cm.getValue();
@@ -102,9 +102,19 @@ export function ScratchpadView(props: Props) {
             }
         });
 
+        DDDot.onMessage("scratchpad.worker.toggleFocus", (_) => {
+            const { cm } = state.current;
+            if (!cm.hasFocus()) {
+                cm.focus();
+            } else {
+                DDDot.postMessage({
+                    type: "dddot.focusNoteBody",
+                });
+            }
+        });
+
         updateContent(props.content);
-        updateHeight(props.height ?? 80);
-        // TODO: Handle drop event
+        updateHeight(props.height ?? MIN_HEIGHT);
     }, []);
 
     React.useEffect(() => {
@@ -112,13 +122,68 @@ export function ScratchpadView(props: Props) {
     }, [props.content]);
 
     React.useEffect(() => {
-        updateHeight(props.height ?? 80);
+        updateHeight(props.height ?? MIN_HEIGHT);
+    }, [props.height]);
+
+    /* Drag and drop */
+    React.useEffect(() => {
+        updateHeight(props.height ?? MIN_HEIGHT);
+
+        const handle = handleRef.current;
+        if (!handle || props.height == null) {
+            return;
+        }
+
+        const onMouseDown = (e: MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            state.current.isMouseDown = true;
+            state.current.startY = e.clientY;
+            state.current.dragStartHeight = state.current.height;
+        };
+
+        const onMouseMove = (e: MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (state.current.isMouseDown) {
+                const newHeight = state.current.dragStartHeight + e.clientY - state.current.startY;
+                if (newHeight >= MIN_HEIGHT) {
+                    updateHeight(newHeight);
+                }
+            }
+        };
+
+        const onMouseUp = (e: MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (state.current.isMouseDown) {
+                state.current.isMouseDown = false;
+
+                const newHeight = Math.max(state.current.dragStartHeight + e.clientY - state.current.startY, MIN_HEIGHT);
+
+                DDDot.postMessage({
+                    type: "scratchpad.tool.setHeight",
+                    height: newHeight,
+                });
+            }
+        };
+
+        handle.addEventListener("mousedown", onMouseDown);
+        document.addEventListener("mouseup", onMouseUp);
+        document.addEventListener("mousemove", onMouseMove);
+
+        // eslint-disable-next-line consistent-return
+        return () => {
+            handle.removeEventListener("mousedown", onMouseDown);
+            document.removeEventListener("mouseup", onMouseUp);
+            document.removeEventListener("mousemove", onMouseMove);
+        };
     }, [props.height]);
 
     return (
         <div>
             <textarea id="dddot-scratchpad-textarea" rows="10" ref={textareaRef}></textarea>
-            <div class="fas fa-ellipsis-h dddot-scratchpad-handle"></div>
+            <div class="fas fa-ellipsis-h dddot-scratchpad-handle" ref={handleRef}></div>
         </div>
     );
 }

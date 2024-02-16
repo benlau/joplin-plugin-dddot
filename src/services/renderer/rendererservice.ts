@@ -13,9 +13,4 @@ export default class RendererService {
     escapeInline(text: string) {
         return this.replaceAll(text, "\"", "&quot;");
     }
-
-    renderInlineDDDotPostMessage(message) {
-        const json = this.escapeInline(JSON.stringify(message));
-        return `DDDot.postMessage('${json}')`;
-    }
 }

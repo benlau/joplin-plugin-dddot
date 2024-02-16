@@ -27,11 +27,5 @@ async function noteDialogWorker() {
             content,
         } = message;
         App.setSectionViewProp("notedialog", "content", content);
-
-        currentEditor.setValue(content);
-        const lastLine = currentEditor.lastLine();
-        const rect = currentEditor.charCoords({ line: lastLine, ch: 0 });
-        const height = rect.bottom;
-        currentEditor.scrollTo(null, height);
     });
 }

@@ -4,7 +4,6 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Section } from "./section";
 import { BacklinksView } from "../tools/backlinks/view";
-import { RawHtml } from "./rawhtml";
 import { RecentNotesView } from "../tools/recentnotes/view";
 import { ShortcutsView } from "../tools/shortcuts/view";
 import { ScratchpadView } from "../tools/scratchpad/view";
@@ -96,7 +95,11 @@ export function MainPanel(props: Props) {
                 <>
                     {
                         availableTools.map((tool: ToolInfo, index: number) => {
-                            const View = Views[tool.key] ?? RawHtml;
+                            const View = Views[tool.key];
+
+                            if (!View) {
+                                return null;
+                            }
 
                             return (
                                 <React.Fragment key={tool.key}>

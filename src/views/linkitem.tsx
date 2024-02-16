@@ -46,6 +46,8 @@ export function LinkItem(props: {
         type: DragItemType.Link,
     });
 
+    const checkboxClasses = link.isTodoCompleted ? "far fa-check-square" : "far fa-square";
+
     return (
         <div
             ref={drag}
@@ -58,16 +60,14 @@ export function LinkItem(props: {
             }
             onDragStart={onDragStart}
         >
-            <div
-
-            >
+            <div>
                 <a href="#">
                     {
-                        link.isTodo === true
-                            ? link.isTodoCompleted === true
-                                ? "<i class='far fa-check-square'></i> "
-                                : "<i class='far fa-square'></i> "
-                            : ""
+                        link.isTodo && (
+                            <>
+                                <i class={checkboxClasses}></i><span>&nbsp;</span>
+                            </>
+                        )
                     }
                     {link.title}
                 </a>

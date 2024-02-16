@@ -4,6 +4,7 @@ async function shortcutsWorker() {
         App.setSectionViewProp("shortcuts", "links", links);
     };
 
+    // @FIXME
     DDDot.onNoteDropped("#dddot-shortcuts-tool-container", async (noteId) => {
         const response = await DDDot.postMessage({
             type: "shortcuts.onNoteDropped",
@@ -13,6 +14,7 @@ async function shortcutsWorker() {
         refresh(response);
     });
 
+    // @FIXME
     DDDot.onFolderDropped("#dddot-shortcuts-tool-container", async (folderId) => {
         const response = await DDDot.postMessage({
             type: "shortcuts.tool.pushFolder",

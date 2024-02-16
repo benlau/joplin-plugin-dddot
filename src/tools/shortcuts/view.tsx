@@ -53,7 +53,7 @@ export function ShortcutItem(props: {
         }),
     });
 
-    const [spec, dropRef] = useDrop({
+    const [_spec, dropRef] = useDrop({
         accept: DragItemType.Link,
         hover: (item: any, monitor) => {
             // Ref: https://dev.to/crishanks/transfer-lists-with-react-dnd-3ifo
@@ -80,6 +80,7 @@ export function ShortcutItem(props: {
 
     const itemRef = dragRef(dropRef(ref));
     const opacity = isDragging ? 0 : 1;
+    const checkboxClasses = link.isTodoCompleted ? "far fa-check-square" : "far fa-square";
 
     return (
         <div
@@ -97,12 +98,11 @@ export function ShortcutItem(props: {
             >
                 <a href="#">
                     {
-                        link.isTodo === true
-                            ? link.isTodoCompleted === true
-                                ? "<i class='far fa-check-square'></i> "
-                                : "<i class='far fa-square'></i> "
-                            : ""
-                    }
+                        link.isTodo && (
+                            <>
+                                <i class={checkboxClasses}></i><span>&nbsp;</span>
+                            </>
+                        )}
                     {link.title}
                 </a>
             </div>

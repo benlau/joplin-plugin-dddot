@@ -1,5 +1,4 @@
 import JoplinService from "../joplin/joplinservice";
-import RendererService from "../renderer/rendererservice";
 
 interface ToolbarItem {
   name: string;
@@ -12,13 +11,10 @@ interface ToolbarItem {
 export default class ToolbarService {
     joplinService: JoplinService;
 
-    rendererServie: RendererService;
-
     toolbarItems: ToolbarItem[] = [];
 
-    constructor(joplinService: JoplinService, rendererService: RendererService) {
+    constructor(joplinService: JoplinService) {
         this.joplinService = joplinService;
-        this.rendererServie = rendererService;
     }
 
     async onLoaded() {

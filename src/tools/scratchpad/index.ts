@@ -76,15 +76,6 @@ export default class ScratchPad extends Tool {
         return { content, height };
     }
 
-    render() {
-        return `
-            <div>
-                <textarea id="dddot-scratchpad-textarea" rows="10"></textarea>
-                <div class="fas fa-ellipsis-h dddot-scratchpad-handle"></div>
-            </div>
-        `;
-    }
-
     get key() {
         return "scratchpad";
     }

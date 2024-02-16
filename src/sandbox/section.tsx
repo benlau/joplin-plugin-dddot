@@ -5,7 +5,6 @@ import { ToolInfo } from "../types/toolinfo";
 import { DragItemType } from "../types/drag";
 
 type Props = {
-    rawHtml?: string;
     tool: ToolInfo;
     index: number;
     moveListItem: (dragIndex: number, hoverIndex: number) => void;
@@ -17,7 +16,6 @@ export function useSectionState(props: Props) {
         tool,
         index,
         moveListItem,
-        rawHtml,
         children,
     } = props;
 
@@ -69,7 +67,6 @@ export function useSectionState(props: Props) {
         setIsExpanded,
         onHeaderClick,
         isDragging,
-        rawHtml,
         children,
         index, // Return index to make sure it could trigger SecionImpl to re-render after DnD
     };
