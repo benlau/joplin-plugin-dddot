@@ -2,6 +2,7 @@
   "name": "joplin-plugin-joplin-dddot",
   "version": "0.2.0",
   "scripts": {
+    "predist": "tailwindcss  -o src/styles/tailwind.css",
     "dist": "webpack --env joplin-plugin-config=buildMain && webpack --env joplin-plugin-config=buildExtraScripts && webpack --env joplin-plugin-config=createArchive",
     "prepare": "npm run dist",
     "update": "npm install -g generator-joplin && yo joplin --node-package-manager npm --update --force",
@@ -44,15 +45,16 @@
     "yargs": "^16.2.0"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "classnames": "^2.5.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "fecha": "^4.2.3",
     "i18next": "^21.6.16",
     "i18next-resources-to-backend": "^1.2.0",
-    "react-dnd": "^16.0.1"
+    "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.1"
   },
   "files": [
     "publish"

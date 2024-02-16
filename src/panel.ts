@@ -36,6 +36,7 @@ export default class Panel {
             "./libs/Sortable.min.js",
             "./theme/codemirror/blackboard.css",
             "./styles/css-tooltip.css",
+            "./styles/tailwind.css",
         ].concat(this.servicePool.assetFiles);
 
         await Promise.all(
