@@ -4,26 +4,6 @@ async function shortcutsWorker() {
         App.setSectionViewProp("shortcuts", "links", links);
     };
 
-    // @FIXME
-    DDDot.onNoteDropped("#dddot-shortcuts-tool-container", async (noteId) => {
-        const response = await DDDot.postMessage({
-            type: "shortcuts.onNoteDropped",
-            noteId,
-            index: 0,
-        });
-        refresh(response);
-    });
-
-    // @FIXME
-    DDDot.onFolderDropped("#dddot-shortcuts-tool-container", async (folderId) => {
-        const response = await DDDot.postMessage({
-            type: "shortcuts.tool.pushFolder",
-            folderId,
-            index: 0,
-        });
-        refresh(response);
-    });
-
     DDDot.onMessage("shortcuts.refresh", (message) => {
         refresh(message.links);
     });

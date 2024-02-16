@@ -83,7 +83,7 @@ export default class Shortcuts extends Tool {
         this.linkListModel.push(link);
         await this.save();
 
-        return this.read();
+        this.refresh(this.read());
     }
 
     async removeLink(id: string) {
@@ -102,7 +102,7 @@ export default class Shortcuts extends Tool {
         this.linkListModel.push(link);
         await this.save();
 
-        return this.read();
+        this.refresh(this.read());
     }
 
     async onOrderChanged(linkIds: string[]) {

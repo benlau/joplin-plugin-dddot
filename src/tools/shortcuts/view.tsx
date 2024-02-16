@@ -104,6 +104,7 @@ type Props = {
 
 export function ShortcutsView(props: Props) {
     const [links, setLinks] = React.useState<Link[]>(props.links ?? []);
+    const [isLinkDragging, setIsLinkDragging] = React.useState(false);
 
     const linkRef = React.useRef(null);
     linkRef.current = links;
@@ -113,11 +114,18 @@ export function ShortcutsView(props: Props) {
     }, [props.links]);
 
     const onClick = React.useCallback((link: Link) => {
-        const type = link.type === LinkType.FolderLink ? "panel.openFolder" : "dddot.openLink";
-        DDDot.postMessage({
-            type,
-            noteId: link.id,
-        });
+        if (link.type === LinkType.FolderLink) {
+            DDDot.postMessage({
+                type: "panel.openFolder",
+                folderId: link.id,
+            });
+
+        } else {
+            DDDot.postMessage({
+                type: "dddot.openNote",
+                noteId: link.id,
+            });
+         }
     }, []);
 
     const onContextMenu = React.useCallback((link: Link) => {
@@ -137,7 +145,7 @@ export function ShortcutsView(props: Props) {
         });
     }, []);
 
-    const onDragged = React.useCallback(() => {
+    const onLinkItemDragged = React.useCallback(() => {
         DDDot.postMessage({
             type: "shortcuts.onOrderChanged",
             linkIds: linkRef.current?.map((link) => link.id) ?? [],
@@ -146,8 +154,68 @@ export function ShortcutsView(props: Props) {
 
     const isEmpty = (links?.length ?? 0) === 0;
 
+    const ref = React.useRef(null);
+
+    React.useEffect(() => {
+        const dragover = (e: DragEvent) => {
+            const dt = e.dataTransfer;
+            if (
+                (dt.types.indexOf(DDDot.X_JOP_NOTE_IDS) >= 0) ||
+                 dt.types.indexOf(DDDot.X_JOP_FOLDER_IDS) >= 0
+                ) {
+                setIsLinkDragging(true);
+                dt.dropEffect = "link";
+                e.stopPropagation();
+                e.preventDefault();    
+                return;
+            }
+            return;
+        }
+
+        const dragleave = (e: DragEvent) => {
+            setIsLinkDragging(false);
+        }
+
+        const drop = (e: DragEvent) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setIsLinkDragging(false);
+
+            const noteData = e.dataTransfer.getData(DDDot.X_JOP_NOTE_IDS);
+            if (noteData != "") {
+                const noteId = noteData.replace("[\"", "").replace("\"]", "");
+                DDDot.postMessage({
+                    type: "shortcuts.onNoteDropped",
+                    noteId,
+                });
+            }
+
+            const folderData = e.dataTransfer.getData(DDDot.X_JOP_FOLDER_IDS);
+            if (folderData != "") {
+                const folderId = folderData.replace("[\"", "").replace("\"]", "");
+                DDDot.postMessage({
+                    type: "shortcuts.tool.pushFolder",
+                    folderId,
+                });
+            }
+        }
+
+        const el = ref.current;
+        el.addEventListener("dragover", dragover);
+        el.addEventListener("dragleave", dragleave);
+        el.addEventListener("drop", drop);
+
+        return () => {
+            el.removeEventListener("dragover", dragover);
+            el.removeEventListener("dragleave", dragleave);
+            el.removeEventListener("drop", drop);
+        }
+    }, []);
+
+    const className = isLinkDragging ? "dddot-note-list dddot-note-dragging" : "dddot-note-list";
+
     return (
-        <div className="dddot-note-list">
+        <div className={className} ref={ref}>
             {
                 isEmpty ? (
                     <div class='dddot-tool-help-text'>
@@ -160,7 +228,7 @@ export function ShortcutsView(props: Props) {
                                 moveRow={moveRow}
                                 index={index}
                                 onClick={onClick}
-                                onDragged={onDragged}
+                                onDragged={onLinkItemDragged}
                                 onContextMenu={onContextMenu}/>
                         </React.Fragment>
                     ))
