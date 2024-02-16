@@ -5,7 +5,6 @@
     "es2021": true,
     "mocha": true,
     "jest": true,
-    "jquery": true
   },
   "globals": {
     "module": true,
@@ -13,7 +12,6 @@
     "messenger": true,
     "CodeMirror": true,
     "DDDot": true,
-    "Sortable": true,
     "CodeMirror5Manager": true,
     "App": true
   }, 

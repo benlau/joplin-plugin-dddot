@@ -69,6 +69,7 @@ export function ScratchpadView(props: Props) {
             const dt = event.dataTransfer;
             if (dt.types.indexOf(DDDot.X_JOP_NOTE_IDS) >= 0) {
                 dt.dropEffect = "link";
+                event.stopPropagation();
                 event.preventDefault();
             }
         });
@@ -86,19 +87,6 @@ export function ScratchpadView(props: Props) {
                 cm.setCursor(cm.coordsChar({ left: x, top: y }));
                 const cursor = cm.getCursor();
                 doc.replaceRange(text, cursor);
-            }
-        });
-
-        DDDot.onEvent((event) => {
-            switch (event.type) {
-            case DDDot.Event.SortableDragStarted:
-                cm.setOption("dragDrop", false);
-                break;
-            case DDDot.Event.SortableDragEnded:
-                cm.setOption("dragDrop", true);
-                break;
-            default:
-                break;
             }
         });
 

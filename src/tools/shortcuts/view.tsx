@@ -119,13 +119,12 @@ export function ShortcutsView(props: Props) {
                 type: "panel.openFolder",
                 folderId: link.id,
             });
-
         } else {
             DDDot.postMessage({
                 type: "dddot.openNote",
                 noteId: link.id,
             });
-         }
+        }
     }, []);
 
     const onContextMenu = React.useCallback((link: Link) => {
@@ -160,21 +159,19 @@ export function ShortcutsView(props: Props) {
         const dragover = (e: DragEvent) => {
             const dt = e.dataTransfer;
             if (
-                (dt.types.indexOf(DDDot.X_JOP_NOTE_IDS) >= 0) ||
-                 dt.types.indexOf(DDDot.X_JOP_FOLDER_IDS) >= 0
-                ) {
+                (dt.types.indexOf(DDDot.X_JOP_NOTE_IDS) >= 0)
+                 || dt.types.indexOf(DDDot.X_JOP_FOLDER_IDS) >= 0
+            ) {
                 setIsLinkDragging(true);
                 dt.dropEffect = "link";
                 e.stopPropagation();
-                e.preventDefault();    
-                return;
+                e.preventDefault();
             }
-            return;
-        }
+        };
 
-        const dragleave = (e: DragEvent) => {
+        const dragleave = () => {
             setIsLinkDragging(false);
-        }
+        };
 
         const drop = (e: DragEvent) => {
             e.stopPropagation();
@@ -182,7 +179,7 @@ export function ShortcutsView(props: Props) {
             setIsLinkDragging(false);
 
             const noteData = e.dataTransfer.getData(DDDot.X_JOP_NOTE_IDS);
-            if (noteData != "") {
+            if (noteData !== "") {
                 const noteId = noteData.replace("[\"", "").replace("\"]", "");
                 DDDot.postMessage({
                     type: "shortcuts.onNoteDropped",
@@ -191,14 +188,14 @@ export function ShortcutsView(props: Props) {
             }
 
             const folderData = e.dataTransfer.getData(DDDot.X_JOP_FOLDER_IDS);
-            if (folderData != "") {
+            if (folderData !== "") {
                 const folderId = folderData.replace("[\"", "").replace("\"]", "");
                 DDDot.postMessage({
                     type: "shortcuts.tool.pushFolder",
                     folderId,
                 });
             }
-        }
+        };
 
         const el = ref.current;
         el.addEventListener("dragover", dragover);
@@ -209,7 +206,7 @@ export function ShortcutsView(props: Props) {
             el.removeEventListener("dragover", dragover);
             el.removeEventListener("dragleave", dragleave);
             el.removeEventListener("drop", drop);
-        }
+        };
     }, []);
 
     const className = isLinkDragging ? "dddot-note-list dddot-note-dragging" : "dddot-note-list";

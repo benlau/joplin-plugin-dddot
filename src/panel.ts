@@ -30,7 +30,6 @@ export default class Panel {
             "./panel.css",
             "./sandbox/app.js",
             "./sandbox/dddot.js",
-            "./libs/jquery.min.js",
             "./sandbox/codemirror5manager.js",
             "./libs/codemirror.js",
             "./libs/codemirror.css",

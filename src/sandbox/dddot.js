@@ -2,32 +2,6 @@ async function sleep(time) {
     return new Promise((resolve) => { setTimeout(resolve, time); });
 }
 
-function onDropped(type, elem, callback) {
-    $(elem).on("dragover", (event) => {
-        const dt = event.originalEvent.dataTransfer;
-        if (dt.types.indexOf(type) >= 0) {
-            dt.dropEffect = "link";
-            $(elem).addClass("dddot-note-dragging");
-            return false;
-        }
-        return undefined;
-    });
-
-    $(elem).on("dragleave", () => {
-        $(elem).removeClass("dddot-note-dragging");
-    });
-
-    $(elem).on("drop", (event) => {
-        const dt = event.originalEvent.dataTransfer;
-        $(elem).removeClass("dddot-note-dragging");
-        if (dt.types.indexOf(type) >= 0) {
-            callback(dt.getData(type));
-            return false;
-        }
-        return undefined;
-    });
-}
-
 async function waitUntilLoaded(components) {
     for (;;) {
         const loadedComponents = components.filter((component) => component in window);
@@ -57,13 +31,6 @@ class DDDot {
 
     static eventListeners = [];
 
-    static Event = {
-        SortableDragStarted: "SortableDragStarted",
-        SortableDragEnded: "SortableDragEnded",
-    };
-
-    static sortable = undefined;
-
     static fullSceenDialog = undefined;
 
     static listenPanelMessage() {
@@ -88,7 +55,7 @@ class DDDot {
             this.setToolOrder(message);
         });
 
-        const components = ["CodeMirror", "Sortable", "$", "CodeMirror5Manager", "App"];
+        const components = ["CodeMirror", "CodeMirror5Manager", "App"];
         await waitUntilLoaded(components);
 
         this.postMessage({
@@ -116,15 +83,11 @@ class DDDot {
         await Promise.all(tools.map(async (tool) => {
             const {
                 workerFunctionName,
-                containerId,
                 enabled,
             } = tool;
 
             if (enabled) {
                 await window[workerFunctionName]({ theme });
-                $(`#${containerId}`).removeClass("dddot-hidden");
-            } else {
-                $(`#${containerId}`).addClass("dddot-hidden");
             }
         }));
 
@@ -149,20 +112,6 @@ class DDDot {
             return webviewApi.postMessage(JSON.parse(message));
         }
         return webviewApi.postMessage(message);
-    }
-
-    static onNoteDropped(elem, callback) {
-        onDropped(this.X_JOP_NOTE_IDS, elem, (data) => {
-            const noteId = data.replace("[\"", "").replace("\"]", "");
-            callback(noteId);
-        });
-    }
-
-    static onFolderDropped(elem, callback) {
-        onDropped(this.X_JOP_FOLDER_IDS, elem, (data) => {
-            const folderId = data.replace("[\"", "").replace("\"]", "");
-            callback(folderId);
-        });
     }
 
     static async createNoteLink(noteId) {
@@ -199,15 +148,6 @@ class DDDot {
 
     static onEvent(listener) {
         this.eventListeners.push(listener);
-    }
-
-    static setupDraggableLinks(selector) {
-        // eslint-disable-next-line
-        $(selector).on("dragstart", function (event) {
-            const id = $(this).attr("dddot-note-id");
-            event.originalEvent.dataTransfer.clearData();
-            event.originalEvent.dataTransfer.setData(DDDot.X_JOP_NOTE_IDS, `["${id}"]`);
-        });
     }
 }
 DDDot.load();

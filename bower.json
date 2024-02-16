@@ -19,8 +19,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "^3.6.0",
     "codemirror": "^5.65.1",
-    "Sortable": "sortablejs#^1.14.0"
   }
 }
