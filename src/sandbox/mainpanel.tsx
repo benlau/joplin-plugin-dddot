@@ -88,11 +88,11 @@ export function MainPanel(props: Props) {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div id="dddot-panel-container">
+            <div id="dddot-panel-container" className="h-screen flex flex-col">
                 <ToolbarView
                     {...viewPropsMap.toolbar}
                 />
-                <>
+                <div className="flex-1 overflow-y-auto">
                     {
                         availableTools.map((tool: ToolInfo, index: number) => {
                             const View = Views[tool.key];
@@ -110,7 +110,7 @@ export function MainPanel(props: Props) {
                             );
                         })
                     }
-                </>
+                </div>
             </div>
             {isNoteDialogOpened
             && <div key={viewPropsMap.notedialog.noteId ?? 0}>

@@ -2,7 +2,7 @@
   "name": "joplin-plugin-joplin-dddot",
   "version": "0.2.0",
   "scripts": {
-    "predist": "tailwindcss  -o src/styles/tailwind.css",
+    "predist": "tailwindcss -i config.css -o src/styles/tailwind.css",
     "dist": "webpack --env joplin-plugin-config=buildMain && webpack --env joplin-plugin-config=buildExtraScripts && webpack --env joplin-plugin-config=createArchive",
     "prepare": "npm run dist",
     "update": "npm install -g generator-joplin && yo joplin --node-package-manager npm --update --force",

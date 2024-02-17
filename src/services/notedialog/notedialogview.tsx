@@ -102,7 +102,7 @@ export function NoteDialogView(props: Props) {
     return (
         <div>
             <div class="dddot-notedialog-container">
-                <div class="dddot-notedialog-header">
+                <div class="dddot-notedialog-header height-[26px]">
                     <div class="dddot-notedialog-title">
                         <NoteLink title={title} noteId={noteId}/>
                     </div>
