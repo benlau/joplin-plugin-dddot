@@ -1,6 +1,7 @@
 import React from "react";
 import { t } from "i18next";
 import { NoteLink } from "../../views/notelink";
+import { PrimaryButton } from "../../views/primarybutton";
 
 type Props = {
     title?: string;
@@ -26,7 +27,7 @@ export function CommandButton(props: {
     const { alignment } = props;
     const position = alignment !== "" ? `tooltip-${alignment}` : "";
 
-    const className = `tooltip-multiline ${position} dddot-notedialog-button`;
+    const className = `${position}`;
 
     const onClick = React.useCallback(() => {
         DDDot.postMessage({
@@ -37,10 +38,9 @@ export function CommandButton(props: {
     }, [noteId, command]);
 
     return (
-        <div class={className} data-tooltip={t(tooltip)}>
-            <button class="dddot-clickable"
-                onClick={onClick}>{t(title)}</button>
-        </div>
+        <PrimaryButton className={className} onClick={onClick} tooltip={tooltip}>
+            {t(title)}
+        </PrimaryButton>
     );
 }
 
