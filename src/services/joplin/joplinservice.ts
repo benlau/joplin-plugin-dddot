@@ -94,7 +94,7 @@ export default class JoplinService {
 
         const links = items.map(
             (item) => LinkMonad.createNoteLinkFromRawData(item),
-        );
+        ).filter((item) => item.id !== id);
         return links;
     }
 
