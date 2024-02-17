@@ -17,8 +17,8 @@ class App {
         MainPanel.setSectionViewProp(toolId, key, value);
     }
 
-    static setNoteDialogVisible(visible: boolean) {
-        MainPanel.setNoteDialogVisible(visible);
+    static setOverlayVisible(view: string, visible: boolean) {
+        MainPanel.setOverlayVisible(view, visible);
     }
 
     static setToolsOrder(order: string[]) {

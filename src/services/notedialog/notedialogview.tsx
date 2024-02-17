@@ -7,7 +7,7 @@ type Props = {
     title?: string;
     noteId?: string;
     content?: string;
-    onCloseClick: () => void;
+    onClose: () => void;
 }
 
 type State = {
@@ -107,7 +107,7 @@ export function NoteDialogView(props: Props) {
                         <NoteLink title={title} noteId={noteId}/>
                     </div>
                     <div class="dddot-notedialog-close-button-holder ">
-                        <div class="dddot-notedialog-close-button dddot-clickable" onClick={props.onCloseClick}>
+                        <div class="dddot-notedialog-close-button dddot-clickable" onClick={props.onClose}>
                             <h3><i class="fas fa-times"></i></h3>
                         </div>
                     </div>

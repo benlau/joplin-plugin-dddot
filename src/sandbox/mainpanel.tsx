@@ -26,7 +26,7 @@ const Views = {
 
 let singletonRef = null as null | {
   setSectionViewProp: (tool, key, value) => void;
-  setNoteDialogVisible: (visible: boolean) => void;
+  setOverlayVisible: (view: string, visible: boolean) => void;
 };
 
 export function MainPanel(props: Props) {
@@ -34,11 +34,14 @@ export function MainPanel(props: Props) {
     const [viewPropsMap, setSectionViewPropMap] = React.useState(
         {} as {[key: string]: {[key:string]: any}},
     );
+    const [overlayUpdateCounter, setOverlayUpdateCounter] = React.useState(
+        0,
+    );
 
-    const [isNoteDialogOpened, setIsNoteDialogOpened] = React.useState(false);
+    const [overlayVisibleList, setOverlayVisibleList] = React.useState([]);
 
-    const closeNoteDialog = React.useCallback(() => {
-        setIsNoteDialogOpened(false);
+    const closeOverlay = React.useCallback((overlay: string) => {
+        setOverlayVisibleList((prev) => prev.filter((item) => item !== overlay));
     }, []);
 
     const [availableTools, setAvailableTools] = React.useState<ToolInfo[]>(
@@ -77,8 +80,12 @@ export function MainPanel(props: Props) {
                     };
                 });
             },
-            setNoteDialogVisible: (visible: boolean) => {
-                setIsNoteDialogOpened(visible);
+            setOverlayVisible: (view: string, visible: boolean) => {
+                setOverlayVisibleList((prev) => {
+                    const items = prev.filter((overlay) => overlay !== view);
+                    return visible ? items.concat(view) : items;
+                });
+                setOverlayUpdateCounter((prev) => prev + 1);
             },
         };
         return () => {
@@ -112,13 +119,20 @@ export function MainPanel(props: Props) {
                     }
                 </div>
             </div>
-            {isNoteDialogOpened
-            && <div key={viewPropsMap.notedialog.noteId ?? 0}>
-                <NoteDialogView
-                    {...viewPropsMap.notedialog}
-                    onCloseClick={closeNoteDialog}
-                />
-            </div>
+            {
+                overlayVisibleList.map((overlay) => {
+                    const View = Views[overlay];
+                    return (
+                        <div key={overlayUpdateCounter}>
+                            <View
+                                {...viewPropsMap[overlay]}
+                                onClose={() => {
+                                    closeOverlay(overlay);
+                                }}
+                            />
+                        </div>
+                    );
+                })
             }
         </DndProvider>
     );
@@ -128,6 +142,6 @@ MainPanel.setSectionViewProp = (tool, key, value) => {
     singletonRef?.setSectionViewProp(tool, key, value);
 };
 
-MainPanel.setNoteDialogVisible = (visible: boolean) => {
-    singletonRef?.setNoteDialogVisible(visible);
+MainPanel.setOverlayVisible = (view: string, visible: boolean) => {
+    singletonRef?.setOverlayVisible(view, visible);
 };

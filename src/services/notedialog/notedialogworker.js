@@ -2,11 +2,11 @@
 async function noteDialogWorker() {
 
     const closeDialog = () => {
-        App.setNoteDialogVisible(false);
+        App.setOverlayVisible("notedialog", false);
     };
 
     const openDialog = () => {
-        App.setNoteDialogVisible(true);
+        App.setOverlayVisible("notedialog", true);
     };
 
     DDDot.onMessage("notedialog.worker.open", (message) => {
