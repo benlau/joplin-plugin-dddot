@@ -55,7 +55,7 @@ export function useSectionState(props: Props) {
 
     const itemRef = dragPreviewRef(dropRef(ref));
 
-    const onHeaderClick = React.useCallback(() => {
+    const onExpandClick = React.useCallback(() => {
         setIsExpanded((prev) => !prev);
     }, [isExpanded]);
 
@@ -66,7 +66,7 @@ export function useSectionState(props: Props) {
         dragPreviewRef,
         isExpanded,
         setIsExpanded,
-        onHeaderClick,
+        onExpandClick,
         isDragging,
         children,
         index, // Return index to make sure it could trigger SecionImpl to re-render after DnD
@@ -76,12 +76,12 @@ export function useSectionState(props: Props) {
 export function SectionImpl(props: ReturnType<typeof useSectionState>) {
     const {
         tool,
-        onHeaderClick,
+        onExpandClick,
         itemRef,
         isDragging,
     } = props;
 
-    const buttonClass = cn("dddot-expand-button", {
+    const expandButtonClass = cn("dddot-expand-button", {
         "dddot-expand-button-active": props.isExpanded,
         "dddot-expand-button-inactive": !props.isExpanded,
     });
@@ -90,9 +90,20 @@ export function SectionImpl(props: ReturnType<typeof useSectionState>) {
 
     return (
         <div data-id={tool.key} id={tool.containerId} ref={itemRef} style={{ opacity }}>
-            <div class="dddot-tool-header" onClick={onHeaderClick} ref={props.dragRef}>
+            <div class="dddot-tool-header" ref={props.dragRef}>
                 <h3><i class="fas fa-bars"></i> {tool.title}</h3>
-                <h3 class={buttonClass}><i class="fas fa-play"></i></h3>
+                <div className="flex flex-row gap-[4px] center justify-center h-full">
+                    {
+                        tool.extraButtons.map((button, index) => (
+                            <h3 key={index} onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                DDDot.postMessage(button.message);
+                            }}><i class={`fas ${button.icon}`}></i></h3>
+                        ))
+                    }
+                    <h3 class={expandButtonClass} onClick={onExpandClick}><i class="fas fa-play"></i></h3>
+                </div>
             </div>
             {
                 props.isExpanded && (

@@ -233,6 +233,7 @@ export default class Panel {
                     key,
                     title,
                     hasView,
+                    extraButtons,
                 } = tool;
 
                 const enabled = await tool.updateEnabledFromSetting();
@@ -249,6 +250,7 @@ export default class Panel {
                     contentId,
                     enabled,
                     hasView,
+                    extraButtons,
                 } as ToolInfo;
             }),
         );

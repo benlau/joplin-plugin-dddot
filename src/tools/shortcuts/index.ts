@@ -121,4 +121,16 @@ export default class Shortcuts extends Tool {
     get title() {
         return t("shortcuts.title");
     }
+
+    get extraButtons() {
+        return [
+            {
+                tooltip: t("shortcuts.show_export_view"),
+                icon: "fas fa-file-export",
+                message: {
+                    type: "shortcuts.showExportView",
+                },
+            },
+        ];
+    }
 }

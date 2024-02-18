@@ -2,6 +2,7 @@ import { MenuItem } from "api/types";
 import JoplinRepo from "../repo/joplinrepo";
 import JoplinService from "../services/joplin/joplinservice";
 import ServicePool from "../services/servicepool";
+import { ToolButton } from "../types/toolinfo";
 
 export function blockDisabled(_target, _name, descriptor) {
     const original = descriptor.value;
@@ -59,6 +60,10 @@ export default class Tool {
 
     get hasWorkerFunction() {
         return true;
+    }
+
+    get extraButtons(): ToolButton[] {
+        return [];
     }
 
     async updateEnabledFromSetting() {
