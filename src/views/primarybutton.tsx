@@ -13,10 +13,10 @@ export function PrimaryButton(props: Props) {
     const tooltip = props.tooltip != null ? t(props.tooltip) : null;
     const className = cn(props.className, {
         "tooltip-multiline": props.tooltip != null,
-
-    });
-    const buttonClasses = cn([
-        "dddot-clickable",
+    }, [
+        "bg-transparent",
+        "hover:bg-[#ffffff7f]",
+        "active:bg-[#ffffff5f]",
         "bg-transparent",
         "py-[4px]",
         "rounded-[4px]",
@@ -26,10 +26,8 @@ export function PrimaryButton(props: Props) {
     ]);
 
     return (
-        <div class={className} data-tooltip={t(tooltip)} onClick={props.onClick}>
-            <button class={buttonClasses}>
-                {props.children}
-            </button>
-        </div>
+        <button class={className} data-tooltip={t(tooltip)} onClick={props.onClick}>
+            {props.children}
+        </button>
     );
 }

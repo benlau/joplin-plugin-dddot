@@ -126,13 +126,15 @@ export function NoteDialogView(props: Props) {
                         <h3>{t("notedialog.note_editor")} ⮕ {t("notedialog.quick_view")}</h3>
                         {
                             // eslint-disable-next-line @typescript-eslint/no-shadow
-                            commands.map(([command, title, tooltip]) => (
-                                <CommandButton
-                                    noteId={noteId}
-                                    command={command}
-                                    title={title}
-                                    tooltip={tooltip}
-                                    alignment="left"/>
+                            commands.map(([command, title, tooltip], index) => (
+                                <div key={index}>
+                                    <CommandButton
+                                        noteId={noteId}
+                                        command={command}
+                                        title={title}
+                                        tooltip={tooltip}
+                                        alignment="left"/>
+                                </div>
                             ))
                         }
                     </div>

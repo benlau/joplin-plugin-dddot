@@ -21,7 +21,7 @@ export function Overlay(props: Props) {
                     {props.header}
                 </div>
                 <div className="flex flex-col justify-center">
-                    <PrimaryButton onClick={props.onClose}>
+                    <PrimaryButton onClick={props.onClose} className="min-w-[50px] mr-2">
                         <i class="fas fa-times"></i>
                     </PrimaryButton>
                 </div>
