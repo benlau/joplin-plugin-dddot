@@ -33,7 +33,6 @@ export default class Panel {
             "./sandbox/codemirror5manager.js",
             "./libs/codemirror.js",
             "./libs/codemirror.css",
-            "./libs/Sortable.min.js",
             "./theme/codemirror/blackboard.css",
             "./styles/css-tooltip.css",
             "./styles/tailwind.css",

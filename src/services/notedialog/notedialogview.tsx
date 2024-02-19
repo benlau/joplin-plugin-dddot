@@ -2,6 +2,7 @@ import React from "react";
 import { t } from "i18next";
 import { NoteLink } from "../../views/notelink";
 import { PrimaryButton } from "../../views/primarybutton";
+import { Overlay } from "../../views/overlay";
 
 type Props = {
     title?: string;
@@ -100,51 +101,43 @@ export function NoteDialogView(props: Props) {
     }, [content]);
 
     return (
-        <div>
-            <div class="dddot-notedialog-container">
-                <div class="dddot-notedialog-header height-[26px]">
-                    <div class="dddot-notedialog-title">
-                        <NoteLink title={title} noteId={noteId}/>
-                    </div>
-                    <div class="dddot-notedialog-close-button-holder ">
-                        <div class="dddot-notedialog-close-button dddot-clickable" onClick={props.onClose}>
-                            <h3><i class="fas fa-times"></i></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="dddot-notedialog-content">
-                    <div class="dddot-notedialog-editor">
-                        <div class="dddot-notedialog-editor-content">
-                            <textarea id="dddot-notedialog-texarea" rows="10" ref={textareaRef}></textarea>
-                        </div>
-                    </div>
-                    <div class="dddot-notedialog-tool-panel">
-                        <CommandButton
-                            noteId={noteId}
-                            command="swap"
-                            title="notedialog.swap"
-                            tooltip="notedialog.swap_tooltip"
-                            alignment="right"
-                        />
-                    </div>
-                    <div class="dddot-note-dialog-command-panel">
-                        <div class="dddot-note-dialog-command-panel-content">
-                            <h3>{t("notedialog.note_editor")} ⮕ {t("notedialog.quick_view")}</h3>
-                            {
-                                // eslint-disable-next-line @typescript-eslint/no-shadow
-                                commands.map(([command, title, tooltip]) => (
-                                    <CommandButton
-                                        noteId={noteId}
-                                        command={command}
-                                        title={title}
-                                        tooltip={tooltip}
-                                        alignment="left"/>
-                                ))
-                            }
-                        </div>
+        <Overlay
+            header={
+                (<NoteLink title={title} noteId={noteId}/>)
+            }
+            onClose={props.onClose}>
+            <>
+                <div class="dddot-notedialog-editor">
+                    <div class="dddot-notedialog-editor-content">
+                        <textarea rows="10" ref={textareaRef}></textarea>
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="dddot-notedialog-tool-panel">
+                    <CommandButton
+                        noteId={noteId}
+                        command="swap"
+                        title="notedialog.swap"
+                        tooltip="notedialog.swap_tooltip"
+                        alignment="right"
+                    />
+                </div>
+                <div class="dddot-note-dialog-command-panel">
+                    <div class="dddot-note-dialog-command-panel-content">
+                        <h3>{t("notedialog.note_editor")} ⮕ {t("notedialog.quick_view")}</h3>
+                        {
+                            // eslint-disable-next-line @typescript-eslint/no-shadow
+                            commands.map(([command, title, tooltip]) => (
+                                <CommandButton
+                                    noteId={noteId}
+                                    command={command}
+                                    title={title}
+                                    tooltip={tooltip}
+                                    alignment="left"/>
+                            ))
+                        }
+                    </div>
+                </div>
+            </>
+        </Overlay>
     );
 }
