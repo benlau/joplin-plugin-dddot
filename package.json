@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "cntl": "^1.0.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "fecha": "^4.2.3",
     "i18next": "^21.6.16",

@@ -3,6 +3,32 @@ import cn from "classnames";
 import { useDrag, useDrop } from "react-dnd";
 import { ToolInfo } from "../types/toolinfo";
 import { DragItemType } from "../types/drag";
+import { SmallIconButton } from "../views/smalliconbutton";
+
+function ExpendButton(props: { isExpanded: boolean, onClick: () => void }) {
+    const styles = props.isExpanded ? {
+        transformOrigin: "center center",
+        transform: "translate(2px,2px) rotate(90deg)",
+    } : {
+        transformOrigin: "center center",
+        transform: "translate(0px,4px) rotate(180deg)",
+    };
+
+    return (
+        <SmallIconButton
+            icon="fa-play"
+            onClick={props.onClick}
+        >
+            <div
+                style={styles}
+                className="w-full h-fil flex flex-col justify-center items-center">
+                <h3>
+                    <i class="fas fa-play"></i>
+                </h3>
+            </div>
+        </SmallIconButton>
+    );
+}
 
 type Props = {
     tool: ToolInfo;
@@ -81,28 +107,26 @@ export function SectionImpl(props: ReturnType<typeof useSectionState>) {
         isDragging,
     } = props;
 
-    const expandButtonClass = cn("dddot-expand-button", {
-        "dddot-expand-button-active": props.isExpanded,
-        "dddot-expand-button-inactive": !props.isExpanded,
-    });
-
     const opacity = isDragging ? 0 : 1;
 
     return (
         <div data-id={tool.key} id={tool.containerId} ref={itemRef} style={{ opacity }}>
             <div class="dddot-tool-header" ref={props.dragRef}>
                 <h3><i class="fas fa-bars"></i> {tool.title}</h3>
-                <div className="flex flex-row gap-[4px] center justify-center h-full">
+                <div className="flex flex-row center justify-center h-full">
                     {
                         tool.extraButtons.map((button, index) => (
-                            <h3 key={index} onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                DDDot.postMessage(button.message);
-                            }}><i class={`fas ${button.icon}`}></i></h3>
+                            <React.Fragment key={index}>
+                                <SmallIconButton icon={button.icon} onClick={() => {
+                                    DDDot.postMessage(button.message);
+                                }}/>
+                            </React.Fragment>
                         ))
                     }
-                    <h3 class={expandButtonClass} onClick={onExpandClick}><i class="fas fa-play"></i></h3>
+                    <ExpendButton
+                        isExpanded={props.isExpanded}
+                        onClick={onExpandClick}
+                    />
                 </div>
             </div>
             {
