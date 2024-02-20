@@ -26,7 +26,7 @@ export function PrimaryButton(props: Props) {
     ]);
 
     return (
-        <button class={className} data-tooltip={t(tooltip)} onClick={props.onClick}>
+        <button class={className} data-tooltip={tooltip} onClick={props.onClick}>
             {props.children}
         </button>
     );

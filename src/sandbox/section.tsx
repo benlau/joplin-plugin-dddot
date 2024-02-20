@@ -1,5 +1,4 @@
 import React from "react";
-import cn from "classnames";
 import { useDrag, useDrop } from "react-dnd";
 import { ToolInfo } from "../types/toolinfo";
 import { DragItemType } from "../types/drag";

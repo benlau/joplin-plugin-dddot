@@ -6,6 +6,7 @@ import { Section } from "./section";
 import { BacklinksView } from "../tools/backlinks/view";
 import { RecentNotesView } from "../tools/recentnotes/view";
 import { ShortcutsView } from "../tools/shortcuts/view";
+import { ShortcutsOverlay } from "../tools/shortcuts/overlay";
 import { ScratchpadView } from "../tools/scratchpad/view";
 import { NoteDialogView } from "../services/notedialog/notedialogview";
 import { ToolbarView } from "../services/toolbar/toolbarview";
@@ -19,6 +20,7 @@ const Views = {
     backlinks: BacklinksView,
     recentnotes: RecentNotesView,
     shortcuts: ShortcutsView,
+    shortcutsOverlay: ShortcutsOverlay,
     scratchpad: ScratchpadView,
     notedialog: NoteDialogView,
     toolbar: ToolbarView,

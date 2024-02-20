@@ -50,6 +50,9 @@ export default class Shortcuts extends Tool {
         case "shortcuts.tool.removeLink":
             this.removeLink(message.id);
             return undefined;
+        case "shortcuts.onImportExportClicked":
+            this.showOverlay();
+            return undefined;
         case "shortcuts.onOrderChanged":
             await this.onOrderChanged(message.linkIds);
             break;
@@ -125,12 +128,18 @@ export default class Shortcuts extends Tool {
     get extraButtons() {
         return [
             {
-                tooltip: t("shortcuts.show_export_view"),
+                tooltip: t("shortcuts.import_export_tooltip"),
                 icon: "fas fa-file-export",
                 message: {
-                    type: "shortcuts.showExportView",
+                    type: "shortcuts.onImportExportClicked",
                 },
             },
         ];
+    }
+
+    showOverlay() {
+        this.joplinRepo.panelPostMessage({
+            type: "shortcuts.showOverlay",
+        });
     }
 }
