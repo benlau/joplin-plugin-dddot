@@ -50,6 +50,9 @@ export default class Shortcuts extends Tool {
         case "shortcuts.tool.removeLink":
             this.removeLink(message.id);
             return undefined;
+        case "shortcuts.importShortcuts":
+            this.importShortcuts(message.shortcuts);
+            break;
         case "shortcuts.onImportExportClicked":
             this.showOverlay();
             return undefined;
@@ -141,5 +144,11 @@ export default class Shortcuts extends Tool {
         this.joplinRepo.panelPostMessage({
             type: "shortcuts.showOverlay",
         });
+    }
+
+    async importShortcuts(shortcuts: Link[]) {
+        this.linkListModel.rehydrate(shortcuts);
+        await this.save();
+        this.refresh(this.read());
     }
 }

@@ -2,49 +2,80 @@ import Shortcuts from "../src/tools/shortcuts";
 import JoplinRepo from "../src/repo/joplinrepo";
 import ServicePool from "../src/services/servicepool";
 import { LinkMonad } from "../src/types/link";
+import { ShortcutsStorageValidator } from "../src/tools/shortcuts/types";
 import LinkListModel from "../src/models/linklistmodel";
 
 jest.mock("../src/repo/joplinrepo");
-jest.mock("../src/repo/platformrepo", () => ({
-    default: jest.fn().mockImplementation(() => ({ isLinux: () => true })),
-}));
-
-test("removeNote - it should ask for confirmation", async () => {
-    const joplinRepo: any = new JoplinRepo();
-    const servicePool = new ServicePool(joplinRepo);
-    const tool = new Shortcuts(servicePool);
-
-    const ids = ["1", "2", "3"];
-    const model = new LinkListModel();
-    ids.forEach((id) => {
-        const link = LinkMonad.createNoteLink(id, `title:${id}`);
-        model.push(link);
-    });
-
-    tool.linkListModel = model;
-    joplinRepo.dialogOpen.mockReturnValue({ id: "ok" });
-
-    await tool.removeLink("1");
-
-    expect(tool.linkListModel.links.length).toBe(ids.length - 1);
+// eslint-disable-next-line func-names
+jest.mock("../src/repo/platformrepo", () => function () {
+    this.isLinux = () => true;
 });
 
-test("removeNote - user could refuse to remove", async () => {
-    const joplinRepo: any = new JoplinRepo();
-    const servicePool = new ServicePool(joplinRepo);
-    const tool = new Shortcuts(servicePool);
+describe("Shortcuts Tool", () => {
+    test("removeNote - it should ask for confirmation", async () => {
+        const joplinRepo: any = new JoplinRepo();
+        const servicePool = new ServicePool(joplinRepo);
+        const tool = new Shortcuts(servicePool);
 
-    const ids = ["1", "2", "3"];
-    const model = new LinkListModel();
-    ids.forEach((id) => {
-        const link = LinkMonad.createNoteLink(id, `title:${id}`);
-        model.push(link);
+        const ids = ["1", "2", "3"];
+        const model = new LinkListModel();
+        ids.forEach((id) => {
+            const link = LinkMonad.createNoteLink(id, `title:${id}`);
+            model.push(link);
+        });
+
+        tool.linkListModel = model;
+        joplinRepo.dialogOpen.mockReturnValue({ id: "ok" });
+
+        await tool.removeLink("1");
+
+        expect(tool.linkListModel.links.length).toBe(ids.length - 1);
     });
 
-    tool.linkListModel = model;
-    joplinRepo.dialogOpen.mockReturnValue({ id: "cancel" });
+    test("removeNote - user could refuse to remove", async () => {
+        const joplinRepo: any = new JoplinRepo();
+        const servicePool = new ServicePool(joplinRepo);
+        const tool = new Shortcuts(servicePool);
 
-    await tool.removeLink("1");
+        const ids = ["1", "2", "3"];
+        const model = new LinkListModel();
+        ids.forEach((id) => {
+            const link = LinkMonad.createNoteLink(id, `title:${id}`);
+            model.push(link);
+        });
 
-    expect(tool.linkListModel.links.length).toBe(ids.length);
+        tool.linkListModel = model;
+        joplinRepo.dialogOpen.mockReturnValue({ id: "cancel" });
+
+        await tool.removeLink("1");
+
+        expect(tool.linkListModel.links.length).toBe(ids.length);
+    });
+});
+
+describe("shortcuts storage", () => {
+    test("validate - it should return true if the link is valid", () => {
+        const storage = {
+            version: 1,
+            shortcuts: [
+                {
+                    id: "123",
+                    title: "123",
+                    type: "note",
+                    isTodo: false,
+                    isTodoCompleted: false,
+                },
+            ],
+        };
+
+        const validator = new ShortcutsStorageValidator();
+        const result = validator.validate(storage);
+        expect(result).toBe(true);
+    });
+
+    test("validate - it should return false for invalid format", () => {
+        const validator = new ShortcutsStorageValidator();
+        expect(validator.validate({})).toBe(false);
+        expect(validator.validate(undefined)).toBe(false);
+    });
 });

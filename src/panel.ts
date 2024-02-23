@@ -210,6 +210,7 @@ export default class Panel {
     async onLoaded() {
         const {
             joplinService,
+            joplinRepo,
         } = this.servicePool;
 
         await this.servicePool.onLoaded();
@@ -256,7 +257,7 @@ export default class Panel {
         const currentTheme = await joplinService.queryThemeType();
         const { serviceWorkerFunctions } = this.servicePool;
 
-        const locale = await joplin.settings.globalValue("locale");
+        const locale = await joplinRepo.settingsLoadGlobal("locale", "en");
 
         this.joplinRepo.panelPostMessage({
             type: "dddot.start",
