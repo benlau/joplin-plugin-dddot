@@ -52,7 +52,7 @@
   bottom: 0px;
   left: 0px;
   right: 4px;
-  border: 1 solid var(--joplin-color);
+  border: 1px solid var(--joplin-color);
 }
 
 .dddot-notedialog-tool-panel {
