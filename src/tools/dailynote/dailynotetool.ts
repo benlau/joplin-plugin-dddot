@@ -122,7 +122,7 @@ export default class DailyNoteTool extends Tool {
     async createDailyNoteAndOpenNote() {
         const {
             noteId,
-        } = await this.createDailyNote();
+        } = await this.getOrCreateDailyNote();
 
         await this.joplinService.openNoteAndWaitOpened(noteId);
     }
@@ -130,12 +130,12 @@ export default class DailyNoteTool extends Tool {
     async createDailyNoteAndOpenDialog() {
         const {
             noteId,
-        } = await this.createDailyNote();
+        } = await this.getOrCreateDailyNote();
 
         await this.noteDialogService.openAndWaitOpened(noteId);
     }
 
-    async createDailyNote() {
+    async getOrCreateDailyNote() {
         const {
             joplinService,
             dateTimeService,
@@ -146,7 +146,7 @@ export default class DailyNoteTool extends Tool {
 
         const today = dateTimeService.getNormalizedToday(startHour);
 
-        const noteId = await this.genNoteId(today);
+        const hashedNoteId = await this.genNoteId(today);
 
         const dateFormat = await joplinRepo.settingsLoadGlobal("dateFormat", "YYYY-MM-DD");
 
@@ -154,12 +154,30 @@ export default class DailyNoteTool extends Tool {
 
         const defaultNotebook = await joplinRepo.settingsLoad(DailyNoteDefaultNotebook, "");
 
+        try {
+            const note = await joplinService.getNote(hashedNoteId);
+            if (note) {
+                return {
+                    noteId: hashedNoteId,
+                };
+            }
+        } catch {
+            // Do nothing
+        }
+
+        const searchResult = await joplinService.searchNoteByTitle(title, 1);
+        if (searchResult.length > 0) {
+            return {
+                noteId: searchResult[0].id,
+            };
+        }
+
         const parentId = await joplinService.queryNotebookId(defaultNotebook);
 
-        await joplinService.createNoteWithIdIfNotExists(noteId, title, { parentId });
+        await joplinService.createNoteWithIdIfNotExists(hashedNoteId, title, { parentId });
 
         return {
-            noteId,
+            noteId: hashedNoteId,
         };
     }
 

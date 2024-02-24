@@ -75,6 +75,23 @@ export default class JoplinService {
         return LinkMonad.createFolderLink(folder.id, folder.title);
     }
 
+    async searchNoteByTitle(title: string, maxCount?: number) {
+        let items = [];
+        const query = this.dataGet(
+            ["search"],
+            { query: title, fields: ["id", "title"] },
+        );
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const result of query) {
+            const notes = result.items.filter((item) => item.title.includes(title));
+            items = items.concat(notes);
+            if (maxCount !== undefined && items.length >= maxCount) {
+                break;
+            }
+        }
+        return maxCount !== undefined ? items.slice(0, maxCount) : items;
+    }
+
     async searchBacklinks(id: string): Promise<Link[]> {
         let hasMore = true;
         let page = 1;
