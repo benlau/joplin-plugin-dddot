@@ -9,9 +9,7 @@ export class ShortcutsStorageValidator {
     validateLink(link: Link) {
         return link.id !== undefined
             && link.title !== undefined
-            && link.type !== undefined
-            && link.isTodo !== undefined
-            && link.isTodoCompleted !== undefined;
+            && link.type !== undefined;
     }
 
     validate(storage: any) {

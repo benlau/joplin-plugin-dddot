@@ -65,6 +65,16 @@ describe("shortcuts storage", () => {
                     isTodo: false,
                     isTodoCompleted: false,
                 },
+                { // isTodo and isTodoCompleted is optional fields
+                    id: "fd43ba75224e4475b2a8a29662e1c008",
+                    title: "Inbox",
+                    type: "FolderLink",
+                },
+                {
+                    id: "ffc86962b2d34474bb774b52d3f07373",
+                    title: "Test Note",
+                    type: "NoteLink",
+                },
             ],
         };
 
