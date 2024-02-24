@@ -10,7 +10,6 @@ export function ShortcutItem(props: {
     onClick: (link: Link) => void;
     onContextMenu: (link: Link) => void;
     moveRow: (dragIndex: number, hoverIndex: number) => void;
-    onDragged: () => void;
 }) {
     const {
         link,
@@ -62,7 +61,8 @@ export function ShortcutItem(props: {
             item.index = hoverIndex;
         },
         drop: () => {
-            props.onDragged();
+            // If the item is not dropped, it won't be called
+            // Therefore, to save the changed order, it should do it in the hover event
         },
     });
 
@@ -134,20 +134,21 @@ export function ShortcutsView(props: Props) {
         });
     }, []);
 
+    const onOrderChanged = React.useCallback((linkIds: string[]) => {
+        DDDot.postMessage({
+            type: "shortcuts.onOrderChanged",
+            linkIds,
+        });
+    }, []);
+
     const moveRow = React.useCallback((dragIndex: number, hoverIndex: number) => {
         setLinks((prev) => {
             const newValue = [...prev];
             const tmp = newValue[dragIndex];
             newValue[dragIndex] = newValue[hoverIndex];
             newValue[hoverIndex] = tmp;
+            onOrderChanged(newValue.map((link) => link.id));
             return newValue;
-        });
-    }, []);
-
-    const onLinkItemDragged = React.useCallback(() => {
-        DDDot.postMessage({
-            type: "shortcuts.onOrderChanged",
-            linkIds: linkRef.current?.map((link) => link.id) ?? [],
         });
     }, []);
 
@@ -225,7 +226,6 @@ export function ShortcutsView(props: Props) {
                                 moveRow={moveRow}
                                 index={index}
                                 onClick={onClick}
-                                onDragged={onLinkItemDragged}
                                 onContextMenu={onContextMenu}/>
                         </React.Fragment>
                     ))
