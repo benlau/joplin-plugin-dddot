@@ -39,7 +39,6 @@ export function MainPanel(props: Props) {
     const [overlayUpdateCounter, setOverlayUpdateCounter] = React.useState(
         0,
     );
-
     const [overlayVisibleList, setOverlayVisibleList] = React.useState([]);
 
     const closeOverlay = React.useCallback((overlay: string) => {
@@ -113,7 +112,7 @@ export function MainPanel(props: Props) {
                         availableTools.map((tool: ToolInfo, index: number) => {
                             const View = Views[tool.key];
 
-                            if (!View) {
+                            if (!View || !tool.enabled) {
                                 return null;
                             }
 
