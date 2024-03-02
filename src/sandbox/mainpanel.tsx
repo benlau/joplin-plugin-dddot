@@ -66,6 +66,13 @@ export function MainPanel(props: Props) {
             const tmp = newValue[dragIndex];
             newValue[dragIndex] = newValue[hoverIndex];
             newValue[hoverIndex] = tmp;
+
+            const toolIds = newValue.map((tool) => tool.key);
+
+            DDDot.postMessage({
+                type: "dddot.onToolOrderChanged",
+                toolIds,
+            });
             return newValue;
         });
     }, []);
