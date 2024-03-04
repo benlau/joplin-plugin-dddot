@@ -20,7 +20,7 @@
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
-    "@joplin/lib": "~2.9",
+    "@joplin/lib": "^2.6.3",
     "@types/jest": "^27.4.1",
     "@types/node": "^18.7.13",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
@@ -61,5 +61,8 @@
   },
   "files": [
     "publish"
-  ]
+  ],
+  "overrides": {
+    "immer": "^10.0.3"
+  }
 }
