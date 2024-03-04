@@ -28,5 +28,9 @@
     "dailynote.open_daily_note": "Open Daily Note",
     "randomnote.title": "Random Note",
     "randomnote.enable": "Enable Random Note",
-    "randomnote.open_random_note": "Open Random Note"
+    "randomnote.open_random_note": "Open Random Note",
+    "outline.title": "Outline",
+    "outline.enable": "Enable Outline",
+    "outline.link_copied": "Link copied!",
+    "outline.settings.height": "Outline Height(px)"
 }

@@ -1,35 +1,57 @@
-import { Marked } from "marked";
-import { Outline } from "../../types/outline";
+import uslug from "uslug";
+import markdownit from "markdown-it";
+import { Heading } from "../../types/outline";
 
 export class MarkdownParserService {
-    marked: Marked;
+    md: any;
 
     constructor() {
-        this.marked = new Marked({
-            async: true,
-        });
+        this.md = markdownit();
     }
 
-    async parseOutlines(markdown: string): Promise<Outline[]> {
-        const result = await this.marked.lexer(markdown);
-        const outlines = [] as Outline[];
+    escapeLinkText(title: string) {
+        return title.replace(/(\[|\])/g, "\\$1");
+    }
+
+    genMarkdownLink(title: string, id: string, slug?: string) {
+        if (!slug) {
+            return `[${this.escapeLinkText(title)}](:/${id})`;
+        }
+
+        return `[${this.escapeLinkText(title)}](:/${id}#${slug})`;
+    }
+
+    parseHeadings(markdown: string): Heading[] {
+        const result = this.md.parse(markdown, {});
+        const outlines = [] as Heading[];
         let lastOutline = null;
-        result.forEach((token) => {
-            if (token.type !== "heading") {
-                return;
+        result.forEach((token, index) => {
+            try {
+                if (token.type !== "heading_open") {
+                    return;
+                }
+                const title = result[index + 1].children.reduce((acc, cur) => acc + cur.content, "");
+
+                const slug = uslug(title);
+                const level = token.markup.length;
+                const lineno = token.map[0];
+
+                const outline = {
+                    title,
+                    level,
+                    slug,
+                    lineno,
+                    children: [],
+                } as Heading;
+                if (lastOutline && lastOutline.level < outline.level) {
+                    lastOutline.children.push(outline);
+                } else {
+                    outlines.push(outline);
+                }
+                lastOutline = outline;
+            } catch (e) {
+                console.error(e);
             }
-            const outline = {
-                title: token.text,
-                level: token.depth,
-                slug: token.text.toLowerCase().replace(/ /g, "-"),
-                children: [],
-            } as Outline;
-            if (lastOutline && lastOutline.level < outline.level) {
-                lastOutline.children.push(outline);
-            } else {
-                outlines.push(outline);
-            }
-            lastOutline = outline;
         });
         return outlines;
     }

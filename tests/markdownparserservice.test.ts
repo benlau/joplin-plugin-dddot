@@ -1,6 +1,6 @@
 import { MarkdownParserService } from "../src/services/markdownparser/markdownparserservice";
 
-test("parseOutlines", async () => {
+test("parseHeadings", async () => {
     const service = new MarkdownParserService();
     const sample = `
 # Title
@@ -9,17 +9,19 @@ test("parseOutlines", async () => {
 456
 # Title 2
 `;
-    const outline = await service.parseOutlines(sample);
+    const headings = await service.parseHeadings(sample);
 
-    expect(outline).toStrictEqual([
+    expect(headings).toStrictEqual([
         {
             title: "Title",
             level: 1,
+            lineno: 1,
             slug: "title",
             children: [
                 {
                     title: "Subtitle 1",
                     level: 2,
+                    lineno: 3,
                     slug: "subtitle-1",
                     children: [],
                 },
@@ -29,6 +31,7 @@ test("parseOutlines", async () => {
             title: "Title 2",
             level: 1,
             slug: "title-2",
+            lineno: 5,
             children: [],
         },
     ]);

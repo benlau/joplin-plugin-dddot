@@ -10,6 +10,7 @@ import { ShortcutsOverlay } from "../tools/shortcuts/overlay";
 import { ScratchpadView } from "../tools/scratchpad/view";
 import { NoteDialogView } from "../services/notedialog/notedialogview";
 import { ToolbarView } from "../services/toolbar/toolbarview";
+import { OutlineView } from "../tools/outline/view";
 
 type Props = {
   tools: ToolInfo[];
@@ -24,6 +25,7 @@ const Views = {
     scratchpad: ScratchpadView,
     notedialog: NoteDialogView,
     toolbar: ToolbarView,
+    outline: OutlineView,
 };
 
 let singletonRef = null as null | {

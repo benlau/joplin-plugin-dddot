@@ -1,5 +1,5 @@
 import joplin from "api";
-import { SettingItemType } from "api/types";
+import { ContentScriptType, SettingItemType } from "api/types";
 import { t } from "i18next";
 import ScratchPad from "./tools/scratchpad";
 import RecentNotes from "./tools/recentnotes";
@@ -13,6 +13,7 @@ import DailyNoteTool from "./tools/dailynote/dailynotetool";
 import RandomNoteTool from "./tools/randomnote/randomnotetool";
 import PlatformRepo from "./repo/platformrepo";
 import { ToolInfo } from "./types/toolinfo";
+import OutlineTool from "./tools/outline";
 
 const ToolOrder = "dddot.settings.panel.toolorder";
 
@@ -53,6 +54,12 @@ export default class Panel {
 
         await Promise.all(
             scripts.map(async (script) => joplin.views.panels.addScript(this.view, script)),
+        );
+
+        await joplin.contentScripts.register(
+            ContentScriptType.CodeMirrorPlugin,
+            "dddot.contentScript",
+            "./sandbox/contentScript.js",
         );
     }
 
@@ -117,9 +124,10 @@ export default class Panel {
         const backLinks = new BackLinks(this.servicePool);
         const dailyNote = new DailyNoteTool(this.servicePool);
         const randomNote = new RandomNoteTool(this.servicePool);
+        const outlineTool = new OutlineTool(this.servicePool);
 
         const tools = [
-            scratchpad, shortcuts, recentlyNotes, backLinks,
+            scratchpad, outlineTool, shortcuts, recentlyNotes, backLinks,
             dailyNote, randomNote];
         this.tools = tools;
 

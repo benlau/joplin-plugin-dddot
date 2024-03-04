@@ -7,6 +7,7 @@ import NoteDialogService from "./notedialog/notedialogservice";
 import ToolbarService from "./toolbar/toolbarservice";
 import DateTimeService from "./datetime/datetimeservice";
 import PlatformRepo from "../repo/platformrepo";
+import { MarkdownParserService } from "./markdownparser/markdownparserservice";
 
 export default class ServicePool {
     joplinService: JoplinService;
@@ -25,6 +26,8 @@ export default class ServicePool {
 
     platformRepo: PlatformRepo;
 
+    markdownParserService: MarkdownParserService;
+
     receivers: { [key: string]: any } = {};
 
     constructor(joplinRepo: JoplinRepo) {
@@ -36,6 +39,7 @@ export default class ServicePool {
         this.noteDialogService = new NoteDialogService(this.joplinService, this.rendererService);
         this.toolbarService = new ToolbarService(this.joplinService);
         this.dateTimeService = new DateTimeService();
+        this.markdownParserService = new MarkdownParserService();
 
         this.receivers = {
             notedialog: this.noteDialogService,

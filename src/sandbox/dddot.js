@@ -54,6 +54,9 @@ class DDDot {
         this.onMessage("dddot.setToolOrder", (message) => {
             this.setToolOrder(message);
         });
+        this.onMessage("dddot.logError", (message) => {
+            this.logError(message);
+        });
 
         const components = ["CodeMirror", "CodeMirror5Manager", "App"];
         await waitUntilLoaded(components);
@@ -101,6 +104,11 @@ class DDDot {
     static setToolOrder(message) {
         const { toolIds } = message;
         App.setToolsOrder(toolIds);
+    }
+
+    static logError(message) {
+        const { error } = message;
+        console.error(error);
     }
 
     static onMessage(type, callback) {
