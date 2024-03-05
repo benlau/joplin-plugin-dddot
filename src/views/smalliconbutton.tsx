@@ -14,7 +14,7 @@ export function SmallIconButton(props: Props) {
         if (props.onClick) {
             props.onClick();
         }
-    }, [props.onClick]);
+    }, [props]);
 
     return (
         <div className={cntl`bg-transparent 

@@ -98,7 +98,7 @@ export function NoteDialogView(props: Props) {
 
     React.useEffect(() => {
         updateContent(content);
-    }, [content]);
+    }, [content, updateContent]);
 
     return (
         <Overlay

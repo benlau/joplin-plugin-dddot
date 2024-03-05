@@ -73,7 +73,7 @@ export function OutlineItem(props: {
             slug: outline.slug,
             lineno: outline.lineno,
         });
-    }, []);
+    }, [outline.slug, outline.lineno]);
 
     const { triggerProps, showToast } = useToast();
 
@@ -85,7 +85,7 @@ export function OutlineItem(props: {
             type: "outline.copyOutlineLink",
             link: outline.link,
         });
-    }, [showToast]);
+    }, [showToast, outline.link]);
 
     return (
         <div
@@ -214,6 +214,7 @@ export function OutlineView(props: Props) {
             document.removeEventListener("mouseup", onMouseUp);
             document.removeEventListener("mousemove", onMouseMove);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

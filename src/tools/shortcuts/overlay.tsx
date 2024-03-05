@@ -65,7 +65,7 @@ export function ShortcutsOverlay(props: {
             }
         };
         elem.click();
-    }, []);
+    }, [props]);
 
     return (
         <Overlay

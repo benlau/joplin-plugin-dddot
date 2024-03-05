@@ -58,7 +58,13 @@ export function useSectionState(props: Props) {
 
     const onExpandClick = React.useCallback(() => {
         setIsExpanded((prev) => !prev);
-    }, [isExpanded]);
+    }, []);
+
+    const onBackgroundClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        if (e.detail >= 2 && e.detail % 2 === 0) {
+            setIsExpanded((prev) => !prev);
+        }
+    }, []);
 
     return {
         tool,
@@ -70,6 +76,7 @@ export function useSectionState(props: Props) {
         onExpandClick,
         isDragging,
         children,
+        onBackgroundClick,
         index, // Return index to make sure it could trigger SecionImpl to re-render after DnD
     };
 }
@@ -80,13 +87,15 @@ export function SectionImpl(props: ReturnType<typeof useSectionState>) {
         onExpandClick,
         itemRef,
         isDragging,
+        onBackgroundClick,
     } = props;
 
     const opacity = isDragging ? 0 : 1;
 
     return (
-        <div data-id={tool.key} id={tool.containerId} ref={itemRef} style={{ opacity }}>
-            <div class="dddot-tool-header" ref={props.dragRef}>
+        <div data-id={tool.key} id={tool.containerId}
+            ref={itemRef} style={{ opacity }}>
+            <div class="dddot-tool-header" ref={props.dragRef} onClick={onBackgroundClick}>
                 <h3><i class="fas fa-bars"></i> {tool.title}</h3>
                 <div className="flex flex-row center justify-center h-full">
                     {

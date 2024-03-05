@@ -16,18 +16,18 @@ export function LinkItem(props: {
         e.preventDefault();
         e.stopPropagation();
         props.onClick(link);
-    }, []);
+    }, [props, link]);
 
     const onContextMenu = React.useCallback((e) => {
         e.preventDefault();
         e.stopPropagation();
         props.onContextMenu(link);
-    }, []);
+    }, [props, link]);
 
     const onDragStart = React.useCallback((e) => {
         e.dataTransfer.clearData();
         e.dataTransfer.setData(DDDot.X_JOP_NOTE_IDS, `["${props.link.id}"]`);
-    }, []);
+    }, [props]);
 
     const [_collected, drag] = useDrag({
         type: DragItemType.Link,

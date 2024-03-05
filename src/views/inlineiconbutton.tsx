@@ -9,7 +9,7 @@ export function InlineIconButton(props: {
         e.stopPropagation();
         e.preventDefault();
         props.onClick();
-    }, []);
+    }, [props]);
 
     return (
         <div className={cntl`bg-transparent 

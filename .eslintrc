@@ -17,6 +17,7 @@
   }, 
   "parser": "@typescript-eslint/parser",
   "plugins": [
+    "react-hooks",
     "@typescript-eslint"
   ],
   "extends": [
@@ -49,6 +50,7 @@
     ],
     "import/prefer-default-export": "off",
     "no-empty-function": "off",
-    "no-alert": "off"
+    "no-alert": "off",
+    "react-hooks/exhaustive-deps": "error"
   }
 }

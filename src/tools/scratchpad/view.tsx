@@ -103,15 +103,16 @@ export function ScratchpadView(props: Props) {
 
         updateContent(props.content);
         updateHeight(props.height ?? MIN_HEIGHT);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         updateContent(props.content);
-    }, [props.content]);
+    }, [props.content, updateContent]);
 
     React.useEffect(() => {
         updateHeight(props.height ?? MIN_HEIGHT);
-    }, [props.height]);
+    }, [props.height, updateHeight]);
 
     /* Drag and drop */
     React.useEffect(() => {
@@ -169,7 +170,7 @@ export function ScratchpadView(props: Props) {
             document.removeEventListener("mouseup", onMouseUp);
             document.removeEventListener("mousemove", onMouseMove);
         };
-    }, [props.height]);
+    }, [props.height, updateHeight]);
 
     return (
         <div>

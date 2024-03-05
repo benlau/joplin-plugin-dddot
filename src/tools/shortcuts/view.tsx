@@ -23,13 +23,13 @@ export function ShortcutItem(props: {
         e.preventDefault();
         e.stopPropagation();
         props.onClick(link);
-    }, []);
+    }, [props, link]);
 
     const onContextMenu = React.useCallback((e) => {
         e.preventDefault();
         e.stopPropagation();
         props.onContextMenu(link);
-    }, []);
+    }, [props, link]);
 
     const [{ isDragging }, dragRef] = useDrag({
         type: DragItemType.Link,
@@ -150,7 +150,7 @@ export function ShortcutsView(props: Props) {
             onOrderChanged(newValue.map((link) => link.id));
             return newValue;
         });
-    }, []);
+    }, [onOrderChanged]);
 
     const isEmpty = (links?.length ?? 0) === 0;
 
@@ -208,6 +208,7 @@ export function ShortcutsView(props: Props) {
             el.removeEventListener("dragleave", dragleave);
             el.removeEventListener("drop", drop);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const className = isLinkDragging ? "dddot-note-list dddot-note-dragging" : "dddot-note-list";
