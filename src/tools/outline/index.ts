@@ -5,6 +5,8 @@ import { Outline } from "src/types/outline";
 import Tool, { blockDisabled } from "../tool";
 import { debouncer } from "../../utils/debouncer";
 
+const OutlineLineHeight = 28;
+const OutlineHeightMargin = 10;
 const MinHeight = 56;
 const OutlineHeight = "dddot.settings.outline.height";
 
@@ -18,6 +20,8 @@ export default class OutlineTool extends Tool {
     }
 
     deboucnedRefresh: Function;
+
+    lastOutlines?: Outline[];
 
     constructor(servicePool: ServicePool) {
         super(servicePool);
@@ -45,10 +49,22 @@ export default class OutlineTool extends Tool {
                 public: true,
                 label: t("outline.settings.height"),
                 minValue: MinHeight,
-                step: 28, // Same as the item height
+                step: OutlineLineHeight,
                 section,
             },
         };
+    }
+
+    get extraButtons() {
+        return [
+            {
+                tooltip: t("outline.auto_reisze_tooltip"),
+                icon: "fas fa-window-maximize",
+                message: {
+                    type: "outline.onAutoResizeClicked",
+                },
+            },
+        ];
     }
 
     @blockDisabled
@@ -104,6 +120,8 @@ export default class OutlineTool extends Tool {
             );
         case "outline.setHeight":
             return this.setHeight(message.height);
+        case "outline.onAutoResizeClicked":
+            return this.onAutoResizeClicked();
         default:
             break;
         }
@@ -160,6 +178,8 @@ export default class OutlineTool extends Tool {
             },
         );
 
+        this.lastOutlines = [...outlines];
+
         return {
             outlines,
             id: activeNote.id,
@@ -205,5 +225,26 @@ export default class OutlineTool extends Tool {
         } = this;
 
         await joplinRepo.settingsSave(OutlineHeight, height);
+    }
+
+    onAutoResizeClicked() {
+        const {
+            joplinRepo,
+        } = this;
+
+        let counter = 0;
+        const count = (outlines: Outline[]) => {
+            counter += outlines.length;
+            outlines.forEach((outline) => count(outline.children));
+        };
+
+        count(this.lastOutlines);
+        const newHeight = counter * OutlineLineHeight + OutlineHeightMargin;
+
+        joplinRepo.panelPostMessage({
+            type: "outline.autoResize",
+            newHeight,
+        });
+        this.setHeight(newHeight);
     }
 }

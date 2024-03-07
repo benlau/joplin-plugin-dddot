@@ -32,5 +32,6 @@
     "outline.title": "Outline",
     "outline.enable": "Enable Outline",
     "outline.link_copied": "Link copied!",
-    "outline.settings.height": "Outline Height(px)"
+    "outline.settings.height": "Outline Height(px)",
+    "outline.auto_reisze_tooltip": "Auto resize height"
 }

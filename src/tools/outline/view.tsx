@@ -117,6 +117,7 @@ type Props = {
     id?: string;
     title?: string;
     height?: number;
+    heightRefreshCounter?: number;
     outlines?: Heading[];
 }
 
@@ -133,6 +134,7 @@ export function OutlineView(props: Props) {
         title,
         outlines,
         height,
+        heightRefreshCounter,
     } = props;
 
     const flattenOutlines = React.useMemo(() => {
@@ -155,7 +157,8 @@ export function OutlineView(props: Props) {
         const newHeight = height ?? MIN_HEIGHT;
         setContentHeight(newHeight);
         state.current.height = newHeight;
-    }, [height]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [height, heightRefreshCounter]);
 
     const contentHeightRef = React.useRef(contentHeight);
     contentHeightRef.current = contentHeight;
