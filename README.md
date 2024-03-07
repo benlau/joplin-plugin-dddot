@@ -53,6 +53,8 @@ Drag the note from the note list over the Shortcuts tool
 
 ## Outline
 
+![image](https://github.com/benlau/joplin-plugin-dddot/assets/82716/a90087a5-1e95-4b75-a690-38ef472302f5)
+
 - Show the table of content of the selected note
 - Click on the item will go to the section
 - Press the "Copy" button to copy the link of the section
