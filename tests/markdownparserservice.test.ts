@@ -36,3 +36,11 @@ test("parseHeadings", async () => {
         },
     ]);
 });
+
+test("slug", () => {
+    const service = new MarkdownParserService();
+
+    expect(service.slug("Title")).toStrictEqual("title");
+    expect(service.slug("♥")).toStrictEqual("hearts");
+    expect(service.slug("🔴 Important note")).toStrictEqual("red_circle-important-note");
+});

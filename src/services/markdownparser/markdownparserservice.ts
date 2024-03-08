@@ -13,6 +13,10 @@ export class MarkdownParserService {
         return title.replace(/(\[|\])/g, "\\$1");
     }
 
+    slug(title: string) {
+        return uslug(title);
+    }
+
     genMarkdownLink(title: string, id: string, slug?: string) {
         if (!slug) {
             return `[${this.escapeLinkText(title)}](:/${id})`;
