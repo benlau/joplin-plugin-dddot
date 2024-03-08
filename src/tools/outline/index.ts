@@ -205,7 +205,8 @@ export default class OutlineTool extends Tool {
             });
         } else {
             // RTF Editor
-            await joplinRepo.commandsExecute("scrollToHash", slug);
+            const hash = slug === "" ? "rendered-md" : slug;
+            await joplinRepo.commandsExecute("scrollToHash", hash);
         }
     }
 
