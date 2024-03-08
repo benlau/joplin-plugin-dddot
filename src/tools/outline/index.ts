@@ -7,7 +7,7 @@ import { debouncer } from "../../utils/debouncer";
 
 const OutlineLineHeight = 28;
 const OutlineHeightMargin = 10;
-const MinHeight = 56;
+const MinHeight = OutlineLineHeight + OutlineHeightMargin;
 const OutlineHeight = "dddot.settings.outline.height";
 
 export default class OutlineTool extends Tool {
@@ -58,8 +58,8 @@ export default class OutlineTool extends Tool {
     get extraButtons() {
         return [
             {
-                tooltip: t("outline.auto_reisze_tooltip"),
-                icon: "fas fa-window-maximize",
+                tooltip: t("outline.resize_to_fit_tooltip"),
+                icon: "fas fa-expand-arrows-alt",
                 message: {
                     type: "outline.onAutoResizeClicked",
                 },

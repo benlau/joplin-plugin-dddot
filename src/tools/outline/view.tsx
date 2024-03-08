@@ -4,7 +4,9 @@ import { t } from "i18next";
 import { Heading, Outline } from "../../types/outline";
 import { InlineIconButton } from "../../views/inlineiconbutton";
 
-const MIN_HEIGHT = 56;
+const OutlineLineHeight = 28;
+const OutlineHeightMargin = 10;
+const MinHeight = OutlineLineHeight + OutlineHeightMargin;
 
 function useToast() {
     const [message, setMessage] = React.useState<string | null>(null);
@@ -147,14 +149,14 @@ export function OutlineView(props: Props) {
     const state = React.useRef<State>({
         isMouseDown: false,
         startY: -1,
-        height: MIN_HEIGHT,
+        height: MinHeight,
         dragStartHeight: 0,
     });
 
-    const [contentHeight, setContentHeight] = React.useState(height ?? MIN_HEIGHT);
+    const [contentHeight, setContentHeight] = React.useState(height ?? MinHeight);
 
     React.useEffect(() => {
-        const newHeight = height ?? MIN_HEIGHT;
+        const newHeight = height ?? MinHeight;
         setContentHeight(newHeight);
         state.current.height = newHeight;
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -193,7 +195,7 @@ export function OutlineView(props: Props) {
                 e.preventDefault();
                 e.stopPropagation();
                 const newHeight = state.current.dragStartHeight + e.clientY - state.current.startY;
-                if (newHeight >= MIN_HEIGHT) {
+                if (newHeight >= MinHeight) {
                     updateHeight(newHeight);
                 }
             }

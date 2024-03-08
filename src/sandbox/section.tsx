@@ -101,9 +101,12 @@ export function SectionImpl(props: ReturnType<typeof useSectionState>) {
                     {
                         tool.extraButtons.map((button, index) => (
                             <React.Fragment key={index}>
-                                <SmallIconButton icon={button.icon} onClick={() => {
-                                    DDDot.postMessage(button.message);
-                                }}/>
+                                <SmallIconButton icon={button.icon}
+                                    tooltip={button.tooltip}
+                                    onClick={() => {
+                                        DDDot.postMessage(button.message);
+                                    }}
+                                />
                             </React.Fragment>
                         ))
                     }
