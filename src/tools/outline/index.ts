@@ -149,7 +149,7 @@ export default class OutlineTool extends Tool {
 
         const convert = (heading: any) => {
             const link = markdownParser.genMarkdownLink(
-                heading.title,
+                `${heading.title} @ ${activeNote.title}`,
                 activeNote.id,
                 heading.slug,
             );
