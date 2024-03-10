@@ -69,16 +69,25 @@ export default class OutlineTool extends Tool {
         };
     }
 
-    get extraButtons() {
-        return [
-            {
-                tooltip: t("outline.resize_to_fit_tooltip"),
-                icon: "fas fa-expand-arrows-alt",
-                message: {
-                    type: "outline.onAutoResizeClicked",
+    async queryExtraButtons() {
+        const resizeMode = await this.joplinRepo.settingsLoad(
+            OutlineResizeModeSettingKey,
+            OutlineToolResizeMode.Manual,
+        );
+
+        if (resizeMode === OutlineToolResizeMode.Manual) {
+            return [
+                {
+                    tooltip: t("outline.resize_to_fit_tooltip"),
+                    icon: "fas fa-expand-arrows-alt",
+                    message: {
+                        type: "outline.onAutoResizeClicked",
+                    },
                 },
-            },
-        ];
+            ];
+        }
+
+        return [];
     }
 
     @blockDisabled

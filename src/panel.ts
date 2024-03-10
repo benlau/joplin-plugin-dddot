@@ -216,6 +216,8 @@ export default class Panel {
     }
 
     async onLoaded() {
+        /// Triggered by DDDot.onLoad which may be called multiple times
+        /// e.g when the panel is hidden and shown again
         const {
             joplinService,
             joplinRepo,
@@ -241,8 +243,9 @@ export default class Panel {
                     key,
                     title,
                     hasView,
-                    extraButtons,
                 } = tool;
+
+                const extraButtons = await tool.queryExtraButtons();
 
                 const enabled = await tool.updateEnabledFromSetting();
 

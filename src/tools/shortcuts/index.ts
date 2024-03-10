@@ -128,7 +128,7 @@ export default class Shortcuts extends Tool {
         return t("shortcuts.title");
     }
 
-    get extraButtons() {
+    async queryExtraButtons() {
         return [
             {
                 tooltip: t("shortcuts.import_export_tooltip"),

@@ -62,14 +62,14 @@ export default class Tool {
         return true;
     }
 
-    get extraButtons(): ToolButton[] {
-        return [];
-    }
-
     async updateEnabledFromSetting() {
         const res = await this.joplinRepo.settingsLoad(this.genSettingKey("enabled"), true);
         this.isEnabled = res as Boolean;
         return res;
+    }
+
+    async queryExtraButtons(): Promise<ToolButton[]> {
+        return [];
     }
 
     genSettingKey(key: string) {
