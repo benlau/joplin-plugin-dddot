@@ -4,11 +4,13 @@ import ServicePool from "src/services/servicepool";
 import { Outline } from "src/types/outline";
 import Tool, { blockDisabled } from "../tool";
 import { debouncer } from "../../utils/debouncer";
+import { OutlineToolResizeMode } from "./types";
 
 const OutlineLineHeight = 28;
 const OutlineHeightMargin = 10;
 const MinHeight = OutlineLineHeight + OutlineHeightMargin;
-const OutlineHeight = "dddot.settings.outline.height";
+const OutlineHeightSettingKey = "dddot.settings.outline.height";
+const OutlineResizeModeSettingKey = "dddot.settings.outline.resize_mode";
 
 export default class OutlineTool extends Tool {
     get title() {
@@ -43,13 +45,25 @@ export default class OutlineTool extends Tool {
 
     settings(section: string) {
         return {
-            [OutlineHeight]: {
+            [OutlineHeightSettingKey]: {
                 value: MinHeight,
                 type: SettingItemType.Int,
                 public: true,
                 label: t("outline.settings.height"),
                 minValue: MinHeight,
                 step: OutlineLineHeight,
+                section,
+            },
+            [OutlineResizeModeSettingKey]: {
+                value: OutlineToolResizeMode.Manual,
+                type: SettingItemType.String,
+                public: true,
+                isEnum: true,
+                label: t("outline.settings.resize_mode"),
+                options: {
+                    [OutlineToolResizeMode.Manual]: t("outline.settings.manual"),
+                    [OutlineToolResizeMode.Auto]: t("outline.settings.auto"),
+                },
                 section,
             },
         };
@@ -129,9 +143,13 @@ export default class OutlineTool extends Tool {
     }
 
     async onReady() {
-        const height = await this.joplinRepo.settingsLoad(OutlineHeight, MinHeight);
+        const height = await this.joplinRepo.settingsLoad(OutlineHeightSettingKey, MinHeight);
+        const resizeMode = await this.joplinRepo.settingsLoad(
+            OutlineResizeModeSettingKey,
+            OutlineToolResizeMode.Manual,
+        );
         const content = await this.query();
-        return { height, ...content };
+        return { height, resizeMode, ...content };
     }
 
     async query() {
@@ -225,7 +243,7 @@ export default class OutlineTool extends Tool {
             joplinRepo,
         } = this;
 
-        await joplinRepo.settingsSave(OutlineHeight, height);
+        await joplinRepo.settingsSave(OutlineHeightSettingKey, height);
     }
 
     onAutoResizeClicked() {

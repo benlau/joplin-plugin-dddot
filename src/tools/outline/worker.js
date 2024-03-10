@@ -29,7 +29,9 @@ async function outlineWorker() {
         title,
         outlines,
         height,
+        resizeMode,
     } = response;
     refresh(id, title, outlines);
     App.setSectionViewProp("outline", "height", height);
+    App.setSectionViewProp("outline", "resizeMode", resizeMode);
 }

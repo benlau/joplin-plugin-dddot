@@ -33,5 +33,8 @@
     "outline.enable": "Enable Outline",
     "outline.link_copied": "Link copied!",
     "outline.settings.height": "Outline Height(px)",
-    "outline.resize_to_fit_tooltip": "Resize Height to Fit Content"
+    "outline.resize_to_fit_tooltip": "Resize Height to Fit Content",
+    "outline.settings.resize_mode": "Outline Resize Mode",
+    "outline.settings.manual": "Manual mode",
+    "outline.settings.auto": "Auto mode"
 }

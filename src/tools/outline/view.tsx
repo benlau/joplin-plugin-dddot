@@ -4,6 +4,8 @@ import { t } from "i18next";
 import { ResizableContainer } from "../../views/resizablecontainer";
 import { Heading, Outline } from "../../types/outline";
 import { InlineIconButton } from "../../views/inlineiconbutton";
+import { FixedHeightContainer } from "../../views/fixedheightcontainer";
+import { OutlineToolResizeMode } from "./types";
 
 const OutlineLineHeight = 28;
 const OutlineHeightMargin = 10;
@@ -122,15 +124,14 @@ type Props = {
     height?: number;
     heightRefreshCounter?: number;
     outlines?: Heading[];
+    resizeMode?: OutlineToolResizeMode;
 }
 
-export function OutlineView(props: Props) {
+function Content(props: Props) {
     const {
         id,
         title,
         outlines,
-        height,
-        heightRefreshCounter,
     } = props;
 
     const flattenOutlines = React.useMemo(() => {
@@ -139,6 +140,28 @@ export function OutlineView(props: Props) {
         ]) ?? [];
         return flatten(outlines);
     }, [outlines]);
+
+    return (
+        <>
+            {flattenOutlines.map((outline, index) => (
+                <React.Fragment key={index}>
+                    <OutlineRow
+                        noteId={id ?? ""}
+                        noteTitle={title ?? ""}
+                        outline={outline} />
+                </React.Fragment>
+            ))}
+        </>
+    );
+}
+
+export function OutlineView(props: Props) {
+    const {
+        height,
+        heightRefreshCounter,
+    } = props;
+
+    const resizeMode = props.resizeMode ?? OutlineToolResizeMode.Manual;
 
     const [contentHeight, setContentHeight] = React.useState(height ?? MinHeight);
     const contentHeightRef = React.useRef(contentHeight);
@@ -159,19 +182,21 @@ export function OutlineView(props: Props) {
     }, [heightRefreshCounter, height]);
 
     return (
-        <ResizableContainer setHeight={updateHeight} getHeight={getHeight} minHeight={MinHeight}>
-            <div style={{ height: contentHeight }}
-                className="overflow-y-auto"
-            >
-                {flattenOutlines.map((outline, index) => (
-                    <React.Fragment key={index}>
-                        <OutlineRow
-                            noteId={id ?? ""}
-                            noteTitle={title ?? ""}
-                            outline={outline} />
-                    </React.Fragment>
-                ))}
-            </div>
-        </ResizableContainer>
+        <>
+            {
+                resizeMode === OutlineToolResizeMode.Manual ? (
+                    <ResizableContainer
+                        setHeight={updateHeight}
+                        getHeight={getHeight}
+                        minHeight={MinHeight}>
+                        <FixedHeightContainer height={contentHeight}>
+                            <Content {...props} />
+                        </FixedHeightContainer>
+                    </ResizableContainer>
+                ) : (
+                    <Content {...props} />
+                )
+            }
+        </>
     );
 }
