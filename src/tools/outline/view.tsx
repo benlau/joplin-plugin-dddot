@@ -2,7 +2,7 @@ import React from "react";
 import cntl from "cntl";
 import { t } from "i18next";
 import { ResizableContainer } from "../../views/resizablecontainer";
-import { Heading, Outline } from "../../types/outline";
+import { OutlineItem } from "../../types/outline";
 import { InlineIconButton } from "../../views/inlineiconbutton";
 import { FixedHeightContainer } from "../../views/fixedheightcontainer";
 import { OutlineToolResizeMode } from "./types";
@@ -62,7 +62,7 @@ function Toast(props: ReturnType<typeof useToast>["triggerProps"]) {
 export function OutlineRow(props: {
     noteId?: string;
     noteTitle?: string;
-    outline: Outline }) {
+    outline: OutlineItem }) {
     const {
         outline,
     } = props;
@@ -123,7 +123,7 @@ type Props = {
     title?: string;
     height?: number;
     heightRefreshCounter?: number;
-    outlines?: Heading[];
+    outlines?: OutlineItem[];
     resizeMode?: OutlineToolResizeMode;
 }
 
@@ -136,7 +136,7 @@ function Content(props: Props) {
 
     const flattenOutlines = React.useMemo(() => {
         // eslint-disable-next-line max-len
-        const flatten = (items?: Heading[]) => items?.flatMap((outline) => [outline, ...flatten(outline.children),
+        const flatten = (items?: OutlineItem[]) => items?.flatMap((outline) => [outline, ...flatten(outline.children),
         ]) ?? [];
         return flatten(outlines);
     }, [outlines]);

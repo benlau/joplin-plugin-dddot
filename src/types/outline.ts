@@ -1,12 +1,14 @@
-export type Heading = {
+export enum OutlineType {
+    Heading,
+    Link
+}
+
+export type OutlineItem = {
     title: string;
     level: number;
     slug: string;
-    children: Heading[];
     lineno: number;
-};
-
-export type Outline = Heading & {
-    link: string;
-    children: Outline[];
+    type: OutlineType;
+    link?: string;
+    children: OutlineItem[];
 };

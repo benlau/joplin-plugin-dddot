@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import { SettingItemType } from "api/types";
 import ServicePool from "src/services/servicepool";
-import { Outline } from "src/types/outline";
+import { OutlineItem, OutlineType } from "../../types/outline";
 import Tool, { blockDisabled } from "../tool";
 import { debouncer } from "../../utils/debouncer";
 import { OutlineToolResizeMode } from "./types";
@@ -23,7 +23,7 @@ export default class OutlineTool extends Tool {
 
     deboucnedRefresh: Function;
 
-    lastOutlines?: Outline[];
+    lastOutlines?: OutlineItem[];
 
     constructor(servicePool: ServicePool) {
         super(servicePool);
@@ -172,27 +172,27 @@ export default class OutlineTool extends Tool {
             };
         }
         const markdownParser = this.servicePool.markdownParserService;
-        const headings = markdownParser.parseHeadings(activeNote.body);
-
-        const convert = (heading: any) => {
+        const convert = (outline: any) => {
             const link = markdownParser.genMarkdownLink(
-                `${heading.title} @ ${activeNote.title}`,
+                `${outline.title} @ ${activeNote.title}`,
                 activeNote.id,
-                heading.slug,
+                outline.slug,
             );
-            const children = heading.children.map(convert);
+            const children = outline.children.map(convert);
 
             return {
-                ...heading,
+                ...outline,
                 link,
                 children,
             };
         };
 
-        const outlines: Outline[] = headings.map(convert);
+        const outlines = markdownParser.parseOutlines(activeNote.body)
+            .map(convert);
 
         outlines.unshift(
             {
+                type: OutlineType.Heading,
                 title: activeNote.title,
                 level: 0,
                 slug: "",
@@ -261,7 +261,7 @@ export default class OutlineTool extends Tool {
         } = this;
 
         let counter = 0;
-        const count = (outlines: Outline[]) => {
+        const count = (outlines: OutlineItem[]) => {
             counter += outlines.length;
             outlines.forEach((outline) => count(outline.children));
         };
