@@ -60,6 +60,7 @@ describe("MarkdownParserService", () => {
                     lineno: 3,
                     slug: "",
                     link: "file://file1.md",
+                    children: [],
                 },
             ]);
         });
@@ -87,6 +88,7 @@ describe("MarkdownParserService", () => {
                             level: 2,
                             lineno: 2,
                             slug: "",
+                            children: [],
                             link: "https://file1.md",
                         },
                         {

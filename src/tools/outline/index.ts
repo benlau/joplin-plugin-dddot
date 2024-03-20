@@ -1,6 +1,7 @@
 import { t } from "i18next";
 import { SettingItemType } from "api/types";
 import ServicePool from "src/services/servicepool";
+import joplin from "api";
 import { OutlineItem, OutlineType } from "../../types/outline";
 import Tool, { blockDisabled } from "../tool";
 import { debouncer } from "../../utils/debouncer";
@@ -11,6 +12,7 @@ const OutlineHeightMargin = 10;
 const MinHeight = OutlineLineHeight + OutlineHeightMargin;
 const OutlineHeightSettingKey = "dddot.settings.outline.height";
 const OutlineResizeModeSettingKey = "dddot.settings.outline.resize_mode";
+const OutlineSchemasSettingKey = "dddot.settings.outline.schemas";
 
 export default class OutlineTool extends Tool {
     get title() {
@@ -64,6 +66,13 @@ export default class OutlineTool extends Tool {
                     [OutlineToolResizeMode.Manual]: t("outline.settings.manual"),
                     [OutlineToolResizeMode.Auto]: t("outline.settings.auto"),
                 },
+                section,
+            },
+            [OutlineSchemasSettingKey]: {
+                value: "",
+                type: SettingItemType.String,
+                public: true,
+                label: t("outline.settings.schemas"),
                 section,
             },
         };
@@ -136,7 +145,7 @@ export default class OutlineTool extends Tool {
         case "outline.onReady":
             return this.onReady();
         case "outline.openOutline":
-            return this.openOutline(message.slug, message.lineno);
+            return this.openOutline(message.slug, message.lineno, message.link);
         case "outline.copyOutlineLink":
             return this.copyOutlineLink(
                 message.link,
@@ -163,6 +172,9 @@ export default class OutlineTool extends Tool {
 
     async query() {
         const activeNote = await this.joplinRepo.workspaceSelectedNote();
+        const schemas = (await this.joplinRepo.settingsLoad(OutlineSchemasSettingKey, "")).split(",").map(
+            (s) => s.trim(),
+        );
 
         if (!activeNote || activeNote.body == null) {
             return {
@@ -173,11 +185,11 @@ export default class OutlineTool extends Tool {
         }
         const markdownParser = this.servicePool.markdownParserService;
         const convert = (outline: any) => {
-            const link = markdownParser.genMarkdownLink(
+            const link = outline.type === OutlineType.Heading ? markdownParser.genMarkdownLink(
                 `${outline.title} @ ${activeNote.title}`,
                 activeNote.id,
                 outline.slug,
-            );
+            ) : outline.link;
             const children = outline.children.map(convert);
 
             return {
@@ -187,8 +199,7 @@ export default class OutlineTool extends Tool {
             };
         };
 
-        const outlines = markdownParser.parseOutlines(activeNote.body)
-            .map(convert);
+        const outlines = markdownParser.parseOutlines(activeNote.body, schemas).map(convert);
 
         outlines.unshift(
             {
@@ -214,10 +225,14 @@ export default class OutlineTool extends Tool {
         };
     }
 
-    async openOutline(slug: string, lineno: number) {
+    async openOutline(slug: string, lineno: number, link: string | undefined) {
         const {
             joplinRepo,
         } = this.servicePool;
+
+        if (link) {
+            joplin.commands.execute("openItem", link);
+        }
 
         // Ref&Credit: joplin-outline project
         // https://github.com/cqroot/joplin-outline

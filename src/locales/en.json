@@ -36,5 +36,6 @@
     "outline.resize_to_fit_tooltip": "Resize Height to Fit Content",
     "outline.settings.resize_mode": "Outline Resize Mode",
     "outline.settings.manual": "Manual mode",
-    "outline.settings.auto": "Auto mode"
+    "outline.settings.auto": "Auto mode",
+    "outline.settings.schemas": "Include URL with schemas (',' separated, e.g. http,https,file)"
 }

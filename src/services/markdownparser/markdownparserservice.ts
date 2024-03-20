@@ -160,10 +160,15 @@ export class MarkdownParserService {
                     level,
                     link: url,
                     lineno,
+                    children: [],
                 };
             }).filter((item) => {
-                const url = new URL(item.link);
-                return includeLinks.includes(url.protocol.replace(":", ""));
+                try {
+                    const url = new URL(item.link);
+                    return includeLinks.includes(url.protocol.replace(":", ""));
+                } catch {
+                    return false;
+                }
             });
         };
 
@@ -199,7 +204,6 @@ export class MarkdownParserService {
                 }
             });
         });
-
         return outlines;
     }
 }

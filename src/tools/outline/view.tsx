@@ -2,7 +2,7 @@ import React from "react";
 import cntl from "cntl";
 import { t } from "i18next";
 import { ResizableContainer } from "../../views/resizablecontainer";
-import { OutlineItem } from "../../types/outline";
+import { OutlineItem, OutlineType } from "../../types/outline";
 import { InlineIconButton } from "../../views/inlineiconbutton";
 import { FixedHeightContainer } from "../../views/fixedheightcontainer";
 import { OutlineToolResizeMode } from "./types";
@@ -77,8 +77,9 @@ export function OutlineRow(props: {
             type: "outline.openOutline",
             slug: outline.slug,
             lineno: outline.lineno,
+            link: outline.type === OutlineType.Link ? outline.link : undefined,
         });
-    }, [outline.slug, outline.lineno]);
+    }, [outline]);
 
     const { triggerProps, showToast } = useToast();
 
@@ -98,13 +99,20 @@ export function OutlineRow(props: {
             onClick={onClick} onContextMenu={onContextMenu}>
             <div style={{ paddingLeft: `${8 * level}px` }}>
                 <a href="#">
+                    {
+                        outline.type === OutlineType.Link && (
+                            <span className="text-[10px]">
+                                <i class="fas fa-link pr-[4px]"></i>
+                            </span>
+                        )
+                    }
                     {outline.title}
                 </a>
             </div>
             <Toast {...triggerProps}></Toast>
             <div className={cntl`
                 hover-button
-                absolute top-0 right-[4px] bottom-0
+                absolute top-0 right-[14px] bottom-0
                 opacity-0
                 hover:opacity-100
                 flex flex-row justify-center items-center
