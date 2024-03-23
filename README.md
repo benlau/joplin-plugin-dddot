@@ -1,4 +1,5 @@
-# Joplin DDDot
+Joplin DDDot
+===========
 
 DDDot is a Joplin plugin to provide a set of tools like recent notes, shortcuts, scratchpad, and .... in a single sidebar.
 
@@ -55,9 +56,26 @@ Drag the note from the note list over the Shortcuts tool
 
 ![image](https://github.com/benlau/joplin-plugin-dddot/assets/82716/a90087a5-1e95-4b75-a690-38ef472302f5)
 
+**Features**:
+
 - Show the table of content of the selected note
 - Click on the item will go to the section
 - Press the "Copy" button to copy the link of the section
+- Manual/Auto Resize Mode
+- Link filter
+
+**Manual vs Auto Resize Mode**
+
+The Outline tool has a fixed height by default. Users could adjust it by dragging the border or clicking the "Size Height to Fit Content" button.
+
+Users may change it to be auto resized via the Joplin Plugin settings. 
+
+**Link filter**
+
+The Outline tool support to display more than just headings; it can also show links within the note. To configure this, go to Settings > DDDot > Include URL with schemas (comma-separated, e.g., http, https, file). Here, you can specify the types of links you want to appear in the Outline.
+
+
+
 
 ## Daily Note
 
