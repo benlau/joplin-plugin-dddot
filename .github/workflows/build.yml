@@ -35,5 +35,18 @@ jobs:
       - name: Test the extension
         run: |
           npm install
+          npx bower install
+          make copy-libs
           npm run test
           npm run lint
+      - name: Build the extension
+        run: |
+          npm run dist
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jpl
+          path: |
+            package.json
+            publish
+            README.md

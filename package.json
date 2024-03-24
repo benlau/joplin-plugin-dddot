@@ -4,7 +4,6 @@
   "scripts": {
     "predist": "tailwindcss -i config.css -o src/styles/tailwind.css",
     "dist": "webpack --env joplin-plugin-config=buildMain && webpack --env joplin-plugin-config=buildExtraScripts && webpack --env joplin-plugin-config=createArchive",
-    "prepare": "npm run dist",
     "update": "npm install -g generator-joplin && yo joplin --node-package-manager npm --update --force",
     "lint": "eslint . --ext .ts --ext .js --ext .tsx",
     "lint:fix": "eslint . --ext .ts --ext .js --ext .tsx --fix",
