@@ -66,11 +66,13 @@ Drag the note from the note list over the Shortcuts tool
 
 **Manual vs Auto Resize Mode**
 
-The Outline tool has a fixed height by default. Users could adjust it by dragging the border or clicking the "Size Height to Fit Content" button.
+The Outline tool has a fixed height by default. Users could adjust it by dragging the border or clicking the "Resize Height to Fit Content" button.
 
 Users may change it to be auto resized via the Joplin Plugin settings. 
 
 **Link filter**
+
+![image](https://github.com/benlau/joplin-plugin-dddot/assets/82716/bdf1a47f-cb9a-4257-8b7c-d99ce8b0629a)
 
 The Outline tool support to display more than just headings; it can also show links within the note. To configure this, go to Settings > DDDot > Include URL with schemas (comma-separated, e.g., http, https, file). Here, you can specify the types of links you want to appear in the Outline.
 
