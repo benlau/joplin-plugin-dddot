@@ -17,7 +17,7 @@ export default class Shortcuts extends Tool {
                 value: [],
                 type: SettingItemType.Object,
                 public: false,
-                label: "Recent Notes",
+                label: "Shortcuts",
                 section,
             },
         };

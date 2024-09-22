@@ -31,6 +31,14 @@ export function ShortcutItem(props: {
         props.onContextMenu(link);
     }, [props, link]);
 
+    const onDragStart = React.useCallback((e: React.DragEvent<HTMLDivElement>) => {
+        if (link.type === LinkType.NoteLink) {
+            e.dataTransfer.setData(DDDot.X_JOP_NOTE_IDS, JSON.stringify([link.id]));
+        } else {
+            e.dataTransfer.setData(DDDot.X_JOP_FOLDER_IDS, JSON.stringify([link.id]));
+        }
+    }, [link]);
+
     const [{ isDragging }, dragRef] = useDrag({
         type: DragItemType.Link,
         item: { index },
@@ -83,6 +91,7 @@ export function ShortcutItem(props: {
         >
             <div
                 ref={itemRef}
+                onDragStart={onDragStart}
             >
                 <a href="#">
                     {
@@ -105,9 +114,6 @@ type Props = {
 export function ShortcutsView(props: Props) {
     const [links, setLinks] = React.useState<Link[]>(props.links ?? []);
     const [isLinkDragging, setIsLinkDragging] = React.useState(false);
-
-    const linkRef = React.useRef(null);
-    linkRef.current = links;
 
     React.useEffect(() => {
         setLinks(props.links ?? []);
