@@ -1,12 +1,12 @@
-import * as crypto from "crypto";
+import sha256 from "crypto-js/sha256";
 import ThemeType from "../../types/themetype";
 import JoplinRepo from "../../repo/joplinrepo";
 import PlatformRepo from "../../repo/platformrepo";
 import { Link, LinkMonad } from "../../types/link";
 import TimerRepo from "../../repo/timerrepo";
 
-export async function sha256(message) {
-    return crypto.createHash("sha256").update(message).digest("hex");
+export function createSha256(message): string {
+    return sha256(message).toString();
 }
 
 export default class JoplinService {
@@ -206,8 +206,8 @@ export default class JoplinService {
         }, timeout);
     }
 
-    async urlToId(url: string): Promise<string> {
-        return (await sha256(url)).slice(0, 32);
+    urlToId(url: string): string {
+        return (createSha256(url)).slice(0, 32);
     }
 
     async createNoteWithIdIfNotExists(noteId: string, title: string, options: any = undefined) {
