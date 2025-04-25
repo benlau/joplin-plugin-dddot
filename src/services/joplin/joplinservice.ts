@@ -184,9 +184,28 @@ export default class JoplinService {
         const {
             joplinRepo,
         } = this;
-        joplinRepo.commandsExecute("openNote", noteId);
+
+        // The "openNote" command can not open a note
+        // where its parent_id is ""
+        // So we use "openItem" instead
+        joplinRepo.commandsExecute("openItem", `:/${noteId}`);
     }
 
+    async getAllNoteIds(): Promise<string[]> {
+        const noteIds: string[] = [];
+        const query = this.dataGet(["notes"], { fields: ["id"] });
+
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const result of query) {
+            const ids = result.items.map((item) => item.id);
+            noteIds.push(...ids);
+        }
+        return noteIds;
+    }
+
+    /**
+     * @deprecated Use openNote(noteId) instead
+     */
     async openNoteByIndex(index: number) {
         const notes = await this.joplinRepo.dataGet(["notes"], { limit: 1, page: index });
         const item = notes.items[0];
@@ -247,28 +266,5 @@ export default class JoplinService {
         const notebook = items.find((item) => item.title === name);
 
         return notebook?.id ?? "";
-    }
-
-    async calcNoteCount() {
-        let page = 512;
-        let maxPage = null;
-        let minPage = 0;
-
-        while (page > minPage) {
-            const notes = await this.joplinRepo.dataGet(["notes"], { limit: 1, page });
-            if (notes.has_more) {
-                minPage = page;
-                if (maxPage === null) {
-                    page *= 2;
-                } else {
-                    page = Math.floor((maxPage - page) / 2 + page);
-                }
-            } else { // no more items
-                maxPage = page;
-                page = Math.floor((page - minPage) / 2 + minPage);
-            }
-        }
-
-        return minPage;
     }
 }

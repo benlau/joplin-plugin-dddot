@@ -6,12 +6,21 @@ import Tool from "../tool";
 import ToolbarService from "../../services/toolbar/toolbarservice";
 import ServicePool from "../../services/servicepool";
 
+interface NoteIdCache {
+    noteIds: string[];
+    timestamp: number;
+}
+
 export default class RandomNoteTool extends Tool {
     toolbarService: ToolbarService;
 
     noteDialogService: NoteDialogService;
 
     platformRepo: PlatformRepo;
+
+    private noteIdCache: NoteIdCache | null = null;
+
+    private readonly CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 
     constructor(servicePool: ServicePool) {
         super(servicePool);
@@ -62,10 +71,53 @@ export default class RandomNoteTool extends Tool {
         return undefined;
     }
 
+    private isCacheValid(): boolean {
+        if (!this.noteIdCache) {
+            return false;
+        }
+
+        const now = Date.now();
+        return now - this.noteIdCache.timestamp < this.CACHE_DURATION_MS;
+    }
+
+    public async getNoteIds(): Promise<string[]> {
+        if (this.noteIdCache == null) {
+            this.noteIdCache = {
+                noteIds: await this.joplinService.getAllNoteIds(),
+                timestamp: Date.now(),
+            };
+            return this.noteIdCache.noteIds;
+        }
+
+        if (this.isCacheValid()) {
+            return this.noteIdCache.noteIds;
+        }
+        const { noteIds } = (this.noteIdCache);
+
+        this.joplinService.getAllNoteIds().then((refreshedNoteIds) => {
+            this.noteIdCache = {
+                noteIds: refreshedNoteIds,
+                timestamp: Date.now(),
+            };
+        });
+        return noteIds;
+    }
+
     async openRandomNote() {
-        const count = await this.joplinService.calcNoteCount();
-        const index = Math.floor(Math.random() * count);
-        await this.joplinService.openNoteByIndex(index);
+        try {
+            const noteIds = await this.getNoteIds();
+
+            if (noteIds.length === 0) {
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * noteIds.length);
+            const randomNoteId = noteIds[randomIndex];
+
+            this.joplinService.openNote(randomNoteId);
+        } catch (error) {
+            console.error("Error opening random note:", error);
+        }
     }
 
     async registerCommands(): Promise<MenuItem[]> {
