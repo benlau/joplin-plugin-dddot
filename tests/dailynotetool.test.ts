@@ -17,7 +17,9 @@ test("getOrCreateDailyNote should create note", async () => {
     dateTimeService.getNormalizedToday.mockReturnValueOnce(new Date(2020, 0, 1));
     joplinService.searchNoteByTitle.mockReturnValueOnce([]);
     joplinService.urlToId.mockReturnValueOnce("hashId");
+    joplinService.queryNotebookId.mockReturnValueOnce("notebookId");
     joplinRepo.settingsLoadGlobal.mockReturnValueOnce("YYYY-MM-DD");
+    joplinRepo.settingsLoad.mockReturnValue("default");
 
     await dailyNoteTool.getOrCreateDailyNote();
 
@@ -29,4 +31,25 @@ test("getOrCreateDailyNote should create note", async () => {
     expect(joplinService.searchNoteByTitle.mock.calls[0][0]).toBe(
         "2020-01-01",
     );
+});
+
+test("getOrCreateDailyNote should show toast if default notebook is not found", async () => {
+    const joplinRepo = new JoplinRepo() as any;
+    const servicePool = new ServicePool(joplinRepo);
+    const dailyNoteTool = new DailyNoteTool(servicePool);
+    const joplinService = servicePool.joplinService as any;
+    const dateTimeService = servicePool.dateTimeService as any;
+
+    dateTimeService.getNormalizedToday.mockReturnValueOnce(new Date(2020, 0, 1));
+    joplinService.searchNoteByTitle.mockReturnValueOnce([]);
+    joplinService.urlToId.mockReturnValueOnce("hashId");
+    joplinService.queryNotebookId.mockReturnValueOnce(null); // Default notebook not found
+    joplinRepo.settingsLoadGlobal.mockReturnValueOnce("YYYY-MM-DD");
+    joplinRepo.settingsLoad.mockReturnValue("default");
+
+    await dailyNoteTool.getOrCreateDailyNote();
+
+    expect(joplinService.queryNotebookId).toHaveBeenCalledWith("default");
+    expect(joplinRepo.toast).toHaveBeenCalledTimes(1);
+    expect(joplinService.createNoteWithIdIfNotExists).not.toHaveBeenCalled();
 });
