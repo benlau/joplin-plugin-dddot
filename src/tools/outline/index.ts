@@ -252,14 +252,8 @@ export default class OutlineTool extends Tool {
         }
     }
 
-    copyOutlineLink(link: string) {
-        const elem = document.createElement("textarea");
-        document.body.appendChild(elem);
-        elem.value = link;
-        elem.focus();
-        elem.select();
-        document.execCommand("copy");
-        elem.remove();
+    async copyOutlineLink(link: string) {
+        await joplin.clipboard.writeText(link);
     }
 
     async setHeight(height: number) {
