@@ -254,7 +254,7 @@ export default class JoplinService {
         });
     }
 
-    async queryNotebookId(name: string) {
+    async queryNotebookId(name: string): Promise<string | undefined> {
         let items = [];
         const query = this.dataGet(["folders"], { fields: ["id", "title"] });
 
@@ -265,6 +265,19 @@ export default class JoplinService {
 
         const notebook = items.find((item) => item.title === name);
 
-        return notebook?.id ?? "";
+        return notebook?.id;
+    }
+
+    async getFirstNotebookId(): Promise<string | undefined> {
+        const query = this.dataGet(["folders"], { fields: ["id"] });
+
+        // eslint-disable-next-line
+        for await (const result of query) {
+            if (result.items.length > 0) {
+                return result.items[0].id;
+            }
+        }
+
+        return undefined;
     }
 }

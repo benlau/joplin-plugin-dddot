@@ -152,7 +152,7 @@ export default class DailyNoteTool extends Tool {
 
         const title = format(today, dateFormat);
 
-        const defaultNotebook = await joplinRepo.settingsLoad(DailyNoteDefaultNotebook, "");
+        const defaultNotebook = (await joplinRepo.settingsLoad(DailyNoteDefaultNotebook, "")).trim();
 
         try {
             const note = await joplinService.getNote(hashedNoteId);
@@ -172,7 +172,14 @@ export default class DailyNoteTool extends Tool {
             };
         }
 
-        const parentId = await joplinService.queryNotebookId(defaultNotebook);
+        const parentId = defaultNotebook !== "" ? await joplinService.queryNotebookId(defaultNotebook) : await joplinService.getFirstNotebookId();
+
+        if (!parentId) {
+            await joplinRepo.toast(t("dailynote.default_notebook_not_found", { notebook: defaultNotebook }), "error");
+            return {
+                noteId: hashedNoteId,
+            };
+        }
 
         await joplinService.createNoteWithIdIfNotExists(hashedNoteId, title, { parentId });
 

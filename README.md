@@ -85,6 +85,8 @@ This tool puts a button at the top of the DDDot panel that will create a note fo
 
 By default, it is not using 0:00 as the start time of a day. It is set to 07:00. You may change the option via the preference interface. Moreover, You may assign a shortcut key to the `dddot.cmd.openDailyNote` command to trigger the function. (Default: Cmd+O / Ctrl+O)
 
+It will create the note according to the default notebook setting. If it is not specified, it will create the note in the first notebook. You may change the default notebook in the preference interface by setting the name of the notebook/folder (e.g. `Inbox`, `Welcome ! (Desktop`). In case you have notebooks/folders with the same name, it will create the note in the first notebook/folder.
+
 ## Random Note
 
 This tool puts a button at the top of the DDDot panel that will open a random note. It also registered a command of `dddot.cmd.openRandomNote`, you may assign a shortcut key to trigger this feature. (Default: Cmd+R / Ctrl+R)

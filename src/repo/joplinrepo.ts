@@ -20,6 +20,8 @@ export enum ItemChangeEventType {
 export default class JoplinRepo {
     panelView: string;
 
+    toastCounter = 0;
+
     constructor(panelView = "") {
         this.panelView = panelView;
     }
@@ -119,5 +121,24 @@ export default class JoplinRepo {
         menuItems: MenuItem[],
     ) {
         return joplin.views.menus.create(id, title, menuItems);
+    }
+
+    async toast(
+        message: string,
+        type: "success" | "error" | "info" = "success",
+        duration: number = 3000,
+    ) {
+        try {
+            await (joplin.views.dialogs as any).showToast(
+                {
+                    message,
+                    // eslint-disable-next-line no-plusplus
+                    duration: duration + (this.toastCounter++ % 50),
+                    type,
+                },
+            );
+        } catch {
+            // Ignore
+        }
     }
 }
