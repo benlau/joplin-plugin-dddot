@@ -26,6 +26,7 @@
     "dailynote.title": "日记",
     "dailynote.enable": "启用日记",
     "dailynote.open_daily_note": "打开日记",
+    "dailynote.default_notebook_not_found": "找不到默认笔记本：{notebook}",
     "randomnote.title": "随手记",
     "randomnote.enable": "启用随手记",
     "randomnote.open_random_note": "打开随手记",
