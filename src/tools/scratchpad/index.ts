@@ -53,6 +53,8 @@ export default class ScratchPad extends Tool {
             return this.onReady();
         case "scratchpad.tool.setHeight":
             return this.setHeight(message.height);
+        case "scratchpad.getContextMenuEnabled":
+            return this.getContextMenuEnabled();
         default:
             return undefined;
         }
@@ -101,5 +103,11 @@ export default class ScratchPad extends Tool {
                 accelerator: this.platformRepo.isMac() ? "Shift+Cmd+Enter" : "Ctrl+Shift+Enter",
             },
         ];
+    }
+
+    async getContextMenuEnabled() {
+        // Check the global setting for plugin webview isolation
+        const isIsolated = await this.joplinRepo.settingsLoadGlobal("featureFlag.plugins.isolatePluginWebViews", false);
+        return { contextMenuEnabled: !isIsolated };
     }
 }

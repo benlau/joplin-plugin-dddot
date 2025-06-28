@@ -172,6 +172,21 @@ export function ScratchpadView(props: Props) {
         };
     }, [props.height, updateHeight]);
 
+    React.useEffect(() => {
+        // A dirty hack to prevent the Joplin crash issue
+        // https://github.com/benlau/joplin-plugin-dddot/issues/14
+        DDDot.postMessage({ type: "scratchpad.getContextMenuEnabled" }).then((result) => {
+            if (result && result.contextMenuEnabled === false) {
+                // Disable CodeMirror context menu
+                if (state.current.cm) {
+                    state.current.cm.getWrapperElement().addEventListener("contextmenu", (e) => {
+                        e.preventDefault();
+                    });
+                }
+            }
+        });
+    }, []);
+
     return (
         <div>
             <textarea id="dddot-scratchpad-textarea" rows="10" ref={textareaRef}></textarea>
