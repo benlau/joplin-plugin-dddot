@@ -240,14 +240,17 @@ export default class OutlineTool extends Tool {
         const editorCodeView = await joplinRepo.settingsLoadGlobal("editor.codeView", undefined);
         const noteVisiblePanes = await joplinRepo.settingsLoadGlobal("noteVisiblePanes", undefined);
         if (editorCodeView && noteVisiblePanes.includes("editor")) {
-            // Markdown editor available
-            await joplinRepo.commandsExecute("editor.execCommand", {
-                name: "dddot.contentScript.scrollToLine",
-                args: [lineno],
-            });
+            if (slug === "") {
+                await joplinRepo.commandsExecute("editor.execCommand", {
+                    name: "dddot.contentScript.scrollToLine",
+                    args: [lineno],
+                });
+            } else {
+                await joplinRepo.commandsExecute("scrollToHash", slug);
+            }
         } else {
             // RTF Editor
-            const hash = slug === "" ? "rendered-md" : slug;
+            const hash = slug === "" ? "tinymce" : slug;
             await joplinRepo.commandsExecute("scrollToHash", hash);
         }
     }
