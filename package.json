@@ -9,7 +9,8 @@
     "lint:fix": "eslint . --ext .ts --ext .js --ext .tsx --fix",
     "test": "jest --silent false --verbose false",
     "test:watch": "jest --watch --silent false --verbose false",
-    "updateVersion": "webpack --env joplin-plugin-config=updateVersion"
+    "updateVersion": "webpack --env joplin-plugin-config=updateVersion",
+    "prepare": "npm run dist"
   },
   "license": "MIT",
   "keywords": [
