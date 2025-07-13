@@ -59,7 +59,13 @@ export default class Panel {
         await joplin.contentScripts.register(
             ContentScriptType.CodeMirrorPlugin,
             "dddot.contentScript",
-            "./sandbox/contentScript.js",
+            "./sandbox/contentScriptCM6.js",
+        );
+
+        await joplin.contentScripts.register(
+            ContentScriptType.CodeMirrorPlugin,
+            "dddot.contentScript",
+            "./sandbox/contentScriptCM5.js",
         );
     }
 

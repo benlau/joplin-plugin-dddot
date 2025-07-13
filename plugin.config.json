@@ -1,5 +1,7 @@
 {
 	"extraScripts": [
-		"sandbox/app.tsx"
+		"sandbox/app.tsx",
+		"sandbox/contentScriptCM6.ts",
+		"sandbox/contentScriptCM5.js"
 	]
 }

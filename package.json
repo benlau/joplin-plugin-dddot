@@ -17,6 +17,7 @@
     "joplin-plugin"
   ],
   "devDependencies": {
+    "@codemirror/view": "6.26.0",
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
