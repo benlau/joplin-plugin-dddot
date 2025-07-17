@@ -250,8 +250,12 @@ export default class OutlineTool extends Tool {
             }
         } else {
             // RTF Editor
-            const hash = slug === "" ? "tinymce" : slug;
-            await joplinRepo.commandsExecute("scrollToHash", hash);
+            if (slug === "") {
+                await joplinRepo.commandsExecute("scrollToHash", "rendered-md");
+                await joplinRepo.commandsExecute("scrollToHash", "tinymce");
+            } else {
+                await joplinRepo.commandsExecute("scrollToHash", slug);
+            }
         }
     }
 
