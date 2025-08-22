@@ -106,22 +106,12 @@ describe("MarkdownParserService", () => {
     });
 });
 
-// test("parseLinks", async () => {
-//     const service = new MarkdownParserService();
-//     const sample = `
-// [google](https://google.com)
-
-// `;
-//     const headings = await service.parseHeadings(sample);
-
-//     expect(headings).toStrictEqual([
-//     ]);
-// });
-
 test("slug", () => {
     const service = new MarkdownParserService();
 
     expect(service.slug("Title")).toStrictEqual("title");
     expect(service.slug("♥")).toStrictEqual("hearts");
     expect(service.slug("🔴 Important note")).toStrictEqual("red_circle-important-note");
+    expect(service.slug("🐶🐶🐶🐱")).toStrictEqual("dogdogdogcat");
+    expect(service.slug("[Heading 2](https://example.com/)")).toStrictEqual("heading-2httpsexamplecom");
 });

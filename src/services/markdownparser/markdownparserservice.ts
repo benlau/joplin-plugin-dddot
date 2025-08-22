@@ -1,4 +1,4 @@
-import uslug from "uslug";
+import uslug from "@joplin/fork-uslug";
 import markdownit from "markdown-it";
 import { OutlineItem, OutlineType } from "../../types/outline";
 
