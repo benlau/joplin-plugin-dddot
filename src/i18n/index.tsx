@@ -5,12 +5,14 @@ import en from "../locales/en.json";
 import zh_TW from "../locales/zh_TW.json";
 import fr_FR from "../locales/fr_FR.json";
 import zh_CN from "../locales/zh_CN.json";
+import de_DE from "../locales/de_DE.json";
 
 const locales = {
     en,
     zh_TW,
     fr_FR,
     zh_CN,
+    de_DE,
 };
 
 export function initializeI18N(locale: string) {
