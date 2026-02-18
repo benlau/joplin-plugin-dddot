@@ -54,8 +54,8 @@
   -webkit-user-drag: none;
   font-family: var(--joplin-font-family);
   color: var(--joplin-color3);
-  height: 28px;
-  line-height: 28px;
+  height: 30px;
+  line-height: 30px;
   white-space: nowrap;
 }
 
