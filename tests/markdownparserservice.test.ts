@@ -65,6 +65,44 @@ describe("MarkdownParserService", () => {
             ]);
         });
 
+        it("It should assign unique slugs when headings have the same title", async () => {
+            const service = new MarkdownParserService();
+            const sample = `
+# Title
+## Title
+# Title
+`;
+            const outlines = service.parseOutlines(sample);
+
+            expect(outlines).toStrictEqual([
+                {
+                    type: OutlineType.Heading,
+                    title: "Title",
+                    level: 1,
+                    lineno: 1,
+                    slug: "title",
+                    children: [
+                        {
+                            type: OutlineType.Heading,
+                            title: "Title",
+                            level: 2,
+                            lineno: 2,
+                            slug: "title-2",
+                            children: [],
+                        },
+                    ],
+                },
+                {
+                    type: OutlineType.Heading,
+                    title: "Title",
+                    level: 1,
+                    slug: "title-3",
+                    lineno: 3,
+                    children: [],
+                },
+            ]);
+        });
+
         it("It should able to parse links and heading together", async () => {
             const service = new MarkdownParserService();
             const sample = `

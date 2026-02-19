@@ -116,6 +116,7 @@ export class MarkdownParserService {
 
     parseOutlines(markdown: string, includeLinks?: string[]): OutlineItem[] {
         let lastHeading = null;
+        const slugCountMap = new Map<string, number>();
 
         const handleHeading = (tokens: any[], index: number) => {
             const result = parseHeadingToken(tokens, index);
@@ -125,10 +126,14 @@ export class MarkdownParserService {
 
             const {
                 title,
-                slug,
+                slug: baseSlug,
                 level,
                 lineno,
             } = result;
+
+            const nextIndex = slugCountMap.get(baseSlug) ?? 0;
+            slugCountMap.set(baseSlug, nextIndex + 1);
+            const slug = nextIndex === 0 ? baseSlug : `${baseSlug}-${nextIndex + 1}`;
 
             return {
                 type: OutlineType.Heading,
