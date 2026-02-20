@@ -170,7 +170,23 @@ export function ShortcutsView(props: Props) {
                  || dt.types.indexOf(DDDot.X_JOP_FOLDER_IDS) >= 0
             ) {
                 setIsLinkDragging(true);
-                dt.dropEffect = "link";
+
+                // On Linux, using dropEffect = 'link' in Electron (Chromium) often
+                // fails due to strict protocol enforcement between the source and
+                // target. Chromium requires the dropEffect to be a subset of
+                // the source's effectAllowed. If Joplin’s internal note list defines
+                // its drag source as copy or copyMove, forcing a link effect creates
+                // a mismatch. While Windows may ignore this, Linux environments
+                // (especially under Wayland or strict X11 window managers) interpret
+                // this mismatch as an invalid operation, triggering a "prohibited"
+                // cursor and canceling the drop event entirely, regardless of the
+                // extension's internal code.
+
+                const allowed = e.dataTransfer.effectAllowed;
+                const isLinkAllowed = (allowed === "all" || allowed === "link" || allowed === "linkMove" || allowed === "copyLink");
+
+                dt.dropEffect = isLinkAllowed ? "link" : "copy";
+
                 e.stopPropagation();
                 e.preventDefault();
             }
